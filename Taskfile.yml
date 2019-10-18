@@ -1,0 +1,21 @@
+version: "2"
+
+tasks:
+  d:build:
+    desc: Build the Caddy Docker image
+    silent: true
+    deps: [d:lint]
+    cmds:
+      - docker build
+        --tag ilyes512/caddy-docker:latest
+        .
+
+  d:lint:
+    desc: Apply a Dockerfile linter (https://github.com/hadolint/hadolint)
+    silent: true
+    cmds:
+      - docker run
+        --rm
+        --interactive
+        hadolint/hadolint:v1.17.2
+        < Dockerfile
