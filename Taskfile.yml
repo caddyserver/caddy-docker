@@ -39,10 +39,10 @@ tasks:
       - d:tmpl:compile
       - task: d:lint
         vars:
-          Dockerfile: build/Dockerfile.{{.TYPE}}
+          DOCKERFILE: build/Dockerfile.{{.TYPE}}
     preconditions:
       - sh: test '{{.TYPE}}' != '<no value>'
-        msg: Provide a (Docker) TYPE-value
+        msg: TYPE needs to contain the Docker type [alpine, scratch]
     cmds:
       - docker build
         --tag ilyes512/caddy-docker:{{.TYPE}}-latest
@@ -67,12 +67,15 @@ tasks:
   d:lint:
     desc: Apply a Dockerfile linter (https://github.com/hadolint/hadolint)
     silent: true
+    preconditions:
+      - sh: test '{{.DOCKERFILE}}' != '<no value>'
+        msg: DOCKERFILE needs to contain a path to a Dockerfile
     cmds:
       - docker run
         --rm
         --interactive
         hadolint/hadolint:v1.17.2
-        < {{.Dockerfile | default "NO_DOCKERFILE"}}
+        < {{.DOCKERFILE}}
 
   ######################################################################################################################
   #
