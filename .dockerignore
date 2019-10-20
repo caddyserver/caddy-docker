@@ -6,3 +6,6 @@
 /.gitignore
 /README.md
 /Taskfile.yml
+
+/build
+!/build/files

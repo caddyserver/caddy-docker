@@ -1,0 +1,30 @@
+FROM golang:1.13.3-alpine3.10 as builder
+
+WORKDIR /src
+
+# hadolint ignore=DL3018
+RUN apk add --no-cache --no-progress \
+        git \
+        musl-dev \
+        gcc \
+        libc-dev \
+        ca-certificates
+
+ENV CADDY_VERSION=v2.0.0-beta6
+
+RUN git clone -b $CADDY_VERSION https://github.com/caddyserver/caddy.git --depth 1
+
+WORKDIR /src/caddy/cmd/caddy
+
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
+    go build -a -tags netgo -ldflags '-extldflags "-static" -s -w' -o /usr/bin/caddy
+
+FROM scratch
+
+COPY --from=builder /usr/bin/caddy /usr/bin/caddy
+COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs
+COPY --from=builder /etc/passwd /etc/passwd
+COPY build/files .
+
+ENTRYPOINT ["/usr/bin/caddy"]
+CMD ["run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]

@@ -1,14 +1,68 @@
 version: "2"
 
+########################################################################################################################
+#
+# TOC
+#
+########################################################################################################################
+#
+# 1. BUILD
+# 2. RUN
+# 3. MISC
+#
+########################################################################################################################
+
 tasks:
+  ######################################################################################################################
+  #
+  #  1. BUILD
+  #
+  ######################################################################################################################
+
+  d:build:scratch:
+    desc: Build a Caddy scratch-based Docker image
+    cmds:
+      - task: d:build
+        vars:
+          TYPE: scratch
+
+  d:build:alpine:
+    desc: Build a Caddy Alpine-based Docker image
+    cmds:
+      - task: d:build
+        vars:
+          TYPE: alpine
+
   d:build:
-    desc: Build the Caddy Docker image
     silent: true
-    deps: [d:lint]
+    deps:
+      - d:tmpl:compile
+      - task: d:lint
+        vars:
+          Dockerfile: build/Dockerfile.{{.TYPE}}
+    preconditions:
+      - sh: test '{{.TYPE}}' != '<no value>'
+        msg: Provide a (Docker) TYPE-value
     cmds:
       - docker build
-        --tag ilyes512/caddy-docker:latest
+        --tag ilyes512/caddy-docker:{{.TYPE}}-latest
+        --file build/Dockerfile.{{.TYPE}}
         .
+
+  d:tmpl:compile:
+    desc: Compile the (Gomplate) templates into Dockerfiles
+    silent: true
+    cmds:
+      - docker run
+        --interactive
+        --tty
+        --rm
+        --volume $(pwd)/build:/build
+        --workdir /build
+        hairyhenderson/gomplate:latest
+        --template partials='templates/partials/'
+        --input-dir templates/
+        --output-map '{{`{{ .in | strings.TrimSuffix ".tmpl" }}`}}'
 
   d:lint:
     desc: Apply a Dockerfile linter (https://github.com/hadolint/hadolint)
@@ -18,4 +72,60 @@ tasks:
         --rm
         --interactive
         hadolint/hadolint:v1.17.2
-        < Dockerfile
+        < {{.Dockerfile | default "NO_DOCKERFILE"}}
+
+  ######################################################################################################################
+  #
+  #  2. RUN
+  #
+  ######################################################################################################################
+
+  d:run:scratch:
+    desc: Build and run the Caddy scratch-based Docker image
+    cmds:
+      - task: d:run
+        vars:
+          TYPE: alpine
+
+  d:run:alpine:
+    desc: Build and run the Caddy alpine-based Docker image
+    cmds:
+      - task: d:run
+        vars:
+          TYPE: alpine
+
+  d:run:
+    silent: true
+    preconditions:
+      - sh: test '{{.TYPE}}' != '<no value>'
+        msg: Provide a (Docker) TYPE-value
+    cmds:
+      - task: d:build:{{.TYPE}}
+      - docker run
+        --interactive
+        --tty
+        --rm
+        --publish 8080:80
+        ilyes512/caddy-docker:{{.TYPE}}-latest
+
+  ######################################################################################################################
+  #
+  #  3. MISC
+  #
+  ######################################################################################################################
+
+  fetch-dist-assets:
+    desc: Fetch the latest default welcome page and default Caddy config
+    silent: true
+    env:
+      CADDYFILE_PATH: /etc/caddy/Caddyfile
+      WELCOMEFILE_PATH: /usr/share/caddy/index.html
+    cmds:
+      - mkdir -p build/files/`dirname $CADDYFILE_PATH`
+      - mkdir -p build/files/`dirname $WELCOMEFILE_PATH`
+      - |
+        CADDYTEMPDIR=`mktemp -d ${TMP:-/tmp/}caddyassets.XXXXXX`
+        git clone https://github.com/caddyserver/dist --depth=1 $CADDYTEMPDIR
+        mv $CADDYTEMPDIR/config/Caddyfile build/files$CADDYFILE_PATH
+        mv $CADDYTEMPDIR/welcome/index.html build/files$WELCOMEFILE_PATH
+        rm -rf $CADDYTEMPDIR
