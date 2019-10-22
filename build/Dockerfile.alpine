@@ -1,4 +1,6 @@
-FROM golang:1.13.3-alpine3.10 as builder
+ARG GO_TAG_VERSION
+ARG ALPINE_TAG_VERSION
+FROM golang:$GO_TAG_VERSION as builder
 
 WORKDIR /src
 
@@ -9,16 +11,17 @@ RUN apk add --no-cache --no-progress \
         libc-dev=0.7.1-r0 \
         ca-certificates=20190108-r0
 
-ENV CADDY_VERSION=v2.0.0-beta6
+ARG CADDY_SOURCE_VERSION=v2
 
-RUN git clone -b $CADDY_VERSION https://github.com/caddyserver/caddy.git --depth 1
+RUN git clone -b $CADDY_SOURCE_VERSION https://github.com/caddyserver/caddy.git --depth 1
 
 WORKDIR /src/caddy/cmd/caddy
 
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
     go build -trimpath -tags netgo -ldflags '-extldflags "-static" -s -w' -o /usr/bin/caddy
 
-FROM alpine:3.10.2
+ARG ALPINE_TAG_VERSION
+FROM alpine:$ALPINE_TAG_VERSION
 
 COPY --from=builder /usr/bin/caddy /usr/bin/caddy
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs
