@@ -16,7 +16,7 @@ RUN git clone -b $CADDY_VERSION https://github.com/caddyserver/caddy.git --depth
 WORKDIR /src/caddy/cmd/caddy
 
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
-    go build -a -tags netgo -ldflags '-extldflags "-static" -s -w' -o /usr/bin/caddy
+    go build -trimpath -tags netgo -ldflags '-extldflags "-static" -s -w' -o /usr/bin/caddy
 
 FROM alpine:3.10.2
 
