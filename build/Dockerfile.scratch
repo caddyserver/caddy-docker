@@ -20,12 +20,20 @@ WORKDIR /src/caddy/cmd/caddy
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
     go build -trimpath -tags netgo -ldflags '-extldflags "-static" -s -w' -o /usr/bin/caddy
 
+RUN addgroup -S caddy \
+    && adduser -SD -h /var/lib/caddy/ -g 'Caddy web server' -s /sbin/nologin -G caddy caddy
+
 FROM scratch
 
-COPY --from=builder /usr/bin/caddy /usr/bin/caddy
-COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs
+COPY --from=builder /etc/group /etc/group
 COPY --from=builder /etc/passwd /etc/passwd
+COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs
+
+COPY --from=builder /usr/bin/caddy /usr/bin/caddy
+COPY --from=builder --chown=caddy:caddy /var/lib/caddy /var/lib/caddy
 COPY build/files .
+
+USER caddy
 
 ENTRYPOINT ["/usr/bin/caddy"]
 CMD ["run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
