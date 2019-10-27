@@ -7,7 +7,7 @@
 # sure your domain's A/AAAA DNS records are properly pointed to
 # this machine's public IP, then replace the line below with your
 # domain name.
-:80
+:8080
 
 # Set this path to your site's directory.
 root * /usr/share/caddy
@@ -16,7 +16,7 @@ root * /usr/share/caddy
 file_server
 
 # Another common task is to set up a reverse proxy:
-# reverse_proxy localhost:8080
+# reverse_proxy localhost:8888
 
 # Or serve a PHP site through php-fpm:
 # php_fastcgi localhost:9000

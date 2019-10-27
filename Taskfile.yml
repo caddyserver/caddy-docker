@@ -121,7 +121,7 @@ tasks:
         --interactive
         --tty
         --rm
-        --publish 8080:80
+        --publish 8080:8080
         {{.TAG_REPOSITORY}}/{{.TAG_NAME}}:{{.TYPE}}-{{.TAG_VERSION}}
 
   ######################################################################################################################
@@ -142,6 +142,12 @@ tasks:
       - |
         CADDYTEMPDIR=`mktemp -d ${TMP:-/tmp/}caddyassets.XXXXXX`
         git clone https://github.com/caddyserver/dist --depth=1 $CADDYTEMPDIR
-        mv $CADDYTEMPDIR/config/Caddyfile build/files$CADDYFILE_PATH
+
+        cat $CADDYTEMPDIR/config/Caddyfile \
+          | docker run --interactive --rm hairyhenderson/sed -r 's/^(.*)(localhost.*):8080(.*)/\1\2:8888\3/g' \
+          | docker run --interactive --rm hairyhenderson/sed 's/^:80$/:8080/g' \
+          > $CADDYTEMPDIR/config/Caddyfile2
+
+        mv $CADDYTEMPDIR/config/Caddyfile2 build/files$CADDYFILE_PATH
         mv $CADDYTEMPDIR/welcome/index.html build/files$WELCOMEFILE_PATH
         rm -rf $CADDYTEMPDIR
