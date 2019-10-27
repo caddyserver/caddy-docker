@@ -85,6 +85,11 @@
 				margin-right: 1.5em;
 			}
 
+			h2 {
+				font-size: 28px;
+				margin-top: 1.5em;
+			}
+
 			p,
 			ol,
 			ul {
@@ -118,6 +123,10 @@
 				border-radius: 2px;
 				padding: 4px 8px;
 				font-size: 90%;
+			}
+
+			.warn {
+				color: #dd0000;
 			}
 
 			footer {
@@ -203,16 +212,38 @@
 						</ol>
 					</li>
 					<li>Reload the configuration: <code>systemctl reload caddy</code></li>
-					<li>Try it out!</li>
+					<li>Visit your site!</li>
 				</ol>
+				<h2>If that worked 🥳</h2>
 				<p>
-					You can also customize your Caddyfile to use Caddy as a reverse proxy or to enable any other features you need. You could even ditch config files completely and use Caddy's API to configure it programmatically. Have fun!
+					Awesome! You won't have to look at this slanted page anymore.
+				</p>
+				<p>
+					Remember, Caddy can do a lot more than serve static files. It's also a powerful reverse proxy and application platform. You can use the Caddyfile to enable any other features you need. Or you could use Caddy's API to configure it programmatically.
 				</p>
 				<p>	
-					Everything you need to know is in the <a href="https://github.com/caddyserver/caddy/wiki/v2:-Documentation">📖 Caddy documentation</a> or the manual for your OS/platform.
+					Everything you need to know is either in the <a href="https://github.com/caddyserver/caddy/wiki/v2:-Documentation">📖 Caddy documentation</a> or the manual for your OS/platform. Have fun!
+				</p>
+
+				<h2>If that didn't work 😶</h2>
+				<p>
+					It's okay, you can fix it! First check the following things:
+				</p>
+				<ul>
+					<li>Service status: <code>systemctl status caddy</code></li>
+					<li>Logs: <code>journalctl --no-pager -u caddy</code></li>
+					<li>Are your site's files readable by the caddy user and group? <code>ls -la /var/www/html</code></li>
+					<li>Is the caddy home directory writeable? <code>ls -la /var/lib/caddy</code></li>
+					<li>Ensure your domain's A and/or AAAA records point to your machine's public IP address: <code>dig example.com</code></li>
+					<li>Are your ports 80 and 443 externally reachable, and is Caddy able to bind to them? Check your firewalls, port forwarding, and other network configuration.</li>
+				</ul>
+				<p>
+					<b class="warn">WAIT!</b> Before trying again, switch to <a href="https://letsencrypt.org/docs/staging-environment/">Let's Encrypt's staging environment</a> to avoid being accidentally <a href="https://letsencrypt.org/docs/rate-limits/">rate limited</a>. Once you get everything else working, it's safe to switch back.
 				</p>
 				<p>
-					If you need help, we have a <a href="https://caddy.community/">great community</a>! First <a href="https://caddy.community/search">try a search</a>, and if your question is original, go ahead and ask it! Remember to pay it forward and help others too. 😁
+					Depending on your DNS provider, it may take a while for the DNS records to propagate. Even when everything is configured properly, automated challenges to obtain TLS certificates usually take several seconds, but may take up to several minutes or hours.
+				<p>
+					If you still need help, we have a <a href="https://caddy.community/">great community</a>! First <a href="https://caddy.community/search">try a search</a>, and if your question is original, go ahead and ask it! Remember to pay it forward and help others too. 😁
 				</p>
 				<p>
 					Visit Caddy on: 
