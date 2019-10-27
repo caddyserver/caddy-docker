@@ -25,6 +25,7 @@ tasks:
       - task: d:build
         vars:
           TYPE: scratch
+          TAG_VERSION: '{{.TAG_VERSION | default "latest"}}'
 
   d:build:alpine:
     desc: Build a Caddy Alpine-based Docker image
@@ -32,6 +33,7 @@ tasks:
       - task: d:build
         vars:
           TYPE: alpine
+          TAG_VERSION: '{{.TAG_VERSION | default "latest"}}'
 
   d:build:
     silent: true
@@ -43,10 +45,15 @@ tasks:
     preconditions:
       - sh: test '{{.TYPE}}' != '<no value>'
         msg: TYPE needs to contain the Docker type [alpine, scratch]
+      - sh: test '{{.TAG_VERSION}}' != '<no value>'
+        msg: TAG_VERSION needs to contain the tag that will be assigned to the Docker build
     cmds:
       - docker build
-        --tag ilyes512/caddy-docker:{{.TYPE}}-latest
+        --tag {{.TAG_REPOSITORY}}/{{.TAG_NAME}}:{{.TYPE}}-{{.TAG_VERSION}}
         --file build/Dockerfile.{{.TYPE}}
+        --build-arg CADDY_SOURCE_VERSION={{.CADDY_SOURCE_VERSION}}
+        --build-arg GO_TAG_VERSION={{.GO_TAG_VERSION}}
+        --build-arg ALPINE_TAG_VERSION="{{.ALPINE_TAG_VERSION}}"
         .
 
   d:tmpl:compile:
@@ -72,9 +79,9 @@ tasks:
         msg: DOCKERFILE needs to contain a path to a Dockerfile
     cmds:
       - docker run
-        --rm
         --interactive
-        hadolint/hadolint:v1.17.2
+        --rm
+        hadolint/hadolint:{{.HADOLINT_TAG_VERSION}}
         < {{.DOCKERFILE}}
 
   ######################################################################################################################
@@ -89,6 +96,7 @@ tasks:
       - task: d:run
         vars:
           TYPE: alpine
+          TAG_VERSION: '{{.TAG_VERSION | default "latest"}}'
 
   d:run:alpine:
     desc: Build and run the Caddy alpine-based Docker image
@@ -96,20 +104,25 @@ tasks:
       - task: d:run
         vars:
           TYPE: alpine
+          TAG_VERSION: '{{.TAG_VERSION | default "latest"}}'
 
   d:run:
     silent: true
     preconditions:
       - sh: test '{{.TYPE}}' != '<no value>'
-        msg: Provide a (Docker) TYPE-value
+        msg: TYPE needs to contain a value ie 'scratch' or 'alpine'
+      - sh: test '{{.TAG_VERSION}}' != '<no value>'
+        msg: TAG_VERSION needs to contain the image tag that will be run
     cmds:
       - task: d:build:{{.TYPE}}
+        vars:
+          TAG_VERSION: "{{.TAG_VERSION}}"
       - docker run
         --interactive
         --tty
         --rm
         --publish 8080:80
-        ilyes512/caddy-docker:{{.TYPE}}-latest
+        {{.TAG_REPOSITORY}}/{{.TAG_NAME}}:{{.TYPE}}-{{.TAG_VERSION}}
 
   ######################################################################################################################
   #
