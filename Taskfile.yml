@@ -79,8 +79,8 @@ tasks:
         msg: DOCKERFILE needs to contain a path to a Dockerfile
     cmds:
       - docker run
-        --rm
         --interactive
+        --rm
         hadolint/hadolint:{{.HADOLINT_TAG_VERSION}}
         < {{.DOCKERFILE}}
 
@@ -110,7 +110,7 @@ tasks:
     silent: true
     preconditions:
       - sh: test '{{.TYPE}}' != '<no value>'
-        msg: Provide a (Docker) TYPE-value
+        msg: TYPE needs to contain a value ie 'scratch' or 'alpine'
       - sh: test '{{.TAG_VERSION}}' != '<no value>'
         msg: TAG_VERSION needs to contain the image tag that will be run
     cmds:
