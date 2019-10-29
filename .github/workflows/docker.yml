@@ -1,0 +1,12 @@
+name: Docker Build
+on: [push]
+
+jobs:
+  docker-build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Build Docker images
+      run: hooks/build
+      env:
+        DOCKER_BUILDKIT: '1'
