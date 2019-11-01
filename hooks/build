@@ -1,0 +1,28 @@
+#!/bin/bash
+set -exuo pipefail
+
+echo "=== Build hook running"
+VCS_REF=$(git rev-parse --short HEAD)
+export VCS_REF
+export DOCKER_REPO=${DOCKER_REPO:-caddy/caddy}
+export DOCKER_TAG=${DOCKER_TAG:-latest}
+export IMAGE_NAME=${IMAGE_NAME:-${DOCKER_REPO}:${DOCKER_TAG}}
+
+
+if (git describe --abbrev=0 --exact-match &>/dev/null); then
+  VERSION=$(git describe --abbrev=0 --exact-match)
+else
+  VERSION=0.0.0-devel
+fi
+export VERSION
+
+tags=(alpine scratch)
+for tag in "${tags[@]}"; do
+    echo "=== Building $DOCKER_REPO:$tag"
+    docker build \
+        --build-arg VCS_REF \
+        --build-arg VERSION \
+        --target "$tag" \
+        --tag "$DOCKER_REPO:$tag" \
+        .
+done
