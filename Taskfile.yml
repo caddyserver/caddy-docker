@@ -24,7 +24,7 @@ tasks:
     cmds:
       - task: d:build
         vars:
-          TYPE: scratch
+          TARGET: scratch
           TAG_VERSION: '{{.TAG_VERSION | default "latest"}}'
 
   d:build:alpine:
@@ -32,57 +32,37 @@ tasks:
     cmds:
       - task: d:build
         vars:
-          TYPE: alpine
+          TARGET: alpine
           TAG_VERSION: '{{.TAG_VERSION | default "latest"}}'
 
   d:build:
     silent: true
     deps:
-      - d:tmpl:compile
       - task: d:lint
-        vars:
-          DOCKERFILE: build/Dockerfile.{{.TYPE}}
     preconditions:
-      - sh: test '{{.TYPE}}' != '<no value>'
-        msg: TYPE needs to contain the Docker type [alpine, scratch]
+      - sh: test '{{.TARGET}}' != '<no value>'
+        msg: TARGET needs to contain the Docker TARGET [alpine, scratch]
       - sh: test '{{.TAG_VERSION}}' != '<no value>'
         msg: TAG_VERSION needs to contain the tag that will be assigned to the Docker build
     cmds:
       - docker build
-        --tag {{.TAG_REPOSITORY}}/{{.TAG_NAME}}:{{.TYPE}}-{{.TAG_VERSION}}
-        --file build/Dockerfile.{{.TYPE}}
+        --target {{.TARGET}}
+        --tag {{.TAG_REPOSITORY}}/{{.TAG_NAME}}:{{.TARGET}}-{{.TAG_VERSION}}
         --build-arg CADDY_SOURCE_VERSION={{.CADDY_SOURCE_VERSION}}
-        --build-arg GO_TAG_VERSION={{.GO_TAG_VERSION}}
-        --build-arg ALPINE_TAG_VERSION="{{.ALPINE_TAG_VERSION}}"
         .
-
-  d:tmpl:compile:
-    desc: Compile the (Gomplate) templates into Dockerfiles
-    silent: true
-    cmds:
-      - docker run
-        --interactive
-        --tty
-        --rm
-        --volume $(pwd)/build:/build
-        --workdir /build
-        hairyhenderson/gomplate:latest
-        --template partials='templates/partials/'
-        --input-dir templates/
-        --output-map '{{`{{ .in | strings.TrimSuffix ".tmpl" }}`}}'
 
   d:lint:
     desc: Apply a Dockerfile linter (https://github.com/hadolint/hadolint)
     silent: true
-    preconditions:
-      - sh: test '{{.DOCKERFILE}}' != '<no value>'
-        msg: DOCKERFILE needs to contain a path to a Dockerfile
     cmds:
       - docker run
         --interactive
         --rm
         hadolint/hadolint:{{.HADOLINT_TAG_VERSION}}
-        < {{.DOCKERFILE}}
+        hadolint
+        --ignore DL3018
+        -
+        < Dockerfile
 
   ######################################################################################################################
   #
@@ -129,19 +109,3 @@ tasks:
   #  3. MISC
   #
   ######################################################################################################################
-
-  fetch-dist-assets:
-    desc: Fetch the latest default welcome page and default Caddy config
-    silent: true
-    env:
-      CADDYFILE_PATH: /etc/caddy/Caddyfile
-      WELCOMEFILE_PATH: /usr/share/caddy/index.html
-    cmds:
-      - mkdir -p build/files/`dirname $CADDYFILE_PATH`
-      - mkdir -p build/files/`dirname $WELCOMEFILE_PATH`
-      - |
-        CADDYTEMPDIR=`mktemp -d ${TMP:-/tmp/}caddyassets.XXXXXX`
-        git clone https://github.com/caddyserver/dist --depth=1 $CADDYTEMPDIR
-        mv $CADDYTEMPDIR/config/Caddyfile build/files$CADDYFILE_PATH
-        mv $CADDYTEMPDIR/welcome/index.html build/files$WELCOMEFILE_PATH
-        rm -rf $CADDYTEMPDIR
