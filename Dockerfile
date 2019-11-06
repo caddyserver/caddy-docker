@@ -25,6 +25,8 @@ ARG DIST_COMMIT=97bcdfccf5392c650216ebb0634a5ed4c680ad6a
 WORKDIR /src/dist
 RUN git clone https://github.com/caddyserver/dist .
 RUN git checkout $DIST_COMMIT
+RUN sed -ri 's/^(.*)(localhost.*):8080(.*)/\1\2:8888\3/g' config/Caddyfile
+RUN sed -i 's/^:80$/:8080/g' config/Caddyfile
 
 RUN cp config/Caddyfile /Caddyfile
 RUN cp welcome/index.html /index.html
