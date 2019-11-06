@@ -52,6 +52,9 @@ LABEL org.opencontainers.image.vendor="Light Code Labs"
 LABEL org.opencontainers.image.licenses=Apache-2.0
 LABEL org.opencontainers.image.source="https://github.com/caddyserver/caddy-docker"
 
+EXPOSE 8080
+EXPOSE 2019
+
 CMD [ "caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile" ]
 
 FROM scratch AS scratch
@@ -74,6 +77,9 @@ LABEL org.opencontainers.image.documentation=https://github.com/caddyserver/cadd
 LABEL org.opencontainers.image.vendor="Light Code Labs"
 LABEL org.opencontainers.image.licenses=Apache-2.0
 LABEL org.opencontainers.image.source="https://github.com/caddyserver/caddy-docker"
+
+EXPOSE 8080
+EXPOSE 2019
 
 ENTRYPOINT [ "caddy" ]
 CMD [ "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile" ]
