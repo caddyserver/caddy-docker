@@ -33,9 +33,11 @@ RUN cp welcome/index.html /index.html
 
 FROM alpine:3.10.3 AS alpine
 
+RUN addgroup -S caddy \
+    && adduser -SD -h /var/lib/caddy/ -g 'Caddy web server' -s /sbin/nologin -G caddy caddy
+
 COPY --from=builder /usr/bin/caddy /usr/bin/caddy
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs
-COPY --from=builder /etc/passwd /etc/passwd
 
 COPY --from=fetch-assets /Caddyfile /etc/caddy/Caddyfile
 COPY --from=fetch-assets /index.html /usr/share/caddy/index.html
@@ -55,13 +57,17 @@ LABEL org.opencontainers.image.source="https://github.com/caddyserver/caddy-dock
 EXPOSE 8080
 EXPOSE 2019
 
-CMD [ "caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile" ]
+USER caddy
+
+CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
 
 FROM scratch AS scratch
 
-COPY --from=builder /usr/bin/caddy /usr/bin/caddy
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs
-COPY --from=builder /etc/passwd /etc/passwd
+COPY --from=alpine /etc/passwd /etc/passwd
+COPY --from=alpine /etc/group /etc/group
+COPY --from=builder /usr/bin/caddy /usr/bin/caddy
+COPY --from=alpine --chown=caddy:caddy /var/lib/caddy /var/lib/caddy
 
 COPY --from=fetch-assets /Caddyfile /etc/caddy/Caddyfile
 COPY --from=fetch-assets /index.html /usr/share/caddy/index.html
@@ -81,5 +87,7 @@ LABEL org.opencontainers.image.source="https://github.com/caddyserver/caddy-dock
 EXPOSE 8080
 EXPOSE 2019
 
-ENTRYPOINT [ "caddy" ]
-CMD [ "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile" ]
+USER caddy
+
+ENTRYPOINT ["caddy"]
+CMD ["run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
