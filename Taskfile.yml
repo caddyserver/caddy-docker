@@ -104,6 +104,7 @@ tasks:
         --name caddy-{{.TYPE}}
         --publish 8080:8080
         --cap-drop ALL
+        --volume caddy-data:/var/lib/caddy/.local
         {{.TAG_REPOSITORY}}/{{.TAG_NAME}}:{{.TYPE}}-{{.TAG_VERSION}}
 
   ######################################################################################################################

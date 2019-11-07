@@ -59,6 +59,9 @@ EXPOSE 2019
 
 USER caddy
 
+RUN mkdir -p /var/lib/caddy/.local/share/caddy
+VOLUME /var/lib/caddy/.local/share/caddy
+
 CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
 
 FROM scratch AS scratch
@@ -88,6 +91,9 @@ EXPOSE 8080
 EXPOSE 2019
 
 USER caddy
+
+RUN mkdir -p /var/lib/caddy/.local/share/caddy
+VOLUME /var/lib/caddy/.local/share/caddy
 
 ENTRYPOINT ["caddy"]
 CMD ["run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
