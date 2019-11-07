@@ -1,5 +1,5 @@
 CADDY_SOURCE_VERSION: v2.0.0-beta9
 HADOLINT_TAG_VERSION: v1.17.2
 
-TAG_REPOSITORY: caddyserver
-TAG_NAME: caddy-docker
+TAG_REPOSITORY: caddy
+TAG_NAME: caddy
