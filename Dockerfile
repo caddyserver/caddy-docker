@@ -41,6 +41,7 @@ COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs
 
 COPY --from=fetch-assets /Caddyfile /etc/caddy/Caddyfile
 COPY --from=fetch-assets /index.html /usr/share/caddy/index.html
+COPY docker-entrypoint.sh /usr/local/bin
 
 ARG VCS_REF
 ARG VERSION
@@ -62,7 +63,7 @@ USER caddy
 RUN mkdir -p /var/lib/caddy/.local/share/caddy
 VOLUME /var/lib/caddy/.local/share/caddy
 
-CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
+CMD ["docker-entrypoint.sh"]
 
 FROM scratch AS scratch
 
