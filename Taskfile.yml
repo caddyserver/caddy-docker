@@ -44,6 +44,8 @@ tasks:
         msg: TARGET needs to contain the Docker TARGET [alpine, scratch]
       - sh: test '{{.TAG_VERSION}}' != '<no value>'
         msg: TAG_VERSION needs to contain the tag that will be assigned to the Docker build
+    env:
+      DOCKER_BUILDKIT: 1
     cmds:
       - docker build
         --target {{.TARGET}}
@@ -75,7 +77,7 @@ tasks:
     cmds:
       - task: d:run
         vars:
-          TYPE: alpine
+          TYPE: scratch
           TAG_VERSION: '{{.TAG_VERSION | default "latest"}}'
 
   d:run:alpine:

@@ -92,7 +92,6 @@ EXPOSE 2019
 
 USER caddy
 
-RUN mkdir -p /var/lib/caddy/.local/share/caddy
 VOLUME /var/lib/caddy/.local/share/caddy
 
 ENTRYPOINT ["caddy"]
