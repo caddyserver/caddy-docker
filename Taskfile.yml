@@ -49,7 +49,7 @@ tasks:
     cmds:
       - docker build
         --target {{.TARGET}}
-        --tag {{.TAG_REPOSITORY}}/{{.TAG_NAME}}:{{.TARGET}}-{{.TAG_VERSION}}
+        --tag {{.TAG_REPOSITORY}}/{{.TAG_NAME}}:{{.TAG_VERSION}}-{{.TARGET}}
         --build-arg CADDY_SOURCE_VERSION={{.CADDY_SOURCE_VERSION}}
         .
 
@@ -107,7 +107,7 @@ tasks:
         --publish 8080:8080
         --cap-drop ALL
         --volume caddy-data:/var/lib/caddy/.local
-        {{.TAG_REPOSITORY}}/{{.TAG_NAME}}:{{.TYPE}}-{{.TAG_VERSION}}
+        {{.TAG_REPOSITORY}}/{{.TAG_NAME}}:{{.TAG_VERSION}}-{{.TARGET}}
 
   ######################################################################################################################
   #
