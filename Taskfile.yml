@@ -77,7 +77,7 @@ tasks:
     cmds:
       - task: d:run
         vars:
-          TYPE: scratch
+          TARGET: scratch
           TAG_VERSION: '{{.TAG_VERSION | default "latest"}}'
 
   d:run:alpine:
@@ -85,25 +85,25 @@ tasks:
     cmds:
       - task: d:run
         vars:
-          TYPE: alpine
+          TARGET: alpine
           TAG_VERSION: '{{.TAG_VERSION | default "latest"}}'
 
   d:run:
     silent: true
     preconditions:
-      - sh: test '{{.TYPE}}' != '<no value>'
-        msg: TYPE needs to contain a value ie 'scratch' or 'alpine'
+      - sh: test '{{.TARGET}}' != '<no value>'
+        msg: TARGET needs to contain one of 'scratch' or 'alpine'
       - sh: test '{{.TAG_VERSION}}' != '<no value>'
         msg: TAG_VERSION needs to contain the image tag that will be run
     cmds:
-      - task: d:build:{{.TYPE}}
+      - task: d:build:{{.TARGET}}
         vars:
           TAG_VERSION: "{{.TAG_VERSION}}"
       - docker run
         --interactive
         --tty
         --rm
-        --name caddy-{{.TYPE}}
+        --name caddy-{{.TARGET}}
         --publish 8080:8080
         --cap-drop ALL
         --volume caddy-data:/var/lib/caddy/.local
