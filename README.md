@@ -15,6 +15,4 @@ task: Available tasks for this project:
 * d:lint:               Apply a Dockerfile linter (https://github.com/hadolint/hadolint)
 * d:run:alpine:         Build and run the Caddy alpine-based Docker image
 * d:run:scratch:        Build and run the Caddy scratch-based Docker image
-* d:tmpl:compile:       Compile the (Gomplate) templates into Dockerfiles
-* fetch-dist-assets:    Fetch the latest default welcome page and default Caddy config
 ```
