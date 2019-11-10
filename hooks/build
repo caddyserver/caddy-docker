@@ -1,13 +1,24 @@
 #!/bin/bash
-set -exuo pipefail
+set -exo pipefail
+
+docker version
+
+echo "=== Environment info"
+echo SOURCE_BRANCH=$SOURCE_BRANCH
+echo SOURCE_COMMIT=$SOURCE_COMMIT
+echo COMMIT_MSG=$COMMIT_MSG
+echo DOCKERFILE_PATH=$DOCKERFILE_PATH
+echo DOCKER_REPO=$DOCKER_REPO
+echo DOCKER_TAG=$DOCKER_TAG
+echo IMAGE_NAME=$IMAGE_NAME
 
 echo "=== Build hook running"
 VCS_REF=$(git rev-parse --short HEAD)
+echo VCS_REF=$VCS_REF
 export VCS_REF
 export DOCKER_REPO=${DOCKER_REPO:-caddy/caddy}
 export DOCKER_TAG=${DOCKER_TAG:-latest}
 export IMAGE_NAME=${IMAGE_NAME:-${DOCKER_REPO}:${DOCKER_TAG}}
-
 
 if (git describe --abbrev=0 --exact-match &>/dev/null); then
   VERSION=$(git describe --abbrev=0 --exact-match)
@@ -26,3 +37,5 @@ for tag in "${tags[@]}"; do
         --tag "$DOCKER_REPO:$tag" \
         .
 done
+
+docker tag $DOCKER_REPO:scratch $IMAGE_NAME
