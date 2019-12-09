@@ -4,7 +4,8 @@ WORKDIR /src
 
 RUN apk add --no-cache \
     git \
-    ca-certificates
+    ca-certificates \
+    libcap
 
 ARG CADDY_SOURCE_VERSION=v2
 
@@ -14,6 +15,8 @@ WORKDIR /src/caddy/cmd/caddy
 
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
     go build -trimpath -tags netgo -ldflags '-extldflags "-static" -s -w' -o /usr/bin/caddy
+
+RUN setcap 'cap_net_bind_service=+ep' /usr/bin/caddy
 
 # Fetch the latest default welcome page and default Caddy config
 FROM alpine:3.10.3 AS fetch-assets
