@@ -16,7 +16,7 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
     go build -trimpath -tags netgo -ldflags '-extldflags "-static" -s -w' -o /usr/bin/caddy
 
 # Fetch the latest default welcome page and default Caddy config
-FROM alpine:3.11.0 AS fetch-assets
+FROM alpine:3.11.2 AS fetch-assets
 
 RUN apk add --no-cache git
 
@@ -31,7 +31,7 @@ RUN sed -i 's/^:80$/:8080/g' config/Caddyfile
 RUN cp config/Caddyfile /Caddyfile
 RUN cp welcome/index.html /index.html
 
-FROM alpine:3.11.0 AS alpine
+FROM alpine:3.11.2 AS alpine
 
 RUN addgroup -S caddy \
     && adduser -SD -h /var/lib/caddy/ -g 'Caddy web server' -s /sbin/nologin -G caddy caddy
