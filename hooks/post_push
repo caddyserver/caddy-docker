@@ -1,0 +1,48 @@
+#!/bin/bash
+set -exuo pipefail
+
+export DOCKER_REPO=${DOCKER_REPO:-caddy}
+export DOCKER_TAG=${DOCKER_TAG:-latest}
+
+docker push "$DOCKER_REPO/builder:$DOCKER_TAG"
+
+names=(runtime caddy)
+targets=(alpine scratch)
+
+for name in "${names[@]}"; do
+    for target in "${targets[@]}"; do
+        docker push "$DOCKER_REPO/$name:$DOCKER_TAG-$target"
+    done
+
+    docker push "$DOCKER_REPO/$name:$DOCKER_TAG"
+done
+
+# This magic figures out if we're currently on a tag (i.e. a release).
+# We only want to have special tags for releases.
+if (git describe --abbrev=0 --exact-match &>/dev/null); then
+    tag=$(git describe --abbrev=0 --exact-match)
+    # splits the major/minor versions from $tag - assumes it's a 3-part semver
+    major=${tag%%\.*}
+    minor=${tag%\.*}
+
+    tags=(latest $tag $major $minor)
+
+    for tag in "${tags[@]}"; do
+        docker tag "$DOCKER_REPO/builder:$DOCKER_TAG" "$DOCKER_REPO/builder:$tag"
+        docker push "$DOCKER_REPO/builder:$tag"
+
+        for name in "${names[@]}"; do
+            for target in "${targets[@]}"; do
+                docker tag \
+                    "$DOCKER_REPO/$name:$DOCKER_TAG-$target" \
+                    "$DOCKER_REPO/$name:$tag-$target"
+                docker push "$DOCKER_REPO/$name:$tag-$target"
+            done
+
+            docker tag \
+                "$DOCKER_REPO/$name:$DOCKER_TAG" \
+                "$DOCKER_REPO/$name:$tag"
+            docker push "$DOCKER_REPO/$name:$tag"
+        done
+    done
+fi

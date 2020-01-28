@@ -1,0 +1,5 @@
+module caddy
+
+go 1.13
+
+require github.com/caddyserver/caddy/v2 ${CADDY_SOURCE_VERSION}
