@@ -1,0 +1,15 @@
+Maintainers: Dave Henderson (@hairyhenderson)
+
+Tags: v2.0.0-beta.13, v2.0.0-beta.13-alpine, alpine, latest
+GitRepo: https://github.com/caddyserver/caddy-docker.git
+Directory: alpine
+GitFetch: refs/heads/build-overhaul
+GitCommit: 59ddc2b17d570b100f264a46c93a451708995c52
+Architectures: amd64
+
+Tags: v2.0.0-beta.13-slim, scratch
+GitRepo: https://github.com/caddyserver/caddy-docker.git
+Directory: scratch
+GitFetch: refs/heads/build-overhaul
+GitCommit: 59ddc2b17d570b100f264a46c93a451708995c52
+Architectures: amd64
