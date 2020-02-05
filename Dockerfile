@@ -6,9 +6,9 @@ RUN apk add --no-cache \
     git \
     ca-certificates
 
-ARG CADDY_SOURCE_VERSION=v2
+ARG CADDY_SOURCE_VERSION=v2.0.0-beta.13
 
-RUN git clone -b $CADDY_SOURCE_VERSION https://github.com/caddyserver/caddy.git --depth 1
+RUN git clone -b $CADDY_SOURCE_VERSION https://github.com/caddyserver/caddy.git --single-branch
 
 WORKDIR /src/caddy/cmd/caddy
 
@@ -20,13 +20,11 @@ FROM alpine:3.11.3 AS fetch-assets
 
 RUN apk add --no-cache git
 
-ARG DIST_COMMIT=97bcdfccf5392c650216ebb0634a5ed4c680ad6a
+ARG DIST_COMMIT=4d5728e7a4452d31030336c8e3ad9a006e58af18
 
 WORKDIR /src/dist
 RUN git clone https://github.com/caddyserver/dist .
 RUN git checkout $DIST_COMMIT
-RUN sed -ri 's/^(.*)(localhost.*):8080(.*)/\1\2:8888\3/g' config/Caddyfile
-RUN sed -i 's/^:80$/:8080/g' config/Caddyfile
 
 RUN cp config/Caddyfile /Caddyfile
 RUN cp welcome/index.html /index.html
