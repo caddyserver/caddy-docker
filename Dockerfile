@@ -31,9 +31,6 @@ RUN cp welcome/index.html /index.html
 
 FROM alpine:3.11.3 AS alpine
 
-RUN addgroup -S caddy \
-    && adduser -SD -h /var/lib/caddy/ -g 'Caddy web server' -s /sbin/nologin -G caddy caddy
-
 COPY --from=builder /usr/bin/caddy /usr/bin/caddy
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs
 
@@ -52,23 +49,16 @@ LABEL org.opencontainers.image.vendor="Light Code Labs"
 LABEL org.opencontainers.image.licenses=Apache-2.0
 LABEL org.opencontainers.image.source="https://github.com/caddyserver/caddy-docker"
 
-EXPOSE 8080
+EXPOSE 80
+EXPOSE 443
 EXPOSE 2019
-
-USER caddy
-
-RUN mkdir -p /var/lib/caddy/.local/share/caddy
-VOLUME /var/lib/caddy/.local/share/caddy
 
 CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
 
 FROM scratch AS scratch
 
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs
-COPY --from=alpine /etc/passwd /etc/passwd
-COPY --from=alpine /etc/group /etc/group
 COPY --from=builder /usr/bin/caddy /usr/bin/caddy
-COPY --from=alpine --chown=caddy:caddy /var/lib/caddy /var/lib/caddy
 
 COPY --from=fetch-assets /Caddyfile /etc/caddy/Caddyfile
 COPY --from=fetch-assets /index.html /usr/share/caddy/index.html
@@ -85,12 +75,9 @@ LABEL org.opencontainers.image.vendor="Light Code Labs"
 LABEL org.opencontainers.image.licenses=Apache-2.0
 LABEL org.opencontainers.image.source="https://github.com/caddyserver/caddy-docker"
 
-EXPOSE 8080
+EXPOSE 80
+EXPOSE 443
 EXPOSE 2019
-
-USER caddy
-
-VOLUME /var/lib/caddy/.local/share/caddy
 
 ENTRYPOINT ["caddy"]
 CMD ["run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
