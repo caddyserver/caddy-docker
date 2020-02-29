@@ -1,15 +1,18 @@
+# this file is generated with gomplate:
+# template: https://github.com/caddyserver/caddy-docker/blob/df066d13dc8d4bf8504eed08a089ff00a453685a/stackbrew.tmpl
+# config context: https://github.com/caddyserver/caddy-docker/blob/f8db28380a31026b30d4fb361364ce88ec9abed1/stackbrew-config.yaml
 Maintainers: Dave Henderson (@hairyhenderson)
 
-Tags: v2.0.0-beta.13, v2.0.0-beta.13-alpine, alpine, latest
+Tags: v2.0.0-beta.15, v2.0.0-beta.15-alpine, alpine, latest
 GitRepo: https://github.com/caddyserver/caddy-docker.git
 Directory: alpine
-GitFetch: refs/heads/build-overhaul
-GitCommit: df066d13dc8d4bf8504eed08a089ff00a453685a
+GitFetch: refs/heads/caddy-v2.0.0-beta15
+GitCommit: f8db28380a31026b30d4fb361364ce88ec9abed1
 Architectures: amd64
 
-Tags: v2.0.0-beta.13-slim, scratch
+Tags: v2.0.0-beta.15-slim, scratch
 GitRepo: https://github.com/caddyserver/caddy-docker.git
 Directory: scratch
-GitFetch: refs/heads/build-overhaul
-GitCommit: df066d13dc8d4bf8504eed08a089ff00a453685a
+GitFetch: refs/heads/caddy-v2.0.0-beta15
+GitCommit: f8db28380a31026b30d4fb361364ce88ec9abed1
 Architectures: amd64

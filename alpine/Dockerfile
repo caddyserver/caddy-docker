@@ -1,4 +1,4 @@
-FROM golang:1.13.8-alpine as builder
+FROM golang:1.14.0-alpine3.11 as builder
 
 WORKDIR /src
 
@@ -6,7 +6,7 @@ RUN apk add --no-cache \
     git \
     ca-certificates
 
-ARG CADDY_SOURCE_VERSION=v2.0.0-beta.13
+ARG CADDY_SOURCE_VERSION=v2.0.0-beta.15
 
 RUN git clone -b $CADDY_SOURCE_VERSION https://github.com/caddyserver/caddy.git --single-branch
 
@@ -20,7 +20,7 @@ FROM alpine:3.11.3 AS fetch-assets
 
 RUN apk add --no-cache git
 
-ARG DIST_COMMIT=4d5728e7a4452d31030336c8e3ad9a006e58af18
+ARG DIST_COMMIT=80870b227ded910971ecace4a0c136bf0ef46342
 
 WORKDIR /src/dist
 RUN git clone https://github.com/caddyserver/dist .
@@ -37,7 +37,7 @@ COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs
 COPY --from=fetch-assets /Caddyfile /etc/caddy/Caddyfile
 COPY --from=fetch-assets /index.html /usr/share/caddy/index.html
 
-ARG VERSION=v2.0.0-beta.13
+ARG VERSION=v2.0.0-beta.15
 LABEL org.opencontainers.image.version=$VERSION
 LABEL org.opencontainers.image.title=Caddy
 LABEL org.opencontainers.image.description="a powerful, enterprise-ready, open source web server with automatic HTTPS written in Go"
