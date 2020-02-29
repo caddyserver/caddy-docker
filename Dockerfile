@@ -6,7 +6,7 @@ RUN apk add --no-cache \
     git \
     ca-certificates
 
-ARG CADDY_SOURCE_VERSION=v2.0.0-beta.13
+ARG CADDY_SOURCE_VERSION=v2.0.0-beta.15
 
 RUN git clone -b $CADDY_SOURCE_VERSION https://github.com/caddyserver/caddy.git --single-branch
 
