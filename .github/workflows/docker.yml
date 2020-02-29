@@ -11,6 +11,17 @@ jobs:
       BASHBREW_NAMESPACE: caddy
       DOCKER_BUILDKIT: '1'
     steps:
-    - uses: actions/checkout@master
-    - name: build
-      run: bashbrew build caddy
+      - uses: actions/checkout@master
+      - name: build
+        run: bashbrew build caddy
+      - name: push
+        # NOTE: DOCKERHUB_TOKEN and DOCKERHUB_USERNAME must be present in https://github.com/caddyserver/caddy-docker/settings
+        # the user must have permission to push to https://hub.docker.com/r/caddy/caddy
+        run: |
+          echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+          bashbrew push caddy
+        if: github.repository == 'caddyserver/caddy-docker' && github.ref == 'refs/heads/master'
+      - name: push (non-master dry run)
+        run: |
+          bashbrew push --dry-run caddy
+        if: github.repository != 'caddyserver/caddy-docker' || github.ref != 'refs/heads/master'
