@@ -6,11 +6,11 @@ Maintainers: Dave Henderson (@hairyhenderson)
 Tags: v2.0.0-beta.15, v2.0.0-beta.15-alpine, alpine, latest
 GitRepo: https://github.com/caddyserver/caddy-docker.git
 Directory: alpine
-GitCommit: f8db28380a31026b30d4fb361364ce88ec9abed1
+GitCommit: fb92f0189a91b14182ca71c6bead8a9358f48318
 Architectures: amd64
 
 Tags: v2.0.0-beta.15-slim, scratch
 GitRepo: https://github.com/caddyserver/caddy-docker.git
 Directory: scratch
-GitCommit: f8db28380a31026b30d4fb361364ce88ec9abed1
+GitCommit: fb92f0189a91b14182ca71c6bead8a9358f48318
 Architectures: amd64
