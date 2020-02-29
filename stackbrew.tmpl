@@ -1,0 +1,12 @@
+# this file is generated with gomplate:
+# template: https://github.com/caddyserver/caddy-docker/blob/{{ fileCommit "stackbrew.tmpl"}}/stackbrew.tmpl
+# config context: https://github.com/caddyserver/caddy-docker/blob/{{ fileCommit "stackbrew-config.yaml"}}/stackbrew-config.yaml
+Maintainers: Dave Henderson (@hairyhenderson)
+{{ range $variant := .conf.variants }}
+{{- if and (file.IsDir $variant.dir) (file.Exists (filepath.Join $variant.dir "Dockerfile")) }}
+Tags: {{ join $variant.tags ", " }}
+GitRepo: https://github.com/caddyserver/caddy-docker.git
+Directory: {{ $variant.dir }}
+GitCommit: {{ fileCommit (filepath.Join $variant.dir "Dockerfile") }}
+Architectures: {{ join $variant.architectures ", " }}
+{{ end }}{{ end -}}

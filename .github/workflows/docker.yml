@@ -4,9 +4,13 @@ on: [push]
 jobs:
   docker-build:
     runs-on: ubuntu-latest
+    container:
+      image: hairyhenderson/dockerfiles-builder:latest
+    env:
+      BASHBREW_LIBRARY: ./library
+      BASHBREW_NAMESPACE: caddy
+      DOCKER_BUILDKIT: '1'
     steps:
     - uses: actions/checkout@master
-    - name: Build Docker images
-      run: hooks/build
-      env:
-        DOCKER_BUILDKIT: '1'
+    - name: build
+      run: bashbrew build caddy
