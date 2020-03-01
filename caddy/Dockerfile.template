@@ -1,8 +1,0 @@
-FROM caddy/builder:${TAG_VERSION} as builder
-FROM caddy/runtime:${TAG_VERSION}-${TAG_TARGET}
-
-ARG VCS_REF
-ARG VERSION
-
-LABEL org.opencontainers.image.revision=$VCS_REF
-LABEL org.opencontainers.image.version=$VERSION
