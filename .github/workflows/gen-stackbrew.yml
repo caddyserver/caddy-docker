@@ -1,6 +1,8 @@
 name: Generate stackbrew library file
 on:
   push:
+    branches:
+      - master
     paths:
       - '*/Dockerfile'
       - stackbrew.tmpl
