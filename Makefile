@@ -1,7 +1,7 @@
 gen-dockerfiles: alpine/Dockerfile scratch/Dockerfile
 
-builder/Dockerfile: builder/Dockerfile.tmpl stackbrew-config.yaml
-	@gomplate -c config=./stackbrew-config.yaml -f builder/Dockerfile.tmpl -o $@
+builder/Dockerfile: builder/Dockerfile.base Dockerfile.builder.tmpl stackbrew-config.yaml
+	@gomplate -d base=$< -c config=./stackbrew-config.yaml -f Dockerfile.builder.tmpl -o $@
 
 %/Dockerfile: %/Dockerfile.base Dockerfile.tmpl
 	@gomplate -d base=$< -f Dockerfile.tmpl -o $@

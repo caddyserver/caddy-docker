@@ -94,7 +94,7 @@ COPY Caddyfile /etc/config/Caddyfile
 COPY site /site
 ```
 
-#### Adding custom plugins
+#### Adding custom Caddy modules
 
 Caddy is extendable through the use of "modules". See https://caddyserver.com/docs/extending-caddy for full details.
 
@@ -105,7 +105,7 @@ FROM caddy/caddy:v2.0.0-builder AS builder
 
 RUN caddy-builder \
     github.com/caddyserver/nginx-adapter \
-    github.com/hairyhenderson/caddy-teapot-module
+    github.com/hairyhenderson/caddy-teapot-module@v0.0.1
 
 FROM caddy/caddy:v2.0.0
 
@@ -114,7 +114,9 @@ COPY --from=builder /usr/bin/caddy /usr/bin/caddy
 
 Note the second `FROM` instruction - this produces a much smaller image by simply overlaying the newly-built binary on top of the the regular `caddy/caddy` image.
 
-The `caddy-builder` script is used to [build a new Caddy entrypoint](https://github.com/caddyserver/caddy/blob/71e81d262bc34545f73f1380bc5d078d83d1570f/cmd/caddy/main.go#L15..L25), with the provided plugins. Note that the "standard" Caddy modules ([`github.com/caddyserver/caddy/v2/modules/standard`](https://github.com/caddyserver/caddy/tree/v2/modules/standard)) are always included.
+The `caddy-builder` script is used to [build a new Caddy entrypoint](https://github.com/caddyserver/caddy/blob/71e81d262bc34545f73f1380bc5d078d83d1570f/cmd/caddy/main.go#L15..L25), with the provided modules. You can specify just a module name, or a name with a version (separated by `@`).
+
+Note that the "standard" Caddy modules ([`github.com/caddyserver/caddy/v2/modules/standard`](https://github.com/caddyserver/caddy/tree/v2/modules/standard)) are always included.
 
 ## License
 

@@ -13,7 +13,8 @@ import (
 EOF
 
 for p in $plugins; do
-    echo -e "\t_ \"$p\"" >> main.go
+    pkg=$(echo $p | cut -f1 -d@)
+    echo -e "\t_ \"$pkg\"" >> main.go
 done
 
 cat >> main.go <<EOF
@@ -24,14 +25,23 @@ func main() {
 }
 EOF
 
+# We only want x.y, not x.y.z
+gover=$(echo $GOLANG_VERSION | awk -F. '{ print $1"."$2 }')
+
 cat >> go.mod <<EOF
 module caddy
 
-go 1.14
+go $gover
 
 require (
 	github.com/caddyserver/caddy/v2 $CADDY_SOURCE_VERSION
 )
+
+replace github.com/caddyserver/caddy/v2 => /src/caddy
 EOF
+
+for p in $plugins; do
+    go get $p
+done
 
 CGO_ENABLED=0 go build -trimpath -tags netgo -ldflags '-extldflags "-static" -s -w' -o /usr/bin/caddy
