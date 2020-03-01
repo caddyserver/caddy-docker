@@ -1,6 +1,6 @@
 # this file is generated with gomplate:
 # template: https://github.com/caddyserver/caddy-docker/blob/df066d13dc8d4bf8504eed08a089ff00a453685a/stackbrew.tmpl
-# config context: https://github.com/caddyserver/caddy-docker/blob/f8db28380a31026b30d4fb361364ce88ec9abed1/stackbrew-config.yaml
+# config context: https://github.com/caddyserver/caddy-docker/blob/0e5245b03df1dfd6fd0e3e165cd0ff43de38b3ee/stackbrew-config.yaml
 Maintainers: Dave Henderson (@hairyhenderson)
 
 Tags: v2.0.0-beta.15, v2.0.0-beta.15-alpine, alpine, latest
@@ -14,3 +14,10 @@ GitRepo: https://github.com/caddyserver/caddy-docker.git
 Directory: scratch
 GitCommit: fb92f0189a91b14182ca71c6bead8a9358f48318
 Architectures: amd64
+
+# this needs to be added only in master
+#Tags: v2.0.0-beta.15-builder, builder
+#GitRepo: https://github.com/caddyserver/caddy-docker.git
+#Directory: builder
+#GitCommit: 190e5b2c6b0e07e724850049e9026aaa75002ba8
+#Architectures: amd64
