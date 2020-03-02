@@ -79,7 +79,7 @@ $ docker run -d -p 80:80 -p 443:443 \
 
 The key here is that Caddy is able to listen to ports `80` and `443`, both required for the ACME HTTP challenge.
 
-See [Caddy's docs](https://caddyserver.com/docs/automatic-https) for more information on automatic HTTP support!
+See [Caddy's docs](https://caddyserver.com/docs/automatic-https) for more information on automatic HTTPS support!
 
 ### Building your own Caddy-based image
 
