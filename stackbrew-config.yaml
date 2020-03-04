@@ -1,8 +1,12 @@
+caddy_version: v2.0.0-beta.15
 # configuration for the stackbrew.tmpl template
 variants:
   - dir: alpine
     tags: [ v2.0.0-beta.15, v2.0.0-beta.15-alpine, alpine, latest ]
     architectures: [ amd64 ]
   - dir: scratch
-    tags: [ v2.0.0-beta.15-slim, scratch]
+    tags: [ v2.0.0-beta.15-slim, scratch ]
+    architectures: [ amd64 ]
+  - dir: builder
+    tags: [ v2.0.0-beta.15-builder, builder ]
     architectures: [ amd64 ]

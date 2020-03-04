@@ -7,6 +7,7 @@
 
 - [`v2.0.0-beta.15`, `v2.0.0-beta.15-alpine`, `alpine`, `latest`](https://github.com/caddyserver/caddy-docker/blob/f8db28380a31026b30d4fb361364ce88ec9abed1/alpine/Dockerfile)
 - [`v2.0.0-beta.15-slim`, `scratch`](https://github.com/caddyserver/caddy-docker/blob/f8db28380a31026b30d4fb361364ce88ec9abed1/scratch/Dockerfile)
+- [`v2.0.0-beta.15-builder`, `builder`](https://github.com/caddyserver/caddy-docker/blob/190e5b2c6b0e07e724850049e9026aaa75002ba8/builder/Dockerfile)
 
 ## Quick reference
 
@@ -92,6 +93,30 @@ FROM caddy/caddy:v2.0.0
 COPY Caddyfile /etc/config/Caddyfile
 COPY site /site
 ```
+
+#### Adding custom Caddy modules
+
+Caddy is extendable through the use of "modules". See https://caddyserver.com/docs/extending-caddy for full details.
+
+You can use the `:builder` image as a short-cut to building a new Caddy binary:
+
+```Dockerfile
+FROM caddy/caddy:v2.0.0-builder AS builder
+
+RUN caddy-builder \
+    github.com/caddyserver/nginx-adapter \
+    github.com/hairyhenderson/caddy-teapot-module@v0.0.1
+
+FROM caddy/caddy:v2.0.0
+
+COPY --from=builder /usr/bin/caddy /usr/bin/caddy
+```
+
+Note the second `FROM` instruction - this produces a much smaller image by simply overlaying the newly-built binary on top of the the regular `caddy/caddy` image.
+
+The `caddy-builder` script is used to [build a new Caddy entrypoint](https://github.com/caddyserver/caddy/blob/71e81d262bc34545f73f1380bc5d078d83d1570f/cmd/caddy/main.go#L15..L25), with the provided modules. You can specify just a module name, or a name with a version (separated by `@`).
+
+Note that the "standard" Caddy modules ([`github.com/caddyserver/caddy/v2/modules/standard`](https://github.com/caddyserver/caddy/tree/v2/modules/standard)) are always included.
 
 ## License
 
