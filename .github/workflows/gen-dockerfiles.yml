@@ -4,6 +4,7 @@ on:
     paths:
       - '*/Dockerfile.base'
       - Dockerfile.tmpl
+      - Dockerfile.builder.tmpl
 
 jobs:
   gen-dockerfiles:
