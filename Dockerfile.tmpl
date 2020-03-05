@@ -6,7 +6,7 @@ RUN apk add --no-cache \
     git \
     ca-certificates
 
-ARG CADDY_SOURCE_VERSION=v2.0.0-beta.15
+ENV CADDY_SOURCE_VERSION={{ .config.caddy_version }}
 
 RUN git clone -b $CADDY_SOURCE_VERSION https://github.com/caddyserver/caddy.git --single-branch
 
@@ -20,7 +20,7 @@ FROM alpine:3.11.3 AS fetch-assets
 
 RUN apk add --no-cache git
 
-ARG DIST_COMMIT=80870b227ded910971ecace4a0c136bf0ef46342
+ENV DIST_COMMIT=80870b227ded910971ecace4a0c136bf0ef46342
 
 WORKDIR /src/dist
 RUN git clone https://github.com/caddyserver/dist .
@@ -50,8 +50,7 @@ ENV XDG_CONFIG_HOME=/config
 VOLUME /data/caddy
 VOLUME /config/caddy
 
-ARG VERSION=v2.0.0-beta.15
-LABEL org.opencontainers.image.version=$VERSION
+LABEL org.opencontainers.image.version={{ .config.caddy_version }}
 LABEL org.opencontainers.image.title=Caddy
 LABEL org.opencontainers.image.description="a powerful, enterprise-ready, open source web server with automatic HTTPS written in Go"
 LABEL org.opencontainers.image.url=https://caddyserver.com
