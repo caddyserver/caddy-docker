@@ -1,54 +1,36 @@
-FROM golang:1.14.0-alpine3.11 as builder
-
-WORKDIR /src
-
-RUN apk add --no-cache \
-    git \
-    ca-certificates
-
-ENV CADDY_SOURCE_VERSION=v2.0.0-beta.15
-
-RUN git clone -b $CADDY_SOURCE_VERSION https://github.com/caddyserver/caddy.git --single-branch
-
-WORKDIR /src/caddy/cmd/caddy
-
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
-    go build -trimpath -tags netgo -ldflags '-extldflags "-static" -s -w' -o /usr/bin/caddy
-
-# Fetch the latest default welcome page and default Caddy config
-FROM alpine:3.11.3 AS fetch-assets
-
-RUN apk add --no-cache git
-
-ENV DIST_COMMIT=80870b227ded910971ecace4a0c136bf0ef46342
-
-WORKDIR /src/dist
-RUN git clone https://github.com/caddyserver/dist .
-RUN git checkout $DIST_COMMIT
-
-RUN cp config/Caddyfile /Caddyfile
-RUN cp welcome/index.html /index.html
-
-RUN mkdir -p /data/caddy
-RUN mkdir -p /config/caddy
-
 FROM alpine:3.11.3
 
-COPY --from=builder /usr/bin/caddy /usr/bin/caddy
-COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs
+RUN apk add --no-cache ca-certificates
 
-COPY --from=fetch-assets /Caddyfile /etc/caddy/Caddyfile
-COPY --from=fetch-assets /index.html /usr/share/caddy/index.html
+# https://github.com/caddyserver/dist/commits
+ENV CADDY_DIST_COMMIT 80870b227ded910971ecace4a0c136bf0ef46342
 
-COPY --from=fetch-assets /data /data
-COPY --from=fetch-assets /config /config
+RUN set -eux; \
+	mkdir -p \
+		/config/caddy \
+		/data/caddy \
+		/etc/caddy \
+		/usr/share/caddy \
+	; \
+	wget -O /etc/caddy/Caddyfile "https://github.com/caddyserver/dist/raw/$CADDY_DIST_COMMIT/config/Caddyfile"; \
+	wget -O /usr/share/caddy/index.html "https://github.com/caddyserver/dist/raw/$CADDY_DIST_COMMIT/welcome/index.html"
+
+# https://github.com/caddyserver/caddy/releases
+ENV CADDY_VERSION v2.0.0-beta.15
+ENV CADDY_CHECKSUM_SHA256 80ddcf00d54e7c5d10211847c30846df460635aaaa5c4e64aafa01ce2e8ee48d
+# TODO: alter filename after v2 relese (version will be taken out of name)
+RUN set -eux; \
+	wget -O /usr/bin/caddy "https://github.com/caddyserver/caddy/releases/download/$CADDY_VERSION/caddy2_beta15_linux_amd64"; \
+	echo "$CADDY_CHECKSUM_SHA256 caddy2_beta15_linux_amd64" | sha256sum --check --strict; \
+	chmod +x /usr/bin/caddy; \
+	caddy version
 
 # See https://caddyserver.com/docs/conventions#file-locations for details
 ENV XDG_DATA_HOME=/data
 ENV XDG_CONFIG_HOME=/config
 
-VOLUME /data/caddy
 VOLUME /config/caddy
+VOLUME /data/caddy
 
 LABEL org.opencontainers.image.version=v2.0.0-beta.15
 LABEL org.opencontainers.image.title=Caddy

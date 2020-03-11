@@ -1,12 +1,17 @@
 caddy_version: v2.0.0-beta.15
+# sha256 checksums for github-released binaries
+checksums:
+  amd64: 80ddcf00d54e7c5d10211847c30846df460635aaaa5c4e64aafa01ce2e8ee48d
+  arm64v8: 1a877a91136f4e9e78ac1b01103d9d4eebbfa579f31caab5fb29496221cb1270
 # configuration for the stackbrew.tmpl template
 variants:
   - dir: alpine
     tags: [ "{{.conf.caddy_version}}", "{{.conf.caddy_version}}-alpine", "alpine", "latest" ]
     architectures: [ amd64 ]
-  - dir: scratch
-    tags: [ "{{.conf.caddy_version}}-slim", "scratch" ]
-    architectures: [ amd64 ]
+  # Drop this for now!
+  # - dir: scratch
+  #   tags: [ "{{.conf.caddy_version}}-slim", "scratch" ]
+  #   architectures: [ amd64 ]
   - dir: builder
     tags: [ "{{.conf.caddy_version}}-builder", "builder" ]
     architectures: [ amd64 ]
