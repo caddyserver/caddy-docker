@@ -1,4 +1,6 @@
-gen-dockerfiles: alpine/Dockerfile scratch/Dockerfile
+all: gen-dockerfiles library/caddy
+
+gen-dockerfiles: alpine/Dockerfile builder/Dockerfile
 
 builder/Dockerfile: builder/Dockerfile.base Dockerfile.builder.tmpl stackbrew-config.yaml
 	@gomplate -d base=$< -c config=./stackbrew-config.yaml -f Dockerfile.builder.tmpl -o $@
