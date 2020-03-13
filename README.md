@@ -90,7 +90,7 @@ Most users deploying production sites will not want to rely on mounting files in
 # note: never use the :latest tag in a production site
 FROM caddy/caddy:v2.0.0
 
-COPY Caddyfile /etc/config/Caddyfile
+COPY Caddyfile /etc/caddy/Caddyfile
 COPY site /site
 ```
 
