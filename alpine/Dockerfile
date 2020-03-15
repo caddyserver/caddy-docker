@@ -18,7 +18,7 @@ RUN set -eux; \
 # https://github.com/caddyserver/caddy/releases
 ENV CADDY_VERSION v2.0.0-beta.15
 ENV CADDY_CHECKSUM_SHA256 80ddcf00d54e7c5d10211847c30846df460635aaaa5c4e64aafa01ce2e8ee48d
-# TODO: alter filename after v2 relese (version will be taken out of name)
+# TODO: alter filename after v2 release (version will be taken out of name)
 RUN set -eux; \
 	wget -O /usr/bin/caddy "https://github.com/caddyserver/caddy/releases/download/$CADDY_VERSION/caddy2_beta15_linux_amd64"; \
 	echo "$CADDY_CHECKSUM_SHA256  /usr/bin/caddy" | sha256sum -c; \
@@ -26,11 +26,11 @@ RUN set -eux; \
 	caddy version
 
 # See https://caddyserver.com/docs/conventions#file-locations for details
-ENV XDG_DATA_HOME=/data
 ENV XDG_CONFIG_HOME=/config
+ENV XDG_DATA_HOME=/data
 
-VOLUME /config/caddy
-VOLUME /data/caddy
+VOLUME /config
+VOLUME /data
 
 LABEL org.opencontainers.image.version=v2.0.0-beta.15
 LABEL org.opencontainers.image.title=Caddy
