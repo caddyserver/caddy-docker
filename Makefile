@@ -14,3 +14,7 @@ library/caddy: stackbrew.tmpl stackbrew-config.yaml */Dockerfile Dockerfile.tmpl
 		-c conf=./stackbrew-config.yaml \
 		-f $< \
 		-o $@
+
+.PHONY: all gen-dockerfiles
+.DELETE_ON_ERROR:
+.SECONDARY:
