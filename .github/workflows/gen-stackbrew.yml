@@ -21,6 +21,7 @@ jobs:
     - uses: actions/checkout@master
     - name: Reattach HEAD
       run: git checkout ${GITHUB_REF#refs/heads/}
+    - run: rm library/caddy
     - run: make library/caddy
     - name: Configure git
       run: |

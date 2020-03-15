@@ -16,9 +16,10 @@ jobs:
       BASHBREW_NAMESPACE: caddy
       DOCKER_BUILDKIT: '1'
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@v2
     - name: Reattach HEAD
       run: git checkout ${GITHUB_REF#refs/heads/}
+    - run: rm alpine/Dockerfile builder/Dockerfile
     - run: make gen-dockerfiles
     - name: Configure git
       run: |

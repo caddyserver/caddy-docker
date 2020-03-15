@@ -12,6 +12,11 @@ jobs:
       DOCKER_BUILDKIT: '1'
     steps:
       - uses: actions/checkout@master
+      - name: non-master build test
+        run: |
+          docker build -f alpine/Dockerfile alpine
+          docker build -f builder/Dockerfile builder
+        if: github.repository != 'caddyserver/caddy-docker' || github.ref != 'refs/heads/master'
       - name: build
         run: bashbrew build caddy
       - name: push
