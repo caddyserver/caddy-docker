@@ -6,7 +6,7 @@ Maintainers: Dave Henderson (@hairyhenderson)
 Tags: v2.0.0-beta.15, v2.0.0-beta.15-alpine, alpine, latest
 GitRepo: https://github.com/caddyserver/caddy-docker.git
 Directory: alpine
-GitCommit: ab31fc4102cf8bff585b90ace4b335d4ec5a33b4
+GitCommit: 23e9cae275f096229b9db56343aa498bea7d1d3a
 Architectures: amd64
 
 Tags: v2.0.0-beta.15-builder, builder
