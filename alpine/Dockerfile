@@ -21,7 +21,7 @@ ENV CADDY_CHECKSUM_SHA256 80ddcf00d54e7c5d10211847c30846df460635aaaa5c4e64aafa01
 # TODO: alter filename after v2 relese (version will be taken out of name)
 RUN set -eux; \
 	wget -O /usr/bin/caddy "https://github.com/caddyserver/caddy/releases/download/$CADDY_VERSION/caddy2_beta15_linux_amd64"; \
-	echo "$CADDY_CHECKSUM_SHA256 caddy2_beta15_linux_amd64" | sha256sum -c; \
+	echo "$CADDY_CHECKSUM_SHA256 /usr/bin/caddy" | sha256sum -c; \
 	chmod +x /usr/bin/caddy; \
 	caddy version
 
