@@ -1,4 +1,4 @@
-FROM golang:1.14.0-alpine3.11 AS builder
+FROM golang:1.14-alpine3.11 AS builder
 
 WORKDIR /src
 
@@ -12,6 +12,8 @@ RUN git clone -b $CADDY_SOURCE_VERSION https://github.com/caddyserver/caddy.git 
 
 WORKDIR /src/caddy/cmd/caddy
 
-RUN go get ./...
+RUN go get -d ./...
 
 COPY caddy-builder.sh /usr/bin/caddy-builder
+
+WORKDIR /src/custom-caddy/cmd/caddy

@@ -7,12 +7,12 @@ checksums:
 # configuration for the stackbrew.tmpl template
 variants:
   - dir: alpine
-    tags: [ "{{.conf.caddy_version}}", "{{.conf.caddy_version}}-alpine", "alpine", "latest" ]
+    tags: [ "{{.conf.caddy_version | strings.TrimPrefix `v` }}", "{{.conf.caddy_version | strings.TrimPrefix `v` }}-alpine", "alpine", "latest" ]
     architectures: [ amd64 ]
   # Drop this for now!
   # - dir: scratch
   #   tags: [ "{{.conf.caddy_version}}-slim", "scratch" ]
   #   architectures: [ amd64 ]
   - dir: builder
-    tags: [ "{{.conf.caddy_version}}-builder", "builder" ]
+    tags: [ "{{.conf.caddy_version | strings.TrimPrefix `v` }}-builder", "builder" ]
     architectures: [ amd64 ]
