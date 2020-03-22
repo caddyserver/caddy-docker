@@ -118,6 +118,19 @@ The `caddy-builder` script is used to [build a new Caddy entrypoint](https://git
 
 Note that the "standard" Caddy modules ([`github.com/caddyserver/caddy/v2/modules/standard`](https://github.com/caddyserver/caddy/tree/v2/modules/standard)) are always included.
 
+### Graceful reloads
+
+Caddy does not require a full restart when configuration is changed. Caddy comes with a [`caddy reload`](https://caddyserver.com/docs/command-line#caddy-reload) command which can be used to reload its configuration with zero downtime.
+
+When running Caddy in Docker, the recommended way to trigger a config reload is by executing the `caddy reload` command in the running container.
+
+First, you'll need to determine your container ID or name. Then, pass the container ID to `docker exec`.
+
+```console
+$ caddy_container_id=$(docker ps | grep caddy | awk '{print $1;}')
+$ docker exec $caddy_container_id caddy reload --config /etc/caddy/Caddyfile --adapter caddyfile
+```
+
 ## License
 
 View [license information](https://github.com/caddyserver/caddy/LICENSE.txt) for the software contained in this image.
