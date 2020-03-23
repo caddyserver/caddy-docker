@@ -131,6 +131,25 @@ $ caddy_container_id=$(docker ps | grep caddy | awk '{print $1;}')
 $ docker exec $caddy_container_id caddy reload --config /etc/caddy/Caddyfile --adapter caddyfile
 ```
 
+### Accessing localhost from container
+
+It's not fun enough to connect Caddy's container to different networks to reverse proxy to other containers. As a solution, you can run Caddy connected to host network and access this containers over localhost:somePort. 
+  
+Usage:
+ - run this docker-compose file:
+ 
+```
+version: '3'
+services:
+  caddy:
+     image: caddy/caddy
+     network_mode: host
+     volumes:
+       - ./caddy_data:/data
+       - ./file/Caddyfile:/etc/caddy/Caddyfile
+```
+- don't forget to allow 80 and 443 in firewall
+
 ## License
 
 View [license information](https://github.com/caddyserver/caddy/LICENSE.txt) for the software contained in this image.
