@@ -16,11 +16,11 @@ RUN set -eux; \
 	wget -O /usr/share/caddy/index.html "https://github.com/caddyserver/dist/raw/$CADDY_DIST_COMMIT/welcome/index.html"
 
 # https://github.com/caddyserver/caddy/releases
-ENV CADDY_VERSION v2.0.0-beta.17
-ENV CADDY_CHECKSUM_SHA256 b25d0b19fcc9e2d9a6c3009cc086256535cdd8ddea14b09266f8d93d087b88cb
+ENV CADDY_VERSION v2.0.0-beta.18
+ENV CADDY_CHECKSUM_SHA256 4f94e91f2ffabd00ddee4c9eac196f36754ed93da93cb24546ff4890918927d2
 # TODO: alter filename after v2 release (version will be taken out of name)
 RUN set -eux; \
-	wget -O /usr/bin/caddy "https://github.com/caddyserver/caddy/releases/download/$CADDY_VERSION/caddy2_beta17_linux_amd64"; \
+	wget -O /usr/bin/caddy "https://github.com/caddyserver/caddy/releases/download/$CADDY_VERSION/caddy2_beta18_linux_amd64"; \
 	echo "$CADDY_CHECKSUM_SHA256  /usr/bin/caddy" | sha256sum -c; \
 	chmod +x /usr/bin/caddy; \
 	caddy version
@@ -32,7 +32,7 @@ ENV XDG_DATA_HOME=/data
 VOLUME /config
 VOLUME /data
 
-LABEL org.opencontainers.image.version=v2.0.0-beta.17
+LABEL org.opencontainers.image.version=v2.0.0-beta.18
 LABEL org.opencontainers.image.title=Caddy
 LABEL org.opencontainers.image.description="a powerful, enterprise-ready, open source web server with automatic HTTPS written in Go"
 LABEL org.opencontainers.image.url=https://caddyserver.com
