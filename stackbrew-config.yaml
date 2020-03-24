@@ -1,9 +1,9 @@
-caddy_version: v2.0.0-beta.18
-caddy_filename_prefix: caddy2_beta18
+caddy_version: v2.0.0-beta.19
+caddy_filename_prefix: caddy2_beta19
 # sha256 checksums for github-released binaries
 checksums:
-  amd64: 4f94e91f2ffabd00ddee4c9eac196f36754ed93da93cb24546ff4890918927d2
-  arm64v8: 35cda1dc206ffdad4a498b7d618ea4abcca653d0c01ecd9c156ed069442fb978
+  amd64: 8e44c8f801fd01f544738767af4ea76359dca17718d1aafcfa893ea45a837736
+  arm64v8: 2b938c63863d32c3e384d4a32d387b553623514f1ca6860574ca35bfe5c6e4c1
 # configuration for the stackbrew.tmpl template
 variants:
   - dir: alpine
