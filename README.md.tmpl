@@ -5,9 +5,10 @@
 
 ## Supported tags and respective `Dockerfile` links
 
-
-- [`2.0.0-rc.2`, `2.0.0-rc.2-alpine`, `alpine`, `latest`](https://github.com/caddyserver/caddy-docker/blob/6c597e446dd027b0a11dbf733e407bb4191a0e8c/alpine/Dockerfile)
-- [`2.0.0-rc.2-builder`, `builder`](https://github.com/caddyserver/caddy-docker/blob/6c597e446dd027b0a11dbf733e407bb4191a0e8c/builder/Dockerfile)
+{{ range $variant := .conf.variants }}
+{{- if and (file.IsDir $variant.dir) (file.Exists (filepath.Join $variant.dir "Dockerfile")) }}
+- [`{{ tmpl.Inline (join $variant.tags "`, `") $ }}`](https://github.com/caddyserver/caddy-docker/blob/{{ fileCommit (filepath.Join $variant.dir "Dockerfile") }}/{{ $variant.dir }}/Dockerfile)
+{{- end }}{{ end }}
 
 ## Quick reference
 
