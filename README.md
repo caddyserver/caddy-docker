@@ -116,7 +116,7 @@ Note the second `FROM` instruction - this produces a much smaller image by simpl
 
 The `caddy-builder` script is used to [build a new Caddy entrypoint](https://github.com/caddyserver/caddy/blob/71e81d262bc34545f73f1380bc5d078d83d1570f/cmd/caddy/main.go#L15..L25), with the provided modules. You can specify just a module name, or a name with a version (separated by `@`).
 
-Note that the "standard" Caddy modules ([`github.com/caddyserver/caddy/v2/modules/standard`](https://github.com/caddyserver/caddy/tree/v2/modules/standard)) are always included.
+Note that the "standard" Caddy modules ([`github.com/caddyserver/caddy/tree/master/modules/standard`](https://github.com/caddyserver/caddy/tree/master/modules/standard)) are always included.
 
 ### Graceful reloads
 
@@ -133,7 +133,7 @@ $ docker exec $caddy_container_id caddy reload --config /etc/caddy/Caddyfile --a
 
 ## License
 
-View [license information](https://github.com/caddyserver/caddy/LICENSE.txt) for the software contained in this image.
+View [license information](https://github.com/caddyserver/caddy/blob/master/LICENSE) for the software contained in this image.
 
 As with all Docker images, these likely also contain other software which may be under other licenses (such as Bash, etc from the base distribution, along with any direct or indirect dependencies of the primary software being contained).
 
