@@ -34,7 +34,7 @@ Caddy requires write access to two locations: a [data directory](https://caddyse
 
 From the docs:
 
-> The data directory must not be treated like a cache. Its contents are not ephemeral or merely for the sake of performance. Caddy stores TLS certificates, private keys, OCSP staples, and other necessary information to the data directory. It should not be purged without an understanding of the implications.
+> The data directory must not be treated as a cache. Its contents are not ephemeral or merely for the sake of performance. Caddy stores TLS certificates, private keys, OCSP staples, and other necessary information to the data directory. It should not be purged without an understanding of the implications.
 
 This image provides for two mount-points for volumes: `/data` and `/config`.
 
@@ -49,7 +49,7 @@ The default config file simply serves files from `/usr/share/caddy`, so if you w
 ```console
 $ echo "hello world" > index.html
 $ docker run -d -p 80:80 \
-    -v $(pwd)/index.html:/usr/share/caddy/index.html \
+    -v $PWD/index.html:/usr/share/caddy/index.html \
     -v caddy_data:/data \
     caddy/caddy
 ...
@@ -61,7 +61,7 @@ To override the default [`Caddyfile`](https://github.com/caddyserver/dist/blob/m
 
 ```console
 $ docker run -d -p 80:80 \
-    -v $(pwd)/Caddyfile:/etc/caddy/Caddyfile \
+    -v $PWD/Caddyfile:/etc/caddy/Caddyfile \
     -v caddy_data:/data \
     caddy/caddy
 ```
@@ -88,7 +88,7 @@ Most users deploying production sites will not want to rely on mounting files in
 
 ```Dockerfile
 # note: never use the :latest tag in a production site
-FROM caddy/caddy:v2.0.0
+FROM caddy/caddy:2.0.0
 
 COPY Caddyfile /etc/caddy/Caddyfile
 COPY site /site
@@ -101,13 +101,13 @@ Caddy is extendable through the use of "modules". See https://caddyserver.com/do
 You can use the `:builder` image as a short-cut to building a new Caddy binary:
 
 ```Dockerfile
-FROM caddy/caddy:v2.0.0-builder AS builder
+FROM caddy/caddy:2.0.0-builder AS builder
 
 RUN caddy-builder \
     github.com/caddyserver/nginx-adapter \
     github.com/hairyhenderson/caddy-teapot-module@v0.0.1
 
-FROM caddy/caddy:v2.0.0
+FROM caddy/caddy:2.0.0
 
 COPY --from=builder /usr/bin/caddy /usr/bin/caddy
 ```
