@@ -16,11 +16,11 @@ RUN set -eux; \
 	wget -O /usr/share/caddy/index.html "https://github.com/caddyserver/dist/raw/$CADDY_DIST_COMMIT/welcome/index.html"
 
 # https://github.com/caddyserver/caddy/releases
-ENV CADDY_VERSION v2.0.0-rc.2
-ENV CADDY_CHECKSUM_SHA512 d3f1a81d983a4d1ade00a7874186864ea35afd1724a8cd8480f88ae48a2609c0b705831d90e9cb49e375ba1b098132a4d97f152c415906a04b79d109f04e7eed
+ENV CADDY_VERSION v2.0.0-rc.3
+ENV CADDY_CHECKSUM_SHA512 32735a963f946bf561ed2a540192c22ad19565be4bce4bc243c61beae9022ca15a54bf5ef8a5f2341bd3af16fd7b0e9f7832697687201a981a2ac52b0c18ca88
 # TODO: alter filename after v2 release (version will be taken out of name)
 RUN set -eux; \
-	wget -O /tmp/caddy.tar.gz "https://github.com/caddyserver/caddy/releases/download/v2.0.0-rc.2/caddy_2.0.0-rc.2_linux_amd64.tar.gz"; \
+	wget -O /tmp/caddy.tar.gz "https://github.com/caddyserver/caddy/releases/download/v2.0.0-rc.3/caddy_2.0.0-rc.3_linux_amd64.tar.gz"; \
 	echo "$CADDY_CHECKSUM_SHA512  /tmp/caddy.tar.gz" | sha512sum -c; \
 	tar x -z -f /tmp/caddy.tar.gz -C /usr/bin caddy; \
 	chmod +x /usr/bin/caddy; \
@@ -33,7 +33,7 @@ ENV XDG_DATA_HOME=/data
 VOLUME /config
 VOLUME /data
 
-LABEL org.opencontainers.image.version=v2.0.0-rc.2
+LABEL org.opencontainers.image.version=v2.0.0-rc.3
 LABEL org.opencontainers.image.title=Caddy
 LABEL org.opencontainers.image.description="a powerful, enterprise-ready, open source web server with automatic HTTPS written in Go"
 LABEL org.opencontainers.image.url=https://caddyserver.com
