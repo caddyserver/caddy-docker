@@ -17,14 +17,18 @@ RUN set -eux; \
 
 # https://github.com/caddyserver/caddy/releases
 ENV CADDY_VERSION v{{ .config.caddy_version }}
-{{- /** TODO: support other architectures here **/}}
-ENV CADDY_CHECKSUM_SHA512 {{ .config.checksums.amd64 }}
 
-{{- /** TODO: support other architectures here **/}}
-# TODO: alter filename after v2 release (version will be taken out of name)
 RUN set -eux; \
-	wget -O /tmp/caddy.tar.gz "https://github.com/caddyserver/caddy/releases/download/v{{ .config.caddy_version }}/caddy_{{ .config.caddy_version }}_linux_amd64.tar.gz"; \
-	echo "$CADDY_CHECKSUM_SHA512  /tmp/caddy.tar.gz" | sha512sum -c; \
+	apkArch="$(apk --print-arch)"; \
+	case "$apkArch" in \
+		x86_64)  binArch='amd64'; checksum='{{ .config.checksums.amd64 }}' ;; \
+		armhf)   binArch='armv6'; checksum='{{ .config.checksums.arm32v6 }}' ;; \
+		armv7)   binArch='armv7'; checksum='{{ .config.checksums.arm32v7 }}' ;; \
+		aarch64) binArch='arm64'; checksum='{{ .config.checksums.arm64v8 }}' ;; \
+		*) echo >&2 "error: unsupported architecture ($apkArch)"; exit 1 ;;\
+	esac; \
+	wget -O /tmp/caddy.tar.gz "https://github.com/caddyserver/caddy/releases/download/v{{ .config.caddy_version }}/caddy_{{ .config.caddy_version }}_linux_${binArch}.tar.gz"; \
+	echo "$checksum  /tmp/caddy.tar.gz" | sha512sum -c; \
 	tar x -z -f /tmp/caddy.tar.gz -C /usr/bin caddy; \
 	chmod +x /usr/bin/caddy; \
 	caddy version

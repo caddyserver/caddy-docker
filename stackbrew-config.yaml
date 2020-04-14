@@ -2,16 +2,14 @@ caddy_version: 2.0.0-rc.3
 # sha256 checksums for github-released binaries
 checksums:
   amd64: 32735a963f946bf561ed2a540192c22ad19565be4bce4bc243c61beae9022ca15a54bf5ef8a5f2341bd3af16fd7b0e9f7832697687201a981a2ac52b0c18ca88
+  arm32v6: 5f1485c4be4a050dc12a42d9cc6b0a215a27173eca0bd46c09a0e5ac941b863511f695ca1fad211fb7ebb21e516c549aa2b6d7bc7b11ce3f3729a6c632315937
+  arm32v7: f38d32e6c48f6eb889d7f7bca9ef18d953aeafe8f6ae5b37a657318890c806999dbf4161ac3f5ccb7c6b356ffbded61228e24e6b1ad5e76b3d694923c2483984
   arm64v8: c4786c030121519ea988ad418878f29b90487357bb434f357955a5ac158460192b4da136fd6d08a2507521a2920412ffa294bf2d83c858c3d1e7fb02de1482a2
 # configuration for the stackbrew.tmpl template
 variants:
   - dir: alpine
     tags: [ "{{.conf.caddy_version}}", "{{.conf.caddy_version}}-alpine", "alpine", "latest" ]
-    architectures: [ amd64 ]
-  # Drop this for now!
-  # - dir: scratch
-  #   tags: [ "{{.conf.caddy_version}}-slim", "scratch" ]
-  #   architectures: [ amd64 ]
+    architectures: [ amd64, arm64v8, arm32v6, arm32v7 ]
   - dir: builder
     tags: [ "{{.conf.caddy_version}}-builder", "builder" ]
-    architectures: [ amd64 ]
+    architectures: [ amd64, arm64v8, arm32v6, arm32v7 ]
