@@ -1,4 +1,4 @@
-all: gen-dockerfiles library/caddy README.md
+all: gen-dockerfiles library/caddy
 
 gen-dockerfiles: alpine/Dockerfile builder/Dockerfile
 
@@ -9,13 +9,6 @@ builder/Dockerfile: builder/Dockerfile.base Dockerfile.builder.tmpl stackbrew-co
 	@gomplate -d base=$< -c config=./stackbrew-config.yaml -f Dockerfile.tmpl -o $@
 
 library/caddy: stackbrew.tmpl stackbrew-config.yaml */Dockerfile Dockerfile.tmpl
-	@gomplate \
-		--plugin fileCommit=./fileCommit.sh \
-		-c conf=./stackbrew-config.yaml \
-		-f $< \
-		-o $@
-
-README.md: README.md.tmpl
 	@gomplate \
 		--plugin fileCommit=./fileCommit.sh \
 		-c conf=./stackbrew-config.yaml \
