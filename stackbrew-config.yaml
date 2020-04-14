@@ -5,11 +5,23 @@ checksums:
   arm32v6: 5f1485c4be4a050dc12a42d9cc6b0a215a27173eca0bd46c09a0e5ac941b863511f695ca1fad211fb7ebb21e516c549aa2b6d7bc7b11ce3f3729a6c632315937
   arm32v7: f38d32e6c48f6eb889d7f7bca9ef18d953aeafe8f6ae5b37a657318890c806999dbf4161ac3f5ccb7c6b356ffbded61228e24e6b1ad5e76b3d694923c2483984
   arm64v8: c4786c030121519ea988ad418878f29b90487357bb434f357955a5ac158460192b4da136fd6d08a2507521a2920412ffa294bf2d83c858c3d1e7fb02de1482a2
+  windows_amd64: 482652dbe7600d4d324c837a00eddf58254aeff57315afa1547fc61daefcb2f8952df8f3f8ec9c44e9ec919d1bfc908aeabe68b7d780d988d68e78581202d7ca
 # configuration for the stackbrew.tmpl template
 variants:
   - dir: alpine
-    tags: [ "{{.conf.caddy_version}}", "{{.conf.caddy_version}}-alpine", "alpine", "latest" ]
+    tags: [ "{{.conf.caddy_version}}-alpine", "alpine", ]
+    shared_tags: [ "{{.conf.caddy_version}}", "latest" ]
     architectures: [ amd64, arm64v8, arm32v6, arm32v7 ]
   - dir: builder
     tags: [ "{{.conf.caddy_version}}-builder", "builder" ]
     architectures: [ amd64, arm64v8, arm32v6, arm32v7 ]
+  - dir: windows/1809
+    base_file: Dockerfile.windowsservercore-1809.base
+    tags: [ "{{.conf.caddy_version}}-windowsservercore-1809", "windowsservercore-1809" ]
+    shared_tags: [ "{{.conf.caddy_version}}-windowsservercore", "windowsservercore", "{{.conf.caddy_version}}", "latest" ]
+    architectures: [ windows-amd64 ]
+  - dir: windows/ltsc2016
+    base_file: Dockerfile.windowsservercore-ltsc2016.base
+    tags: [ "{{.conf.caddy_version}}-windowsservercore-ltsc2016", "windowsservercore-ltsc2016" ]
+    shared_tags: [ "{{.conf.caddy_version}}-windowsservercore", "windowsservercore" ]
+    architectures: [ windows-amd64 ]
