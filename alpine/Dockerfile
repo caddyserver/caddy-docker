@@ -1,6 +1,6 @@
 FROM alpine:3.11
 
-RUN apk add --no-cache ca-certificates
+RUN apk add --no-cache ca-certificates mailcap
 
 # https://github.com/caddyserver/dist/commits
 ENV CADDY_DIST_COMMIT 80870b227ded910971ecace4a0c136bf0ef46342
