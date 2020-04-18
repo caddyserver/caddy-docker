@@ -2,7 +2,7 @@ name: Docker Build
 on: [push]
 
 jobs:
-  docker-build:
+  docker-linux-build:
     runs-on: ubuntu-latest
     container:
       image: hairyhenderson/dockerfiles-builder:latest
@@ -29,4 +29,37 @@ jobs:
       - name: push (non-master dry run)
         run: |
           bashbrew push --dry-run caddy
+        if: github.repository != 'caddyserver/caddy-docker' || github.ref != 'refs/heads/master'
+  docker-windows-build:
+    runs-on: windows-2019
+    # env:
+    #   BASHBREW_LIBRARY: ./library
+    #   BASHBREW_NAMESPACE: caddy
+    steps:
+      - uses: actions/checkout@master
+      - name: non-master build test
+        run: |
+          docker build -f windows/1809/Dockerfile windows
+        if: github.repository != 'caddyserver/caddy-docker' || github.ref != 'refs/heads/master'
+      - name: install bashbrew
+        run: curl -o /bashbrew.exe https://doi-janky.infosiftr.net/job/bashbrew/lastSuccessfulBuild/artifact/bin/bashbrew-windows-amd64.exe
+      - name: build
+        run: /bashbrew --arch windows-amd64 --namespace caddy --library ./library build caddy:windowsservercore-1809
+      - name: push
+        # NOTE: DOCKERHUB_TOKEN and DOCKERHUB_USERNAME must be present in https://github.com/caddyserver/caddy-docker/settings
+        # the user must have permission to push to https://hub.docker.com/r/caddy/caddy
+        run: |
+          echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin;
+          /bashbrew --arch windows-amd64 --namespace caddy --library ./library push caddy:windowsservercore-1809
+        if: github.repository == 'caddyserver/caddy-docker' && github.ref == 'refs/heads/master'
+      - name: push
+        # NOTE: DOCKERHUB_TOKEN and DOCKERHUB_USERNAME must be present in https://github.com/caddyserver/caddy-docker/settings
+        # the user must have permission to push to https://hub.docker.com/r/caddy/caddy
+        run: |
+          echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+          /bashbrew --arch windows-amd64 --namespace caddy --library ./library push --dry-run caddy:windowsservercore-1809
+        if: github.repository == 'caddyserver/caddy-docker' && github.ref != 'refs/heads/master'
+      - name: push (non-master dry run)
+        run: |
+          /bashbrew --arch windows-amd64 --namespace caddy --library ./library push --dry-run caddy:windowsservercore-1809
         if: github.repository != 'caddyserver/caddy-docker' || github.ref != 'refs/heads/master'

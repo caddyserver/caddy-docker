@@ -5,6 +5,9 @@ Maintainers: Dave Henderson (@hairyhenderson)
 {{ range $variant := .conf.variants }}
 {{- if and (file.IsDir $variant.dir) (file.Exists (filepath.Join $variant.dir "Dockerfile")) }}
 Tags: {{ tmpl.Inline (join $variant.tags ", ") $ }}
+{{- if has $variant "shared_tags" }}
+SharedTags: {{ tmpl.Inline (join $variant.shared_tags ", ") $ }}
+{{- end }}
 GitRepo: https://github.com/caddyserver/caddy-docker.git
 Directory: {{ $variant.dir }}
 GitCommit: {{ fileCommit (filepath.Join $variant.dir "Dockerfile") }}
