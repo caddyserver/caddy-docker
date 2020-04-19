@@ -22,6 +22,7 @@ GitRepo: https://github.com/caddyserver/caddy-docker.git
 Directory: windows/1809
 GitCommit: 98d0b9b4f9ce8cffaed0653c8730153338c01c71
 Architectures: windows-amd64
+Constraints: windowsservercore-1809
 
 Tags: 2.0.0-rc.3-windowsservercore-ltsc2016, windowsservercore-ltsc2016
 SharedTags: 2.0.0-rc.3-windowsservercore, windowsservercore
@@ -29,3 +30,4 @@ GitRepo: https://github.com/caddyserver/caddy-docker.git
 Directory: windows/ltsc2016
 GitCommit: 98d0b9b4f9ce8cffaed0653c8730153338c01c71
 Architectures: windows-amd64
+Constraints: windowsservercore-ltsc2016

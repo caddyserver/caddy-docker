@@ -12,4 +12,7 @@ GitRepo: https://github.com/caddyserver/caddy-docker.git
 Directory: {{ $variant.dir }}
 GitCommit: {{ fileCommit (filepath.Join $variant.dir "Dockerfile") }}
 Architectures: {{ join $variant.architectures ", " }}
+{{- if has $variant "constraints" }}
+Constraints: {{ tmpl.Inline (join $variant.constraints ", ") $ }}
+{{- end }}
 {{ end }}{{ end -}}
