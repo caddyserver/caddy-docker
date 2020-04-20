@@ -5,7 +5,9 @@ SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPref
 # https://github.com/caddyserver/dist/commits
 ENV CADDY_DIST_COMMIT 1ae255dd910fe0ad14aeec27eabe4f526bf423ab
 
-RUN mkdir /config; \
+# Apparently Windows Server 2016 disables TLS 1.2 by default - this enables it so we can talk to GitHub
+RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; \
+    mkdir /config; \
     mkdir /data; \
     mkdir /etc/caddy; \
     mkdir /usr/share/caddy; \
