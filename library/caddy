@@ -1,6 +1,6 @@
 # this file is generated with gomplate:
 # template: https://github.com/caddyserver/caddy-docker/blob/8779f909a654f865839d244bbb3edee602f87d85/stackbrew.tmpl
-# config context: https://github.com/caddyserver/caddy-docker/blob/51f344f3bcba595036c14a239172e50a7a373a92/stackbrew-config.yaml
+# config context: https://github.com/caddyserver/caddy-docker/blob/f906d9d2a8aafeef912d8a3f061bf6dd022f5e17/stackbrew-config.yaml
 Maintainers: Dave Henderson (@hairyhenderson)
 
 Tags: 2.0.0-rc.3-alpine, alpine
@@ -24,8 +24,8 @@ GitCommit: 98d0b9b4f9ce8cffaed0653c8730153338c01c71
 Architectures: windows-amd64
 Constraints: windowsservercore-1809
 
-Tags: 2.0.0-rc.3-windowsservercore-ltsc2016, windowsservercore-ltsc2016, 2.0.0-rc.3, latest
-SharedTags: 2.0.0-rc.3-windowsservercore, windowsservercore
+Tags: 2.0.0-rc.3-windowsservercore-ltsc2016, windowsservercore-ltsc2016
+SharedTags: 2.0.0-rc.3-windowsservercore, windowsservercore, 2.0.0-rc.3, latest
 GitRepo: https://github.com/caddyserver/caddy-docker.git
 Directory: windows/ltsc2016
 GitCommit: 98d0b9b4f9ce8cffaed0653c8730153338c01c71
