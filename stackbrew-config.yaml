@@ -23,7 +23,7 @@ variants:
     constraints: [ windowsservercore-1809 ]
   - dir: windows/ltsc2016
     base_file: Dockerfile.windowsservercore-ltsc2016.base
-    tags: [ "{{.conf.caddy_version}}-windowsservercore-ltsc2016", "windowsservercore-ltsc2016", "{{.conf.caddy_version}}", "latest" ]
-    shared_tags: [ "{{.conf.caddy_version}}-windowsservercore", "windowsservercore" ]
+    tags: [ "{{.conf.caddy_version}}-windowsservercore-ltsc2016", "windowsservercore-ltsc2016" ]
+    shared_tags: [ "{{.conf.caddy_version}}-windowsservercore", "windowsservercore", "{{.conf.caddy_version}}", "latest" ]
     architectures: [ windows-amd64 ]
     constraints: [ windowsservercore-ltsc2016 ]
