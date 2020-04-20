@@ -30,6 +30,7 @@ RUN set -eux; \
 	wget -O /tmp/caddy.tar.gz "https://github.com/caddyserver/caddy/releases/download/v{{ .config.caddy_version }}/caddy_{{ .config.caddy_version }}_linux_${binArch}.tar.gz"; \
 	echo "$checksum  /tmp/caddy.tar.gz" | sha512sum -c; \
 	tar x -z -f /tmp/caddy.tar.gz -C /usr/bin caddy; \
+	rm -f /tmp/caddy.tar.gz; \
 	chmod +x /usr/bin/caddy; \
 	caddy version
 
