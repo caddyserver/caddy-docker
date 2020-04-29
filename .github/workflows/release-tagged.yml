@@ -1,0 +1,69 @@
+name: Release Tagged
+
+on:
+  repository_dispatch:
+    types: [release-tagged]
+  # TODO: Remove after done testing
+  pull_request:
+    branches: 
+      - master
+
+jobs:
+  release-tagged:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Update stackbrew config
+        env:
+          # TODO: Switch to event payload tag
+          TAG: v2.0.0-rc.3
+          # TAG: ${{ github.event.client_payload.tag }}
+        run: |
+          # Get the checksums file from the tagged release
+          wget https://github.com/caddyserver/caddy/releases/download/${TAG}/caddy_${TAG#v}_checksums.txt -O checksums.txt
+
+          # Update the version tag in the config
+          echo "Updating version to '${TAG#v}'"
+          sed -i "s/caddy_version: .*/caddy_version: ${TAG#v}/" stackbrew-config.yaml
+
+          # The keys in the stackbrew-config we want to update
+          arches=(
+            amd64
+            arm32v6
+            arm32v7
+            arm64v8
+            windows_amd64
+          )
+
+          # The names of the archives in the checksums file
+          archive_names=(
+            linux_amd64
+            linux_armv6
+            linux_armv7
+            linux_arm64
+            windows_amd64
+          )
+
+          # Get the last index for the loop
+          last=$(expr "${#arches[@]}" - 1)
+
+          for i in $(seq 0 $last); do
+            # Prefix the arch with linux_ if it's not windows
+            arch="${arches[i]}"
+
+            # Get the checksum for the arch we need
+            checksum=$(grep ${archive_names[i]} checksums.txt | awk '{print $1}')
+
+            # Update the checksum in the config
+            echo "Updating ${arch} checksum to ${checksum}"
+            sed -i "s/\b${arch}: .*/${arch}: ${checksum}/" stackbrew-config.yaml
+          done
+
+          rm checksums.txt
+          echo "All done!"
+
+      # - name: Create Pull Request
+      #   uses: peter-evans/create-pull-request@v2
