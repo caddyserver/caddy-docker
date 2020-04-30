@@ -16,12 +16,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Install yq
-        run: |
-          sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys CC86BB64
-          sudo add-apt-repository ppa:rmescandon/yq
-          sudo apt update
-          sudo apt install yq -y
+      # We disabled yq for now because of an upstream bug with whitespace
+      # See https://github.com/mikefarah/yq/issues/343
+      # - name: Install yq
+      #   run: |
+      #     sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys CC86BB64
+      #     sudo add-apt-repository ppa:rmescandon/yq
+      #     sudo apt update
+      #     sudo apt install yq -y
 
       - name: Update stackbrew config
         env:
@@ -32,11 +34,10 @@ jobs:
           # Get the checksums file from the tagged release
           wget https://github.com/caddyserver/caddy/releases/download/${TAG}/caddy_${TAG#v}_checksums.txt -O checksums.txt
 
-          set -x
-
           # Update the version tag in the config
           echo "Updating version to '${TAG#v}'"
-          yq write -i stackbrew-config.yaml caddy_version ${TAG#v}
+          sed -i "s/caddy_version: .*/caddy_version: ${TAG#v}/" stackbrew-config.yaml
+          # yq write -i stackbrew-config.yaml caddy_version ${TAG#v}
 
           # The keys in the stackbrew-config we want to update
           arches=(
@@ -68,7 +69,8 @@ jobs:
 
             # Update the checksum in the config
             echo "Updating ${arch} checksum to ${checksum}"
-            yq write -i stackbrew-config.yaml ${arch} ${checksum}
+            sed -i "s/\b${arch}: .*/${arch}: ${checksum}/" stackbrew-config.yaml
+            # yq write -i stackbrew-config.yaml checksums.${arch} ${checksum}
           done
 
           rm checksums.txt
