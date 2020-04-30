@@ -11,12 +11,17 @@ on:
 jobs:
   release-tagged:
     runs-on: ubuntu-latest
-    container:
-      image: hairyhenderson/dockerfiles-builder:latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: Install yq
+        run: |
+          sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys CC86BB64
+          sudo add-apt-repository ppa:rmescandon/yq
+          sudo apt update
+          sudo apt install yq -y
 
       - name: Update stackbrew config
         env:
