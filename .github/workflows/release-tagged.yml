@@ -11,6 +11,8 @@ on:
 jobs:
   release-tagged:
     runs-on: ubuntu-latest
+    container:
+      image: hairyhenderson/dockerfiles-builder:latest
 
     steps:
       - name: Checkout code
