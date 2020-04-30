@@ -32,7 +32,9 @@ jobs:
           # TAG: ${{ github.event.client_payload.tag }}
         run: |
           # Get the checksums file from the tagged release
-          wget https://github.com/caddyserver/caddy/releases/download/${TAG}/caddy_${TAG#v}_checksums.txt -O checksums.txt
+          echo "Downloading checksums for ${TAG}..."
+          wget -q https://github.com/caddyserver/caddy/releases/download/${TAG}/caddy_${TAG#v}_checksums.txt -O checksums.txt
+          echo ""
 
           # Update the version tag in the config
           echo "Updating version to '${TAG#v}'"
@@ -61,20 +63,21 @@ jobs:
           last=$(expr "${#arches[@]}" - 1)
 
           for i in $(seq 0 $last); do
-            # Prefix the arch with linux_ if it's not windows
+            # Grab the current arch from the list
             arch="${arches[i]}"
 
-            # Get the checksum for the arch we need
+            # Get the checksum of the archive for this arch
             checksum=$(awk "/${archive_names[i]}/{print \$1}" checksums.txt)
 
             # Update the checksum in the config
-            echo "Updating ${arch} checksum to ${checksum}"
+            printf "Updating checksum for %-14s\t${checksum:0:32}...\n" "${arch}"
             sed -i "s/\b${arch}: .*/${arch}: ${checksum}/" stackbrew-config.yaml
             # yq write -i stackbrew-config.yaml checksums.${arch} ${checksum}
           done
 
           rm checksums.txt
           echo "All done!"
+          echo ""
 
           git diff
 
