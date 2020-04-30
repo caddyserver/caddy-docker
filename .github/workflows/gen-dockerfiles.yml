@@ -17,20 +17,15 @@ jobs:
       DOCKER_BUILDKIT: '1'
     steps:
     - uses: actions/checkout@v2
-
     - name: Reattach HEAD
       run: git checkout ${GITHUB_REF#refs/heads/}
-
     - run: rm alpine/Dockerfile builder/Dockerfile
-
     - run: make gen-dockerfiles
-
     - name: Configure git
       run: |
         git config user.name "${GITHUB_ACTOR}"
         git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
         git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git
-
     - name: Commit and push changes
       run: |
         git add */Dockerfile
