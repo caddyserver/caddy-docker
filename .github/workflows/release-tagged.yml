@@ -32,6 +32,8 @@ jobs:
           # Get the checksums file from the tagged release
           wget https://github.com/caddyserver/caddy/releases/download/${TAG}/caddy_${TAG#v}_checksums.txt -O checksums.txt
 
+          set -x
+
           # Update the version tag in the config
           echo "Updating version to '${TAG#v}'"
           yq write -i stackbrew-config.yaml caddy_version ${TAG#v}
@@ -71,6 +73,8 @@ jobs:
 
           rm checksums.txt
           echo "All done!"
+
+          git diff
 
       # - name: Create Pull Request
       #   uses: peter-evans/create-pull-request@v2
