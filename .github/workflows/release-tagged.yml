@@ -27,6 +27,9 @@ jobs:
       #     sudo apt update
       #     sudo apt install yq -y
 
+      - name: Reattach HEAD
+        run: git checkout ${GITHUB_REF#refs/heads/}
+
       - name: Update stackbrew config
         env:
           # TODO: Switch to event payload tag
