@@ -1,4 +1,5 @@
 caddy_version: '2.0.0'
+caddy_major: '2'
 # sha256 checksums for github-released binaries
 checksums:
   amd64: 3b00c705caa3162750dfea9cacd3f05ae1dda798e346293ba320ee63682a94e5e26c994fee75677324d841962757b098d2f696e4c5a0044131a0cd9b0e54b9fd
@@ -9,21 +10,21 @@ checksums:
 # configuration for the stackbrew.tmpl template
 variants:
   - dir: alpine
-    tags: [ "{{.conf.caddy_version}}-alpine", "alpine", ]
-    shared_tags: [ "{{.conf.caddy_version}}", "latest" ]
+    tags: [ "{{.conf.caddy_version}}-alpine", "{{.conf.caddy_major}}-alpine", "alpine", ]
+    shared_tags: [ "{{.conf.caddy_version}}", "{{.conf.caddy_major}}", "latest" ]
     architectures: [ amd64, arm64v8, arm32v6, arm32v7 ]
   - dir: builder
-    tags: [ "{{.conf.caddy_version}}-builder", "builder" ]
+    tags: [ "{{.conf.caddy_version}}-builder", "{{.conf.caddy_major}}-builder", "builder" ]
     architectures: [ amd64, arm64v8, arm32v6, arm32v7 ]
   - dir: windows/1809
     base_file: Dockerfile.windowsservercore-1809.base
-    tags: [ "{{.conf.caddy_version}}-windowsservercore-1809", "windowsservercore-1809" ]
-    shared_tags: [ "{{.conf.caddy_version}}-windowsservercore", "windowsservercore", "{{.conf.caddy_version}}", "latest" ]
+    tags: [ "{{.conf.caddy_version}}-windowsservercore-1809", "{{.conf.caddy_major}}-windowsservercore-1809", "windowsservercore-1809" ]
+    shared_tags: [ "{{.conf.caddy_version}}-windowsservercore", "{{.conf.caddy_major}}-windowsservercore", "windowsservercore", "{{.conf.caddy_version}}", "{{.conf.caddy_major}}", "latest" ]
     architectures: [ windows-amd64 ]
     constraints: [ windowsservercore-1809 ]
   - dir: windows/ltsc2016
     base_file: Dockerfile.windowsservercore-ltsc2016.base
-    tags: [ "{{.conf.caddy_version}}-windowsservercore-ltsc2016", "windowsservercore-ltsc2016" ]
-    shared_tags: [ "{{.conf.caddy_version}}-windowsservercore", "windowsservercore", "{{.conf.caddy_version}}", "latest" ]
+    tags: [ "{{.conf.caddy_version}}-windowsservercore-ltsc2016", "{{.conf.caddy_major}}-windowsservercore-ltsc2016", "windowsservercore-ltsc2016" ]
+    shared_tags: [ "{{.conf.caddy_version}}-windowsservercore", "{{.conf.caddy_major}}-windowsservercore", "windowsservercore", "{{.conf.caddy_version}}", "{{.conf.caddy_major}}", "latest" ]
     architectures: [ windows-amd64 ]
     constraints: [ windowsservercore-ltsc2016 ]
