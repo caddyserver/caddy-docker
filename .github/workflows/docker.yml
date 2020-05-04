@@ -42,7 +42,7 @@ jobs:
           docker build -f windows/1809/Dockerfile windows
         if: github.repository != 'caddyserver/caddy-docker' || github.ref != 'refs/heads/master'
       - name: install bashbrew
-        run: curl -o /bashbrew.exe https://doi-janky.infosiftr.net/job/bashbrew/lastSuccessfulBuild/artifact/bin/bashbrew-windows-amd64.exe
+        run: curl -o /bashbrew.exe https://doi-janky.infosiftr.net/job/bashbrew/job/master/lastSuccessfulBuild/artifact/bashbrew-windows-amd64.exe
       - name: build
         run: /bashbrew --arch windows-amd64 --constraint windowsservercore-1809 --namespace caddy --library ./library build caddy
       - name: push
