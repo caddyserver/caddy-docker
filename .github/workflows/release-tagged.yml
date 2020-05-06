@@ -21,7 +21,7 @@ jobs:
       - name: Update stackbrew config
         env:
           # TODO: Switch to event payload tag
-          TAG: v2.0.0
+          TAG: v2.0.0-rc.3
           # TAG: ${{ github.event.client_payload.tag }}
         run: |
           # Parse semver
@@ -73,6 +73,9 @@ jobs:
             # Get the checksum of the archive for this arch
             checksum=$(awk "/${archive_names[i]}/{print \$1}" checksums.txt)
 
+            # Skip if we don't have the checksum
+            [ -z "${checksum}" ] && continue
+
             # Update the checksum in the config
             printf "Updating checksum for %-14s\t${checksum:0:32}...\n" "${arch}"
             sed -i "s/\b${arch}: .*/${arch}: ${checksum}/" stackbrew-config.yaml
@@ -89,5 +92,5 @@ jobs:
           make gen-dockerfiles
           git diff
 
-      # - name: Create Pull Request
-      #   uses: peter-evans/create-pull-request@v2
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v2
