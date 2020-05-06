@@ -17,6 +17,7 @@ jobs:
         run: |
           GOMPLATE_VERSION="v3.6.0"
           sudo curl -SLo /usr/local/bin/gomplate https://github.com/hairyhenderson/gomplate/releases/download/${GOMPLATE_VERSION}/gomplate_linux-amd64-slim
+          sudo chmod +x /usr/local/bin/gomplate
 
       - name: Checkout code
         uses: actions/checkout@v2
