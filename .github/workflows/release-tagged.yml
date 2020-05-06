@@ -18,24 +18,19 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # We disabled yq for now because of an upstream bug with whitespace
-      # See https://github.com/mikefarah/yq/issues/343
-      # - name: Install yq
-      #   run: |
-      #     sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys CC86BB64
-      #     sudo add-apt-repository ppa:rmescandon/yq
-      #     sudo apt update
-      #     sudo apt install yq -y
-
-      - name: Reattach HEAD
-        run: git checkout ${GITHUB_REF#refs/heads/}
-
       - name: Update stackbrew config
         env:
           # TODO: Switch to event payload tag
-          TAG: v2.0.0-rc.3
+          TAG: v2.0.0
           # TAG: ${{ github.event.client_payload.tag }}
         run: |
+          # Parse semver
+          SEMVER_RE='[^0-9]*\([0-9]*\)[.]\([0-9]*\)[.]\([0-9]*\)\([0-9A-Za-z\.-]*\)'
+          TAG_MAJOR=`echo ${TAG#v} | sed -e "s#$SEMVER_RE#\1#"`
+          TAG_MINOR=`echo ${TAG#v} | sed -e "s#$SEMVER_RE#\2#"`
+          TAG_PATCH=`echo ${TAG#v} | sed -e "s#$SEMVER_RE#\3#"`
+          TAG_SPECIAL=`echo ${TAG#v} | sed -e "s#$SEMVER_RE#\4#"`
+
           # Get the checksums file from the tagged release
           echo "Downloading checksums for ${TAG}..."
           wget -q https://github.com/caddyserver/caddy/releases/download/${TAG}/caddy_${TAG#v}_checksums.txt -O checksums.txt
@@ -43,8 +38,8 @@ jobs:
 
           # Update the version tag in the config
           echo "Updating version to '${TAG#v}'"
-          sed -i "s/caddy_version: .*/caddy_version: ${TAG#v}/" stackbrew-config.yaml
-          # yq write -i stackbrew-config.yaml caddy_version ${TAG#v}
+          sed -i "s/caddy_version: .*/caddy_version: '${TAG#v}'/" stackbrew-config.yaml
+          sed -i "s/caddy_major: .*/caddy_major: '${TAG_MAJOR}'/" stackbrew-config.yaml
 
           # The keys in the stackbrew-config we want to update
           arches=(
@@ -52,16 +47,20 @@ jobs:
             arm32v6
             arm32v7
             arm64v8
+            ppc64le
+            s390x
             windows_amd64
           )
 
           # The names of the archives in the checksums file
           archive_names=(
-            linux_amd64
-            linux_armv6
-            linux_armv7
-            linux_arm64
-            windows_amd64
+            linux_amd64.tar.gz
+            linux_armv6.tar.gz
+            linux_armv7.tar.gz
+            linux_arm64.tar.gz
+            linux_ppc64le.tar.gz
+            linux_s390x.tar.gz
+            windows_amd64.zip
           )
 
           # Get the last index for the loop
@@ -77,7 +76,6 @@ jobs:
             # Update the checksum in the config
             printf "Updating checksum for %-14s\t${checksum:0:32}...\n" "${arch}"
             sed -i "s/\b${arch}: .*/${arch}: ${checksum}/" stackbrew-config.yaml
-            # yq write -i stackbrew-config.yaml checksums.${arch} ${checksum}
           done
 
           rm checksums.txt
@@ -86,9 +84,9 @@ jobs:
 
           git diff
 
-      - name: Run make all
+      - name: Regenerate Dockerfiles
         run: |
-          make all
+          make gen-dockerfiles
           git diff
 
       # - name: Create Pull Request
