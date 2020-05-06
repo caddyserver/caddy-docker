@@ -25,6 +25,8 @@ RUN set -eux; \
 		armhf)   binArch='armv6'; checksum='{{ .config.checksums.arm32v6 }}' ;; \
 		armv7)   binArch='armv7'; checksum='{{ .config.checksums.arm32v7 }}' ;; \
 		aarch64) binArch='arm64'; checksum='{{ .config.checksums.arm64v8 }}' ;; \
+		ppc64el|ppc64le) binArch='ppc64le'; checksum='{{ .config.checksums.ppc64le }}' ;; \
+		s390x)   binArch='s390x'; checksum='{{ .config.checksums.s390x }}' ;; \
 		*) echo >&2 "error: unsupported architecture ($apkArch)"; exit 1 ;;\
 	esac; \
 	wget -O /tmp/caddy.tar.gz "https://github.com/caddyserver/caddy/releases/download/v{{ .config.caddy_version }}/caddy_{{ .config.caddy_version }}_linux_${binArch}.tar.gz"; \
