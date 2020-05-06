@@ -3,10 +3,6 @@ name: Release Tagged
 on:
   repository_dispatch:
     types: [release-tagged]
-  # TODO: Remove after done testing
-  pull_request:
-    branches: 
-      - master
 
 jobs:
   release-tagged:
@@ -27,9 +23,7 @@ jobs:
       - name: Update stackbrew config
         id: vars
         env:
-          # TODO: Switch to event payload tag
-          TAG: v2.0.0-rc.3
-          # TAG: ${{ github.event.client_payload.tag }}
+          TAG: ${{ github.event.client_payload.tag }}
         run: |
           # Parse semver
           SEMVER_RE='[^0-9]*\([0-9]*\)[.]\([0-9]*\)[.]\([0-9]*\)\([0-9A-Za-z\.-]*\)'
