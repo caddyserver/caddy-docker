@@ -11,10 +11,13 @@ on:
 jobs:
   release-tagged:
     runs-on: ubuntu-latest
-    container:
-      image: hairyhenderson/dockerfiles-builder:latest
 
     steps:
+      - name: Install dependencies
+        run: |
+          GOMPLATE_VERSION="v3.6.0"
+          curl -SLo /usr/local/bin/gomplate https://github.com/hairyhenderson/gomplate/releases/download/${GOMPLATE_VERSION}/gomplate_linux-amd64-slim
+
       - name: Checkout code
         uses: actions/checkout@v2
 
