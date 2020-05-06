@@ -25,6 +25,7 @@ jobs:
           ref: master
 
       - name: Update stackbrew config
+        id: vars
         env:
           # TODO: Switch to event payload tag
           TAG: v2.0.0-rc.3
@@ -93,6 +94,13 @@ jobs:
 
           git diff
 
+          # Save some vars for use later
+          echo "::set-output name=TAG::${TAG}"
+          echo "::set-output name=TAG_MAJOR::${TAG_MAJOR}"
+          echo "::set-output name=TAG_MINOR::${TAG_MINOR}"
+          echo "::set-output name=TAG_PATCH::${TAG_PATCH}"
+          echo "::set-output name=TAG_SPECIAL::${TAG_SPECIAL}"
+
       - name: Regenerate Dockerfiles
         run: |
           make gen-dockerfiles
@@ -100,3 +108,13 @@ jobs:
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v2
+        with:
+          commit-message: "ci: Updating to ${{ steps.vars.outputs.TAG }}"
+          reviewers: "hairyhenderson,francislavoie,mholt"
+          title: "Updating to ${{ steps.vars.outputs.TAG }}"
+          body: |
+            :tada: :rocket: :tada: :rocket: :tada: :rocket: :tada: :rocket: :tada:
+
+            Updating to ${{ steps.vars.outputs.TAG }}
+
+            Release: https://github.com/caddyserver/caddy/releases/tag/${{ steps.vars.outputs.TAG }}
