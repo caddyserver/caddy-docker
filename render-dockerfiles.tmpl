@@ -1,0 +1,17 @@
+{{- range $version := .config.versions }}
+{{- $minor := $version.caddy_version | regexp.Replace `([0-9]+\.[0-9]+).*$` `$1` }}
+
+{{- range $variant := $.config.variants }}
+{{- $dir := filepath.Join $minor $variant.dir }}
+{{- test.Assert (print "Expected " $dir " to be a directory") (file.IsDir $dir) }}
+{{- $template := "dockerfile" }}
+{{- if eq "builder" $variant.dir }}{{ $template = "builder-dockerfile" }}{{ end }}
+{{- if strings.HasPrefix "windows" $variant.dir }}{{ $template = "windows-dockerfile" }}{{ end }}
+{{- $base := file.Read (filepath.Join $dir "Dockerfile.base") }}
+{{- $ctx := dict "base" $base "config" $version }}
+{{- $outPath := filepath.Join $dir "Dockerfile" }}
+Rendering {{ $outPath }} with template {{ $template }}...
+{{- tmpl.Exec $template $ctx | file.Write $outPath }}
+{{- end }}
+
+{{- end }}

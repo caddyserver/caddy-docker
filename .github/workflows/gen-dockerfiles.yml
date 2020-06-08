@@ -2,9 +2,10 @@ name: Regenerate Dockerfiles
 on:
   push:
     paths:
-      - '*/Dockerfile.base'
+      - '**/Dockerfile.base'
       - Dockerfile.tmpl
       - Dockerfile.builder.tmpl
+      - Dockerfile.windows.tmpl
 
 jobs:
   gen-dockerfiles:
@@ -19,7 +20,6 @@ jobs:
     - uses: actions/checkout@v2
     - name: Reattach HEAD
       run: git checkout ${GITHUB_REF#refs/heads/}
-    - run: rm alpine/Dockerfile builder/Dockerfile
     - run: make gen-dockerfiles
     - name: Configure git
       run: |
@@ -28,7 +28,7 @@ jobs:
         git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git
     - name: Commit and push changes
       run: |
-        git add */Dockerfile
+        git add */*/Dockerfile
         if output=$(git status --porcelain) && [ ! -z "$output" ]; then
           git commit -m 'chore: regenerate Dockerfiles'
           git push

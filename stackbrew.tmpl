@@ -2,17 +2,40 @@
 # template: https://github.com/caddyserver/caddy-docker/blob/{{ fileCommit "stackbrew.tmpl"}}/stackbrew.tmpl
 # config context: https://github.com/caddyserver/caddy-docker/blob/{{ fileCommit "stackbrew-config.yaml"}}/stackbrew-config.yaml
 Maintainers: Dave Henderson (@hairyhenderson)
-{{ range $variant := .conf.variants }}
-{{- if and (file.IsDir $variant.dir) (file.Exists (filepath.Join $variant.dir "Dockerfile")) }}
-Tags: {{ tmpl.Inline (join $variant.tags ", ") $ }}
+{{ range $version := .config.versions }}
+{{- $minor := $version.caddy_version | regexp.Replace `([0-9]+\.[0-9]+).*$` `$1` }}
+{{- $major := $minor | regexp.Replace `([0-9]+).*$` `$1` }}
+
+{{- range $variant := $.config.variants }}
+{{- $dir := filepath.Join $minor $variant.dir }}
+
+{{- if and (file.IsDir $dir) (file.Exists (filepath.Join $dir "Dockerfile")) }}
+Tags: {{ range $variant.tags }}
+    {{- print $version.caddy_version "-" . }}
+    {{- if $version.is_major }}, {{ print $major "-" . }}{{ end }}
+    {{- if $version.is_latest }}, {{ . }}{{ end }}
+    {{- end }}
+
 {{- if has $variant "shared_tags" }}
-SharedTags: {{ tmpl.Inline (join $variant.shared_tags ", ") $ }}
+SharedTags: {{ range $i, $tag := $variant.shared_tags }}
+    {{- if eq "latest" $tag }}
+        {{- $version.caddy_version }}
+        {{- if $version.is_major }}, {{ $major }}{{ end }}
+    {{- else }}
+        {{- print $version.caddy_version "-" $tag }}
+        {{- if $version.is_major }}, {{ print $major "-" $tag }}{{ end }}
+    {{- end }}
+
+    {{- if $version.is_latest }}, {{ $tag }}{{ end -}}
+{{ if lt (add 1 $i) (len $variant.shared_tags) }}, {{end}}
+{{- end }}
 {{- end }}
 GitRepo: https://github.com/caddyserver/caddy-docker.git
-Directory: {{ $variant.dir }}
-GitCommit: {{ fileCommit (filepath.Join $variant.dir "Dockerfile") }}
+Directory: {{ $dir }}
+GitCommit: {{ fileCommit (filepath.Join $dir "Dockerfile") }}
 Architectures: {{ join $variant.architectures ", " }}
 {{- if has $variant "constraints" }}
-Constraints: {{ tmpl.Inline (join $variant.constraints ", ") $ }}
+Constraints: {{ join $variant.constraints ", " }}
 {{- end }}
 {{ end }}{{ end -}}
+{{ end }}
