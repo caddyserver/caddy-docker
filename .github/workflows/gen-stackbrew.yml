@@ -4,7 +4,7 @@ on:
     branches:
       - master
     paths:
-      - '*/Dockerfile'
+      - '**/Dockerfile'
       - stackbrew.tmpl
       - stackbrew-config.yaml
 
