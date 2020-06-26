@@ -1,8 +1,8 @@
 # List of versions we maintain ()
 versions:
   - caddy_version: '2.1.0'
-    is_major: false
-    is_latest: false
+    is_major: true
+    is_latest: true
     # sha256 checksums for github-released binaries
     checksums:
       amd64: 17d425b20a6906adfa57fd98181b349a2de1a0ac3331ae5cc2858bef1a4d755d7eb0ed093e1bda256d00ecca5f950267bbb892d08f016f00606c5b21b72b51ee
@@ -13,9 +13,8 @@ versions:
       ppc64le: d7a3015fee2f36079729246a816fca4656b45d67d708bf7fab9bbfa5ae200e777e97f5c4962de1693699204f32bb578cf31609bc0b1e19190fe1b7caeb5b9018
       s390x: 5f0af31c7272dccf6ad2e206510e27980e03b5ac817014d5b90eb4f476b2897c752c0fd27aecfc6cdab2d410be6dfb926cda8f2f2da0b46b8cef5285d5dbc922
   - caddy_version: '2.0.0'
-    caddy_major: '2'
-    is_major: true
-    is_latest: true
+    is_major: false
+    is_latest: false
     # sha256 checksums for github-released binaries
     checksums:
       amd64: 3b00c705caa3162750dfea9cacd3f05ae1dda798e346293ba320ee63682a94e5e26c994fee75677324d841962757b098d2f696e4c5a0044131a0cd9b0e54b9fd
