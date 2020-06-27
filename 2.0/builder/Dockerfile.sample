@@ -1,9 +1,0 @@
-FROM b AS builder
-
-RUN caddy-builder \
-    github.com/caddyserver/nginx-adapter \
-    github.com/hairyhenderson/caddy-teapot-module@v0.0.1
-
-FROM caddy/caddy
-
-COPY --from=builder /usr/bin/caddy /usr/bin/caddy
