@@ -35,6 +35,7 @@ replace github.com/caddyserver/caddy/v2 => /src/caddy
 EOF
 
 set -x
+export CGO_ENABLED=0
 go get "$@"
-CGO_ENABLED=0 go build -trimpath -tags netgo -ldflags '-extldflags "-static" -s -w' -o /usr/bin/caddy
+go build -trimpath -tags netgo -ldflags '-extldflags "-static" -s -w' -o /usr/bin/caddy
 /usr/bin/caddy version
