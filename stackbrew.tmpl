@@ -32,7 +32,7 @@ SharedTags: {{ range $i, $tag := $variant.shared_tags }}
 {{- end }}
 GitRepo: https://github.com/caddyserver/caddy-docker.git
 Directory: {{ $dir }}
-GitCommit: {{ fileCommit (filepath.Join $dir "Dockerfile") }}
+GitCommit: {{ fileCommit $dir }}
 Architectures: {{ join $variant.architectures ", " }}
 {{- if has $variant "constraints" }}
 Constraints: {{ join $variant.constraints ", " }}
