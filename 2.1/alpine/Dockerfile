@@ -3,7 +3,7 @@ FROM alpine:3.12
 RUN apk add --no-cache ca-certificates mailcap
 
 # https://github.com/caddyserver/dist/commits
-ARG CADDY_DIST_COMMIT=80870b227ded910971ecace4a0c136bf0ef46342
+ENV CADDY_DIST_COMMIT=80870b227ded910971ecace4a0c136bf0ef46342
 
 RUN set -eux; \
 	mkdir -p \
@@ -16,7 +16,7 @@ RUN set -eux; \
 	wget -O /usr/share/caddy/index.html "https://github.com/caddyserver/dist/raw/${CADDY_DIST_COMMIT}/welcome/index.html"
 
 # https://github.com/caddyserver/caddy/releases
-ARG CADDY_VERSION=2.1.1
+ENV CADDY_VERSION=2.1.1
 
 RUN set -eux; \
 	apkArch="$(apk --print-arch)"; \

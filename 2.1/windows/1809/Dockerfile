@@ -3,7 +3,7 @@ FROM mcr.microsoft.com/windows/servercore:1809 AS caddy
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
 
 # https://github.com/caddyserver/dist/commits
-ARG CADDY_DIST_COMMIT=1ae255dd910fe0ad14aeec27eabe4f526bf423ab
+ENV CADDY_DIST_COMMIT=1ae255dd910fe0ad14aeec27eabe4f526bf423ab
 
 # Apparently Windows Server 2016 disables TLS 1.2 by default - this enables it so we can talk to GitHub
 RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; \
@@ -19,7 +19,7 @@ RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tl
         -OutFile "/usr/share/caddy/index.html"
 
 # https://github.com/caddyserver/caddy/releases
-ARG CADDY_VERSION=2.1.1
+ENV CADDY_VERSION=2.1.1
 
 RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; \
     Invoke-WebRequest \
