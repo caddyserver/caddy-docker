@@ -1,19 +1,32 @@
-{{ .base | strings.TrimSpace }} AS builder
-
-WORKDIR /src
+{{ .base | strings.TrimSpace }}
 
 RUN apk add --no-cache \
     git \
     ca-certificates
 
-ENV CADDY_SOURCE_VERSION=v{{ .config.caddy_version }}
+ENV XCADDY_VERSION v{{ .xcaddy_config.version }}
+# Configures xcaddy to build with this version of Caddy
+ENV CADDY_VERSION v{{ .config.caddy_version }}
+# Configures xcaddy to not clean up post-build (unnecessary in a container)
+ENV XCADDY_SKIP_CLEANUP 1
 
-RUN git clone -b $CADDY_SOURCE_VERSION https://github.com/caddyserver/caddy.git --single-branch
-
-WORKDIR /src/caddy/cmd/caddy
-
-RUN go get -d ./...
+RUN set -eux; \
+	apkArch="$(apk --print-arch)"; \
+	case "$apkArch" in \
+		x86_64)  binArch='amd64'; checksum='{{ .xcaddy_config.checksums.amd64 }}' ;; \
+		armhf)   binArch='armv6'; checksum='{{ .xcaddy_config.checksums.arm32v6 }}' ;; \
+		armv7)   binArch='armv7'; checksum='{{ .xcaddy_config.checksums.arm32v7 }}' ;; \
+		aarch64) binArch='arm64'; checksum='{{ .xcaddy_config.checksums.arm64v8 }}' ;; \
+		ppc64el|ppc64le) binArch='ppc64le'; checksum='{{ .xcaddy_config.checksums.ppc64le }}' ;; \
+		s390x)   binArch='s390x'; checksum='{{ .xcaddy_config.checksums.s390x }}' ;; \
+		*) echo >&2 "error: unsupported architecture ($apkArch)"; exit 1 ;;\
+	esac; \
+	wget -O /tmp/xcaddy.tar.gz "https://github.com/caddyserver/xcaddy/releases/download/v{{ .xcaddy_config.version }}/xcaddy_{{ .xcaddy_config.version }}_linux_${binArch}.tar.gz"; \
+	echo "$checksum  /tmp/xcaddy.tar.gz" | sha512sum -c; \
+	tar x -z -f /tmp/xcaddy.tar.gz -C /usr/bin xcaddy; \
+	rm -f /tmp/xcaddy.tar.gz; \
+	chmod +x /usr/bin/xcaddy;
 
 COPY caddy-builder.sh /usr/bin/caddy-builder
 
-WORKDIR /src/custom-caddy/cmd/caddy
+WORKDIR /usr/bin

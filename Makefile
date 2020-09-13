@@ -1,10 +1,13 @@
 all: gen-dockerfiles library/caddy
 
-gen-dockerfiles: render-dockerfiles.tmpl Dockerfile.tmpl */*/Dockerfile.base
+gen-dockerfiles: render-dockerfiles.tmpl Dockerfile.tmpl Dockerfile.builder.tmpl Dockerfile.windows.tmpl Dockerfile.windows-builder.tmpl */*/Dockerfile.base
 	@gomplate \
 		-t dockerfile=Dockerfile.tmpl \
 		-t builder-dockerfile=Dockerfile.builder.tmpl \
 		-t windows-dockerfile=Dockerfile.windows.tmpl \
+		-t windows-builder-dockerfile=Dockerfile.windows-builder.tmpl \
+		-t caddy-builder=caddy-builder.sh.tmpl \
+		-t caddy-windows-builder=caddy-builder.ps1.tmpl \
 		-c config=./stackbrew-config.yaml \
 		-f $<
 

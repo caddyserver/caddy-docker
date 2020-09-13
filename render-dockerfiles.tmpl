@@ -1,17 +1,37 @@
 {{- range $version := .config.versions }}
-{{- $minor := $version.caddy_version | regexp.Replace `([0-9]+\.[0-9]+).*$` `$1` }}
+	{{- $minor := $version.caddy_version | regexp.Replace `([0-9]+\.[0-9]+).*$` `$1` }}
 
-{{- range $variant := $.config.variants }}
-{{- $dir := filepath.Join $minor $variant.dir }}
-{{- test.Assert (print "Expected " $dir " to be a directory") (file.IsDir $dir) }}
-{{- $template := "dockerfile" }}
-{{- if eq "builder" $variant.dir }}{{ $template = "builder-dockerfile" }}{{ end }}
-{{- if strings.HasPrefix "windows" $variant.dir }}{{ $template = "windows-dockerfile" }}{{ end }}
-{{- $base := file.Read (filepath.Join $dir "Dockerfile.base") }}
-{{- $ctx := dict "base" $base "config" $version }}
-{{- $outPath := filepath.Join $dir "Dockerfile" }}
-Rendering {{ $outPath }} with template {{ $template }}...
-{{- tmpl.Exec $template $ctx | file.Write $outPath }}
-{{- end }}
+	{{- range $variant := $.config.variants }}
+		{{- $dir := filepath.Join $minor $variant.dir }}
+		{{- test.Assert (print "Expected " $dir " to be a directory") (file.IsDir $dir) }}
+		{{- $template := "dockerfile" }}
+		{{- if eq "builder" $variant.dir -}}
+			{{ $template = "builder-dockerfile" -}}
+		{{ end -}}
+		{{- if strings.HasPrefix "windows-builder" $variant.dir -}}
+			{{ $template = "windows-builder-dockerfile" -}}
+		{{- else if strings.HasPrefix "windows" $variant.dir -}}
+			{{ $template = "windows-dockerfile" -}}
+		{{ end -}}
+		{{- $base := file.Read (filepath.Join $dir "Dockerfile.base") }}
+		{{- $ctx := dict "base" $base "config" $version "xcaddy_config" $.config.xcaddy_config }}
+		{{- $outPath := filepath.Join $dir "Dockerfile" -}}
+Rendering {{ $outPath }} with template {{ $template }}...{{ "\n" -}}
+		{{- tmpl.Exec $template $ctx | file.Write $outPath -}}
 
-{{- end }}
+		{{- if eq "builder" $variant.dir -}}
+			{{- $template = "caddy-builder" }}
+			{{- $ctx := dict "config" $version }}
+			{{- $outPath := filepath.Join $dir "caddy-builder.sh" -}}
+Rendering {{ $outPath }} with template {{ $template }}...{{ "\n" -}}
+			{{- tmpl.Exec $template $ctx | file.Write $outPath -}}
+		{{ end -}}
+		{{- if strings.HasPrefix "windows-builder" $variant.dir -}}
+			{{- $template = "caddy-windows-builder" }}
+			{{- $ctx := dict "config" $version }}
+			{{- $outPath := filepath.Join $dir "caddy-builder.ps1" -}}
+Rendering {{ $outPath }} with template {{ $template }}...{{ "\n" -}}
+			{{- tmpl.Exec $template $ctx | file.Write $outPath -}}
+		{{ end -}}
+	{{- end }}
+{{- end -}}
