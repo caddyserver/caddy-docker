@@ -16,7 +16,7 @@ RUN set -eux; \
 	wget -O /usr/share/caddy/index.html "https://github.com/caddyserver/dist/raw/$CADDY_DIST_COMMIT/welcome/index.html"
 
 # https://github.com/caddyserver/caddy/releases
-ENV CADDY_VERSION v2.2.0-rc1
+ENV CADDY_VERSION v2.2.0-rc.1
 
 RUN set -eux; \
 	apkArch="$(apk --print-arch)"; \
@@ -29,7 +29,7 @@ RUN set -eux; \
 		s390x)   binArch='s390x'; checksum='84eb431373a13fb90da3c373b1c39b45e1ce399bb67758f29adf5814da37b7bd0afb954549e4565e8d5ee02b52c674c26d46b11af90e7c8e90df7496cfc5ae08' ;; \
 		*) echo >&2 "error: unsupported architecture ($apkArch)"; exit 1 ;;\
 	esac; \
-	wget -O /tmp/caddy.tar.gz "https://github.com/caddyserver/caddy/releases/download/v2.2.0-rc1/caddy_2.2.0-rc1_linux_${binArch}.tar.gz"; \
+	wget -O /tmp/caddy.tar.gz "https://github.com/caddyserver/caddy/releases/download/v2.2.0-rc.1/caddy_2.2.0-rc.1_linux_${binArch}.tar.gz"; \
 	echo "$checksum  /tmp/caddy.tar.gz" | sha512sum -c; \
 	tar x -z -f /tmp/caddy.tar.gz -C /usr/bin caddy; \
 	rm -f /tmp/caddy.tar.gz; \
@@ -47,7 +47,7 @@ ENV XDG_DATA_HOME=/data
 VOLUME /config
 VOLUME /data
 
-LABEL org.opencontainers.image.version=v2.2.0-rc1
+LABEL org.opencontainers.image.version=v2.2.0-rc.1
 LABEL org.opencontainers.image.title=Caddy
 LABEL org.opencontainers.image.description="a powerful, enterprise-ready, open source web server with automatic HTTPS written in Go"
 LABEL org.opencontainers.image.url=https://caddyserver.com

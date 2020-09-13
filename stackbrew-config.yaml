@@ -11,7 +11,7 @@ versions:
       windows_amd64: 435c881bf3d149da2339fdca28cf4bedcba79a3ed6bbd79365113e7e78bd110f544a13ab4976529cf73d4760c64991abed7b6f952ace4396ff5a78d98fcf3e19
       ppc64le: 30248cca16ec07e1e9aee0dabaaf0959f2f3622aafbdd9dac9135a4f2117ca3cc5b5bbfb8c94d45ea2c1abf61840587885f2db7fec420cd00918819cd39bfc92
       s390x: f4e16ad4f03f13cbe463efb8577d99f22a30161916cde10f5a0c838f7c57022b572b9a18d25fb20925aef4a5366537948ffdd4a191b3d5205ab9ab980406ca4b
-  - caddy_version: '2.2.0-rc1'
+  - caddy_version: '2.2.0-rc.1'
     is_major: false
     is_latest: false
     # sha512 checksums for github-released binaries
