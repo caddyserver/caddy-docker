@@ -6,4 +6,4 @@ RUN caddy-builder \
 
 FROM caddy/caddy
 
-COPY --from=builder /usr/bin/caddy /usr/bin/caddy
+COPY --from=builder /caddy.exe /caddy.exe

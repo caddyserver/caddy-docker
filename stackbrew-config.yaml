@@ -2,6 +2,7 @@ versions:
   - caddy_version: '2.1.1'
     is_major: true
     is_latest: true
+    dist_commit: 506330b23c5cce43a9352179e7977a684678fbaf
     # sha512 checksums for github-released binaries
     checksums:
       amd64: 41f2442c52daf5a36d07af5024711072925997d8b5a7bd459994b000cfee1cb63d0c97d1b54b172c59b6b02a0f0eab285141a8cd3fc23cbca684f824c7b21b75
@@ -14,6 +15,7 @@ versions:
   - caddy_version: '2.2.0-rc.1'
     is_major: false
     is_latest: false
+    dist_commit: 506330b23c5cce43a9352179e7977a684678fbaf
     # sha512 checksums for github-released binaries
     checksums:
       amd64: e7bf7836e00fbddde6e853615db691d21a76d820d05039b48db040efe0ac5001b96d5ac01d60018fb7def0d15a139d68f1236496f6c78812e59e415a9d768b89
@@ -23,6 +25,16 @@ versions:
       ppc64le: 44f036fc5e89a4efc2e94540f302f6734d535a5e7100858251d108dbaa827e0f1eb88f3de28854d0c155f3398550c0a2f82802648ce7b8d33b9d9d01632db155
       s390x: 84eb431373a13fb90da3c373b1c39b45e1ce399bb67758f29adf5814da37b7bd0afb954549e4565e8d5ee02b52c674c26d46b11af90e7c8e90df7496cfc5ae08
       windows_amd64: 3d2d1cd13def57d5fa1d3f41234770643758963234d06193e2f00422861b7d2ca5e4e330beeb22cd07a1814c25527c643b94e40ff2d63eb9f3a68decc3bc94a6
+xcaddy_config:
+  version: '0.1.5'
+  checksums:
+    amd64: 3d71e90a4b4f3ebc55d79086d5fb4e36d675fd067435b0a2e37f50361e89ceb58a4b8eae43ea502d1b6d1522c3020f1791ffad9a9fbd374883c6202cf9ed67f7
+    arm32v6: 243f58f32bba0b6295267ba78ed18c1b36dfd3c8af4ddbe1f8e1fe096a58cb3326d795b19ce06d87b8641fc17d6e8f1fd2ee372af7dca8c844544768cd05c418
+    arm32v7: 51c212b44bf21e3d9feb841cb91c93289f5244d7276a7ce4b1eea73121855345190de77f4a87a3e4e1a93cccf6085133b8552de48687c2164277c0766d3404f0
+    arm64v8: 13c3184699c20734a5718cad3e4ee8fed52df1eca21d0d3fa5d34a671990bfd1fae23824c7618c0cba1ceac6262b3225f85cbb37cd9c162935c2c367c623e1ea
+    ppc64le: faf068bb6b6086881504699fb92f77f628e36297eda3651021fea40a06a2fa043453a729000d460e530b2772420071b65fdd3915abfdd4d47dbf820e3590393d
+    s390x: 79527340291d9e2196079c87daabe6fed5f5e354dc3a4a37e59c684aeed910376b472e4d8969c3ae957f1af35272d46e669fa111fcb47bb90a0822aa039970ea
+    windows_amd64: 9372295e75cb10cff85c609a195b9ac12cea3e9fc3490234d4271d415cd210cfa78116b03d82f008b9519e4d1f6e03fc59c27db80e098798a3065e4e89edd653
 # configuration for the stackbrew.tmpl template
 variants:
   - dir: alpine
@@ -30,7 +42,8 @@ variants:
     shared_tags: [ "latest" ]
     architectures: [ amd64, arm64v8, arm32v6, arm32v7, ppc64le, s390x ]
   - dir: builder
-    tags: [ "builder" ]
+    tags: [ "builder-alpine" ]
+    shared_tags: [ "builder" ]
     architectures: [ amd64, arm64v8, arm32v6, arm32v7, ppc64le, s390x ]
   - dir: windows/1809
     base_file: Dockerfile.windowsservercore-1809.base
@@ -42,5 +55,15 @@ variants:
     base_file: Dockerfile.windowsservercore-ltsc2016.base
     tags: [ "windowsservercore-ltsc2016" ]
     shared_tags: [ "windowsservercore", "latest" ]
+    architectures: [ windows-amd64 ]
+    constraints: [ windowsservercore-ltsc2016 ]
+  - dir: windows-builder/1809
+    tags: [ "builder-windowsservercore-1809" ]
+    shared_tags: [ "builder" ]
+    architectures: [ windows-amd64 ]
+    constraints: [ windowsservercore-1809 ]
+  - dir: windows-builder/ltsc2016
+    tags: [ "builder-windowsservercore-ltsc2016" ]
+    shared_tags: [ "builder" ]
     architectures: [ windows-amd64 ]
     constraints: [ windowsservercore-ltsc2016 ]

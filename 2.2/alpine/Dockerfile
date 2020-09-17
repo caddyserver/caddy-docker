@@ -2,9 +2,6 @@ FROM alpine:3.12
 
 RUN apk add --no-cache ca-certificates mailcap
 
-# https://github.com/caddyserver/dist/commits
-ENV CADDY_DIST_COMMIT 80870b227ded910971ecace4a0c136bf0ef46342
-
 RUN set -eux; \
 	mkdir -p \
 		/config/caddy \
@@ -12,8 +9,8 @@ RUN set -eux; \
 		/etc/caddy \
 		/usr/share/caddy \
 	; \
-	wget -O /etc/caddy/Caddyfile "https://github.com/caddyserver/dist/raw/$CADDY_DIST_COMMIT/config/Caddyfile"; \
-	wget -O /usr/share/caddy/index.html "https://github.com/caddyserver/dist/raw/$CADDY_DIST_COMMIT/welcome/index.html"
+	wget -O /etc/caddy/Caddyfile "https://github.com/caddyserver/dist/raw/506330b23c5cce43a9352179e7977a684678fbaf/config/Caddyfile"; \
+	wget -O /usr/share/caddy/index.html "https://github.com/caddyserver/dist/raw/506330b23c5cce43a9352179e7977a684678fbaf/welcome/index.html"
 
 # https://github.com/caddyserver/caddy/releases
 ENV CADDY_VERSION v2.2.0-rc.1
@@ -41,8 +38,8 @@ RUN set -eux; \
 RUN [ ! -e /etc/nsswitch.conf ] && echo 'hosts: files dns' > /etc/nsswitch.conf
 
 # See https://caddyserver.com/docs/conventions#file-locations for details
-ENV XDG_CONFIG_HOME=/config
-ENV XDG_DATA_HOME=/data
+ENV XDG_CONFIG_HOME /config
+ENV XDG_DATA_HOME /data
 
 VOLUME /config
 VOLUME /data

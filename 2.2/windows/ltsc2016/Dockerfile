@@ -1,9 +1,6 @@
-FROM mcr.microsoft.com/windows/servercore:ltsc2016 AS caddy
+FROM mcr.microsoft.com/windows/servercore:ltsc2016
 
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
-
-# https://github.com/caddyserver/dist/commits
-ENV CADDY_DIST_COMMIT 1ae255dd910fe0ad14aeec27eabe4f526bf423ab
 
 # Apparently Windows Server 2016 disables TLS 1.2 by default - this enables it so we can talk to GitHub
 RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; \
@@ -12,10 +9,10 @@ RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tl
     mkdir /etc/caddy; \
     mkdir /usr/share/caddy; \
     Invoke-WebRequest \
-        -Uri "https://github.com/caddyserver/dist/raw/$env:CADDY_DIST_COMMIT/config/Caddyfile" \
+        -Uri "https://github.com/caddyserver/dist/raw/506330b23c5cce43a9352179e7977a684678fbaf/config/Caddyfile" \
         -OutFile "/etc/caddy/Caddyfile"; \
     Invoke-WebRequest \
-        -Uri "https://github.com/caddyserver/dist/raw/$env:CADDY_DIST_COMMIT/welcome/index.html" \
+        -Uri "https://github.com/caddyserver/dist/raw/506330b23c5cce43a9352179e7977a684678fbaf/welcome/index.html" \
         -OutFile "/usr/share/caddy/index.html"
 
 # https://github.com/caddyserver/caddy/releases
@@ -30,8 +27,8 @@ RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tl
     Remove-Item "/caddy.zip" -Force
 
 # See https://caddyserver.com/docs/conventions#file-locations for details
-ENV XDG_CONFIG_HOME=c:/config
-ENV XDG_DATA_HOME=c:/data
+ENV XDG_CONFIG_HOME c:/config
+ENV XDG_DATA_HOME c:/data
 
 VOLUME c:/config
 VOLUME c:/data
