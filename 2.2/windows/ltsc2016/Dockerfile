@@ -16,13 +16,13 @@ RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tl
         -OutFile "/usr/share/caddy/index.html"
 
 # https://github.com/caddyserver/caddy/releases
-ENV CADDY_VERSION v2.2.0-rc.1
+ENV CADDY_VERSION v2.2.0-rc.3
 
 RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; \
     Invoke-WebRequest \
-        -Uri "https://github.com/caddyserver/caddy/releases/download/v2.2.0-rc.1/caddy_2.2.0-rc.1_windows_amd64.zip" \
+        -Uri "https://github.com/caddyserver/caddy/releases/download/v2.2.0-rc.3/caddy_2.2.0-rc.3_windows_amd64.zip" \
         -OutFile "/caddy.zip"; \
-    if (!(Get-FileHash -Path /caddy.zip -Algorithm SHA512).Hash.ToLower().Equals('3d2d1cd13def57d5fa1d3f41234770643758963234d06193e2f00422861b7d2ca5e4e330beeb22cd07a1814c25527c643b94e40ff2d63eb9f3a68decc3bc94a6')) { exit 1; }; \
+    if (!(Get-FileHash -Path /caddy.zip -Algorithm SHA512).Hash.ToLower().Equals('e63ceb91a6cd7ded39537d6a31970191a58b5b60b911ea39e7a9ab08e6d7d999e480fb01cab818eab9209b0e7a329539133510044712a3b9180464d5c0ddbdf4')) { exit 1; }; \
     Expand-Archive -Path "/caddy.zip" -DestinationPath "/" -Force; \
     Remove-Item "/caddy.zip" -Force
 
@@ -33,7 +33,7 @@ ENV XDG_DATA_HOME c:/data
 VOLUME c:/config
 VOLUME c:/data
 
-LABEL org.opencontainers.image.version=v2.2.0-rc.1
+LABEL org.opencontainers.image.version=v2.2.0-rc.3
 LABEL org.opencontainers.image.title=Caddy
 LABEL org.opencontainers.image.description="a powerful, enterprise-ready, open source web server with automatic HTTPS written in Go"
 LABEL org.opencontainers.image.url=https://caddyserver.com
