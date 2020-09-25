@@ -26,12 +26,5 @@ Rendering {{ $outPath }} with template {{ $template }}...{{ "\n" -}}
 Rendering {{ $outPath }} with template {{ $template }}...{{ "\n" -}}
 			{{- tmpl.Exec $template $ctx | file.Write $outPath -}}
 		{{ end -}}
-		{{- if strings.HasPrefix "windows-builder" $variant.dir -}}
-			{{- $template = "caddy-windows-builder" }}
-			{{- $ctx := dict "config" $version }}
-			{{- $outPath := filepath.Join $dir "caddy-builder.ps1" -}}
-Rendering {{ $outPath }} with template {{ $template }}...{{ "\n" -}}
-			{{- tmpl.Exec $template $ctx | file.Write $outPath -}}
-		{{ end -}}
 	{{- end }}
 {{- end -}}
