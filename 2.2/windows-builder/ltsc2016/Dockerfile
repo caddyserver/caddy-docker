@@ -17,7 +17,4 @@ RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tl
     Expand-Archive -Path "/xcaddy.zip" -DestinationPath "/" -Force; \
     Remove-Item "/xcaddy.zip" -Force
 
-COPY caddy-builder.ps1 /caddy-builder.ps1
-RUN New-Alias -Name caddy-builder -Value /caddy-builder.ps1
-
 WORKDIR /

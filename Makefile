@@ -7,7 +7,6 @@ gen-dockerfiles: render-dockerfiles.tmpl Dockerfile.tmpl Dockerfile.builder.tmpl
 		-t windows-dockerfile=Dockerfile.windows.tmpl \
 		-t windows-builder-dockerfile=Dockerfile.windows-builder.tmpl \
 		-t caddy-builder=caddy-builder.sh.tmpl \
-		-t caddy-windows-builder=caddy-builder.ps1.tmpl \
 		-c config=./stackbrew-config.yaml \
 		-f $<
 
