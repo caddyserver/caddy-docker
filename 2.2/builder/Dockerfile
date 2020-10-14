@@ -6,7 +6,7 @@ RUN apk add --no-cache \
 
 ENV XCADDY_VERSION v0.1.5
 # Configures xcaddy to build with this version of Caddy
-ENV CADDY_VERSION v2.2.0
+ENV CADDY_VERSION v2.2.1
 # Configures xcaddy to not clean up post-build (unnecessary in a container)
 ENV XCADDY_SKIP_CLEANUP 1
 
