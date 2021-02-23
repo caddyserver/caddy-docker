@@ -1,0 +1,11 @@
+version: 2
+updates:
+{{- range file.Walk "." }}{{ if and (file.IsDir .) (file.Exists (filepath.Join . "Dockerfile.base")) }}
+- package-ecosystem: docker
+  directory: "/{{ . }}"
+  schedule:
+    interval: daily
+    time: "02:00"
+    timezone: UTC
+  open-pull-requests-limit: 10
+{{- end }}{{ end }}
