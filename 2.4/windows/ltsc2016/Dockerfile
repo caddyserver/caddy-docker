@@ -9,10 +9,10 @@ RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tl
     mkdir /etc/caddy; \
     mkdir /usr/share/caddy; \
     Invoke-WebRequest \
-        -Uri "https://github.com/caddyserver/dist/raw/5b146b8eb10256d4264e816f38db94e9a7cba14b/config/Caddyfile" \
+        -Uri "https://github.com/caddyserver/dist/raw/a8ef04588bf34a9523b76794d601c6e9cb8e31d3/config/Caddyfile" \
         -OutFile "/etc/caddy/Caddyfile"; \
     Invoke-WebRequest \
-        -Uri "https://github.com/caddyserver/dist/raw/5b146b8eb10256d4264e816f38db94e9a7cba14b/welcome/index.html" \
+        -Uri "https://github.com/caddyserver/dist/raw/a8ef04588bf34a9523b76794d601c6e9cb8e31d3/welcome/index.html" \
         -OutFile "/usr/share/caddy/index.html"
 
 # https://github.com/caddyserver/caddy/releases

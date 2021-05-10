@@ -9,8 +9,8 @@ RUN set -eux; \
 		/etc/caddy \
 		/usr/share/caddy \
 	; \
-	wget -O /etc/caddy/Caddyfile "https://github.com/caddyserver/dist/raw/5b146b8eb10256d4264e816f38db94e9a7cba14b/config/Caddyfile"; \
-	wget -O /usr/share/caddy/index.html "https://github.com/caddyserver/dist/raw/5b146b8eb10256d4264e816f38db94e9a7cba14b/welcome/index.html"
+	wget -O /etc/caddy/Caddyfile "https://github.com/caddyserver/dist/raw/a8ef04588bf34a9523b76794d601c6e9cb8e31d3/config/Caddyfile"; \
+	wget -O /usr/share/caddy/index.html "https://github.com/caddyserver/dist/raw/a8ef04588bf34a9523b76794d601c6e9cb8e31d3/welcome/index.html"
 
 # https://github.com/caddyserver/caddy/releases
 ENV CADDY_VERSION v2.4.0
