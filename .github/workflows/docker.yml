@@ -14,8 +14,8 @@ jobs:
       - uses: actions/checkout@master
       - name: non-master build test
         run: |
-          docker build -f 2.3/alpine/Dockerfile 2.3/alpine
-          docker build -f 2.3/builder/Dockerfile 2.3/builder
+          docker build -f 2.4/alpine/Dockerfile 2.4/alpine
+          docker build -f 2.4/builder/Dockerfile 2.4/builder
         if: github.repository != 'caddyserver/caddy-docker' || github.ref != 'refs/heads/master'
       - name: build
         run: bashbrew build caddy
@@ -39,7 +39,7 @@ jobs:
       - uses: actions/checkout@master
       - name: non-master build test
         run: |
-          docker build -f 2.3/windows/1809/Dockerfile 2.3/windows
+          docker build -f 2.4/windows/1809/Dockerfile 2.4/windows
         if: github.repository != 'caddyserver/caddy-docker' || github.ref != 'refs/heads/master'
       - name: install bashbrew
         run: curl -o /bashbrew.exe https://doi-janky.infosiftr.net/job/bashbrew/job/master/lastSuccessfulBuild/artifact/bashbrew-windows-amd64.exe
