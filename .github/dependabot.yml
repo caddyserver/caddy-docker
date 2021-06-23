@@ -1,84 +1,42 @@
 version: 2
 updates:
 - package-ecosystem: docker
-  directory: "/2.2/alpine"
+  directory: "/2.4/alpine"
   schedule:
     interval: daily
     time: "02:00"
     timezone: UTC
   open-pull-requests-limit: 10
 - package-ecosystem: docker
-  directory: "/2.2/builder"
+  directory: "/2.4/builder"
   schedule:
     interval: daily
     time: "02:00"
     timezone: UTC
   open-pull-requests-limit: 10
 - package-ecosystem: docker
-  directory: "/2.2/windows/1809"
+  directory: "/2.4/windows/1809"
   schedule:
     interval: daily
     time: "02:00"
     timezone: UTC
   open-pull-requests-limit: 10
 - package-ecosystem: docker
-  directory: "/2.2/windows/ltsc2016"
+  directory: "/2.4/windows/ltsc2016"
   schedule:
     interval: daily
     time: "02:00"
     timezone: UTC
   open-pull-requests-limit: 10
 - package-ecosystem: docker
-  directory: "/2.2/windows-builder/1809"
+  directory: "/2.4/windows-builder/1809"
   schedule:
     interval: daily
     time: "02:00"
     timezone: UTC
   open-pull-requests-limit: 10
 - package-ecosystem: docker
-  directory: "/2.2/windows-builder/ltsc2016"
-  schedule:
-    interval: daily
-    time: "02:00"
-    timezone: UTC
-  open-pull-requests-limit: 10
-- package-ecosystem: docker
-  directory: "/2.3/alpine"
-  schedule:
-    interval: daily
-    time: "02:00"
-    timezone: UTC
-  open-pull-requests-limit: 10
-- package-ecosystem: docker
-  directory: "/2.3/builder"
-  schedule:
-    interval: daily
-    time: "02:00"
-    timezone: UTC
-  open-pull-requests-limit: 10
-- package-ecosystem: docker
-  directory: "/2.3/windows/1809"
-  schedule:
-    interval: daily
-    time: "02:00"
-    timezone: UTC
-  open-pull-requests-limit: 10
-- package-ecosystem: docker
-  directory: "/2.3/windows/ltsc2016"
-  schedule:
-    interval: daily
-    time: "02:00"
-    timezone: UTC
-  open-pull-requests-limit: 10
-- package-ecosystem: docker
-  directory: "/2.3/windows-builder/1809"
-  schedule:
-    interval: daily
-    time: "02:00"
-    timezone: UTC
-  open-pull-requests-limit: 10
-- package-ecosystem: docker
-  directory: "/2.3/windows-builder/ltsc2016"
+  directory: "/2.4/windows-builder/ltsc2016"
   schedule:
     interval: daily
     time: "02:00"
