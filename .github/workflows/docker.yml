@@ -52,13 +52,6 @@ jobs:
           echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin;
           /bashbrew --arch windows-amd64 --constraint windowsservercore-1809 --namespace caddy --library ./library push caddy
         if: github.repository == 'caddyserver/caddy-docker' && github.ref == 'refs/heads/master'
-      - name: push
-        # NOTE: DOCKERHUB_TOKEN and DOCKERHUB_USERNAME must be present in https://github.com/caddyserver/caddy-docker/settings
-        # the user must have permission to push to https://hub.docker.com/r/caddy/caddy
-        run: |
-          echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
-          /bashbrew --arch windows-amd64 --constraint windowsservercore-1809 --namespace caddy --library ./library push --dry-run caddy
-        if: github.repository == 'caddyserver/caddy-docker' && github.ref != 'refs/heads/master'
       - name: push (non-master dry run)
         run: |
           /bashbrew --arch windows-amd64 --constraint windowsservercore-1809 --namespace caddy --library ./library push --dry-run caddy
