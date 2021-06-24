@@ -1,6 +1,6 @@
 # this file is generated with gomplate:
 # template: https://github.com/caddyserver/caddy-docker/blob/c74bdca53a1efd5195a9c35005e5515afb5feeff/stackbrew.tmpl
-# config context: https://github.com/caddyserver/caddy-docker/blob/1e2cf7dde14c0cfd3275efdd23f4700ecfc2419f/stackbrew-config.yaml
+# config context: https://github.com/caddyserver/caddy-docker/blob/e01e0a10625f95d031411215378b5f790047d990/stackbrew-config.yaml
 Maintainers: Dave Henderson (@hairyhenderson)
 
 Tags: 2.4.3-alpine, 2-alpine, alpine
@@ -14,7 +14,7 @@ Tags: 2.4.3-builder-alpine, 2-builder-alpine, builder-alpine
 SharedTags: 2.4.3-builder, 2-builder, builder
 GitRepo: https://github.com/caddyserver/caddy-docker.git
 Directory: 2.4/builder
-GitCommit: 1e2cf7dde14c0cfd3275efdd23f4700ecfc2419f
+GitCommit: e01e0a10625f95d031411215378b5f790047d990
 Architectures: amd64, arm64v8, arm32v6, arm32v7, ppc64le, s390x
 
 Tags: 2.4.3-windowsservercore-1809, 2-windowsservercore-1809, windowsservercore-1809
