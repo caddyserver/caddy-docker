@@ -6,19 +6,19 @@ RUN apk add --no-cache \
 
 ENV XCADDY_VERSION v0.1.9
 # Configures xcaddy to build with this version of Caddy
-ENV CADDY_VERSION v2.4.3
+ENV CADDY_VERSION v2.4.4
 # Configures xcaddy to not clean up post-build (unnecessary in a container)
 ENV XCADDY_SKIP_CLEANUP 1
 
 RUN set -eux; \
 	apkArch="$(apk --print-arch)"; \
 	case "$apkArch" in \
-		x86_64)  binArch='amd64'; checksum='8b36aa88d294cfd47e2bbba24d99559a5327db84de0a0b3c28e9f2c8e7c9df16bef96ca0cf033e6304474b7d94336843ee9665bf5159815ecac7986e3ee508bf' ;; \
-		armhf)   binArch='armv6'; checksum='7f8711d98e42ab6fb96fd7405df34944bcc97b16eab7c3d45fd8b496f690bed5cf041cc694b5b615fd88f91e87f75995501c484021f0d510b61375b6888efcc5' ;; \
-		armv7)   binArch='armv7'; checksum='adf762a2c765c84a933ad2b1b27609f3bf1b2394587cd9b199c661b02eea8783a7910b4dced1f8fd6bd33761a7ca792e1328f6acf54d9e4772922d095e541709' ;; \
-		aarch64) binArch='arm64'; checksum='4b914ffb89e0cacbac3d2dcf8e0db4682939d27d64160191f6941ba80dbb439e4d06d511ec6fefd1969a51895cdbd7b10dc0737efb13250ce9a03b39ae5cc6d3' ;; \
-		ppc64el|ppc64le) binArch='ppc64le'; checksum='e4bd087f7e9df1973af14fc420211976cdb34111349d36ad5e1bc193312bf076fc9fad8ce58ebdf09f9d7ff94017ce9dbab7c10fea1c0719ca26b9dc0cac5559' ;; \
-		s390x)   binArch='s390x'; checksum='4e2d075a0fa326683a4911dddcd0776f9de828645c602b9cdf1a6998c438ef265b6d4bb1ce85ef14de2064d7b2d730d36220fdff231674d67df33205ff3eec0b' ;; \
+		x86_64)  binArch='amd64'; checksum='49fbc425dff4c366389c3fb35e624b1dde5748df3aae54120fbc1511d5136b58828fbf8ec0207aa9ca0d1bbf841be8c2760eaa3890ac5101b9c220b221de7393' ;; \
+		armhf)   binArch='armv6'; checksum='dada00f6d2ed3b946309d0b500c869d0f994b81b402bf3b112cfb54caa67592f01fc432c9c737aecbf9ae7af179fd93efb8e91ca6066d747d8c42e48d2ad514f' ;; \
+		armv7)   binArch='armv7'; checksum='25deed88c52b91d7d3f70cb46dfe5c3a458f1705673111feb519f63c28ac9c3adc4f93711736a317557c2ec10c2f78779154c4d56a3d4c1f838982893ba8346e' ;; \
+		aarch64) binArch='arm64'; checksum='421ccd38b28356b06e05c45af975bbd3e8ee28590a6ce599a1d7fd82f660fb7dc47d05b6f1ee1a6535232669d27f04144ab4f65f565d0307674b8389977f2b7d' ;; \
+		ppc64el|ppc64le) binArch='ppc64le'; checksum='2d3724ecb56f77f2622a0240a6ba481f208913e9f1c85f2d60bd21da6f62d8dbeaef2cfd601ba956d7a4154b924652dd4151bdacab519c623927726e8701d201' ;; \
+		s390x)   binArch='s390x'; checksum='2c8a6465cf1c6e1ebd0b8c8a83e09d0dcb0ccaa0470d4a8df59267e26b7ec66e4b3f0ea3c86fef5de57e09401a0fb022794c12ddf14a996f95512abbe4b9d54b' ;; \
 		*) echo >&2 "error: unsupported architecture ($apkArch)"; exit 1 ;;\
 	esac; \
 	wget -O /tmp/xcaddy.tar.gz "https://github.com/caddyserver/xcaddy/releases/download/v0.1.9/xcaddy_0.1.9_linux_${binArch}.tar.gz"; \
