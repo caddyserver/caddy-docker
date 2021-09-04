@@ -1,1 +1,1 @@
-FROM golang:1.16-windowsservercore-ltsc2016
+FROM golang:1.17-windowsservercore-ltsc2016
