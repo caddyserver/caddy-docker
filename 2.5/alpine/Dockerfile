@@ -41,9 +41,6 @@ RUN [ ! -e /etc/nsswitch.conf ] && echo 'hosts: files dns' > /etc/nsswitch.conf
 ENV XDG_CONFIG_HOME /config
 ENV XDG_DATA_HOME /data
 
-VOLUME /config
-VOLUME /data
-
 LABEL org.opencontainers.image.version=v2.5.0-rc.1
 LABEL org.opencontainers.image.title=Caddy
 LABEL org.opencontainers.image.description="a powerful, enterprise-ready, open source web server with automatic HTTPS written in Go"
