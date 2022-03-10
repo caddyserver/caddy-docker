@@ -42,3 +42,45 @@ updates:
     time: "02:00"
     timezone: UTC
   open-pull-requests-limit: 10
+- package-ecosystem: docker
+  directory: "/2.5/alpine"
+  schedule:
+    interval: daily
+    time: "02:00"
+    timezone: UTC
+  open-pull-requests-limit: 10
+- package-ecosystem: docker
+  directory: "/2.5/builder"
+  schedule:
+    interval: daily
+    time: "02:00"
+    timezone: UTC
+  open-pull-requests-limit: 10
+- package-ecosystem: docker
+  directory: "/2.5/windows/1809"
+  schedule:
+    interval: daily
+    time: "02:00"
+    timezone: UTC
+  open-pull-requests-limit: 10
+- package-ecosystem: docker
+  directory: "/2.5/windows/ltsc2016"
+  schedule:
+    interval: daily
+    time: "02:00"
+    timezone: UTC
+  open-pull-requests-limit: 10
+- package-ecosystem: docker
+  directory: "/2.5/windows-builder/1809"
+  schedule:
+    interval: daily
+    time: "02:00"
+    timezone: UTC
+  open-pull-requests-limit: 10
+- package-ecosystem: docker
+  directory: "/2.5/windows-builder/ltsc2016"
+  schedule:
+    interval: daily
+    time: "02:00"
+    timezone: UTC
+  open-pull-requests-limit: 10
