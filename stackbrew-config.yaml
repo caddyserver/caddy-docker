@@ -49,12 +49,6 @@ variants:
     shared_tags: [ "windowsservercore", "latest" ]
     architectures: [ windows-amd64 ]
     constraints: [ windowsservercore-1809 ]
-  - dir: windows/ltsc2016
-    base_file: Dockerfile.windowsservercore-ltsc2016.base
-    tags: [ "windowsservercore-ltsc2016" ]
-    shared_tags: [ "windowsservercore", "latest" ]
-    architectures: [ windows-amd64 ]
-    constraints: [ windowsservercore-ltsc2016 ]
   - dir: windows/ltsc2022
     base_file: Dockerfile.windowsservercore-ltsc2022.base
     tags: [ "windowsservercore-ltsc2022" ]
@@ -66,11 +60,6 @@ variants:
     shared_tags: [ "builder" ]
     architectures: [ windows-amd64 ]
     constraints: [ windowsservercore-1809 ]
-  - dir: windows-builder/ltsc2016
-    tags: [ "builder-windowsservercore-ltsc2016" ]
-    shared_tags: [ "builder" ]
-    architectures: [ windows-amd64 ]
-    constraints: [ windowsservercore-ltsc2016 ]
   - dir: windows-builder/ltsc2022
     tags: [ "builder-windowsservercore-ltsc2022" ]
     shared_tags: [ "builder" ]
