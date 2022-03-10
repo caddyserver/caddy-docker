@@ -1,1 +1,0 @@
-FROM golang:1.17-windowsservercore-ltsc2016
