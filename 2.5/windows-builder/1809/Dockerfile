@@ -4,7 +4,7 @@ SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPref
 
 ENV XCADDY_VERSION v0.2.1
 # Configures xcaddy to build with this version of Caddy
-ENV CADDY_VERSION v2.5.0-beta.1
+ENV CADDY_VERSION v2.5.0-rc.1
 # Configures xcaddy to not clean up post-build (unnecessary in a container)
 ENV XCADDY_SKIP_CLEANUP 1
 
@@ -13,7 +13,7 @@ RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tl
     Invoke-WebRequest \
         -Uri "https://github.com/caddyserver/xcaddy/releases/download/v0.2.1/xcaddy_0.2.1_windows_amd64.zip" \
         -OutFile "/xcaddy.zip"; \
-    if (!(Get-FileHash -Path /xcaddy.zip -Algorithm SHA512).Hash.ToLower().Equals('fc6f2a7feb8f0936a0e04d3c9ea26d0404c2f4907eb436eb60e33152c22c1211f851c46606573fcb5c3334f8cc4f7f810b28b917a9f313f6454d1c5cd0f50f8a')) { exit 1; }; \
+    if (!(Get-FileHash -Path /xcaddy.zip -Algorithm SHA512).Hash.ToLower().Equals('3d7b6a2e4384e6dc9c176036c03eecb2f28488e45e85a2db2c6f72eb3bbeb33c29a5830b96d803805223624d8d706ef2c9b4c1c33001b81fae5b159222e7f637')) { exit 1; }; \
     Expand-Archive -Path "/xcaddy.zip" -DestinationPath "/" -Force; \
     Remove-Item "/xcaddy.zip" -Force
 
