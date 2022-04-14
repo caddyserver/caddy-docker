@@ -22,21 +22,7 @@ updates:
     timezone: UTC
   open-pull-requests-limit: 10
 - package-ecosystem: docker
-  directory: "/2.4/windows/ltsc2016"
-  schedule:
-    interval: daily
-    time: "02:00"
-    timezone: UTC
-  open-pull-requests-limit: 10
-- package-ecosystem: docker
   directory: "/2.4/windows-builder/1809"
-  schedule:
-    interval: daily
-    time: "02:00"
-    timezone: UTC
-  open-pull-requests-limit: 10
-- package-ecosystem: docker
-  directory: "/2.4/windows-builder/ltsc2016"
   schedule:
     interval: daily
     time: "02:00"
