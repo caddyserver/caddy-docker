@@ -1,6 +1,6 @@
 name: Regenerate Dockerfiles
 on:
-  push:
+  pull_request:
     paths:
       - '**/Dockerfile.base'
       - Dockerfile.tmpl
