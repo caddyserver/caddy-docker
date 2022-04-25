@@ -1,34 +1,6 @@
 version: 2
 updates:
 - package-ecosystem: docker
-  directory: "/2.4/alpine"
-  schedule:
-    interval: daily
-    time: "02:00"
-    timezone: UTC
-  open-pull-requests-limit: 10
-- package-ecosystem: docker
-  directory: "/2.4/builder"
-  schedule:
-    interval: daily
-    time: "02:00"
-    timezone: UTC
-  open-pull-requests-limit: 10
-- package-ecosystem: docker
-  directory: "/2.4/windows/1809"
-  schedule:
-    interval: daily
-    time: "02:00"
-    timezone: UTC
-  open-pull-requests-limit: 10
-- package-ecosystem: docker
-  directory: "/2.4/windows-builder/1809"
-  schedule:
-    interval: daily
-    time: "02:00"
-    timezone: UTC
-  open-pull-requests-limit: 10
-- package-ecosystem: docker
   directory: "/2.5/alpine"
   schedule:
     interval: daily
