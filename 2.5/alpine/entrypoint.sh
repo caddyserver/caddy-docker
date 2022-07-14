@@ -2,8 +2,8 @@
 
 # Check if Caddyfile config is passed via $CADDYFILE
 if [[ "$CADDYFILE" ]]; then
-    echo 'Storing $CADDYFILE variable to /etc/caddy/Caddyfile'
-    echo -e $CADDYFILE > /etc/caddy/Caddyfile
+    echo 'Storing $CADDYFILE variable to ./Caddyfile'
+    echo -e $CADDYFILE > Caddyfile
 fi
 
 # Running passed command
