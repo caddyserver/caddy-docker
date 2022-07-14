@@ -56,4 +56,8 @@ EXPOSE 2019
 
 WORKDIR /srv
 
+COPY entrypoint.sh /bin/entrypoint.sh
+
+ENTRYPOINT [ "entrypoint.sh" ]
+
 CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
