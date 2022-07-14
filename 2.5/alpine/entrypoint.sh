@@ -8,5 +8,5 @@ fi
 
 # Running passed command
 if [[ "$1" ]]; then
-    eval "$@"
+    exec $@
 fi
