@@ -3,7 +3,7 @@
 # Check if Caddyfile config is passed via $CADDYFILE
 if [[ "$CADDYFILE" ]]; then
     echo 'Storing $CADDYFILE variable to ./Caddyfile'
-    echo -e $CADDYFILE > Caddyfile
+    printf "$CADDYFILE" > Caddyfile # echo doesn't preserve newlines
 fi
 
 # Running passed command
