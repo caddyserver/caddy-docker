@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 
 # Check if Caddyfile config is passed via $CADDYFILE
 if [[ "$CADDYFILE" ]]; then
@@ -8,5 +9,5 @@ fi
 
 # Running passed command
 if [[ "$1" ]]; then
-    exec $@
+    exec "$@"
 fi
