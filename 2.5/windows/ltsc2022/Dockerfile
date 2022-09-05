@@ -41,6 +41,7 @@ LABEL org.opencontainers.image.source="https://github.com/caddyserver/caddy-dock
 
 EXPOSE 80
 EXPOSE 443
+EXPOSE 443/udp
 EXPOSE 2019
 
 # Make sure it runs and reports its version

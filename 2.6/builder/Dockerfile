@@ -1,4 +1,4 @@
-FROM golang:1.18-alpine
+FROM golang:1.19-alpine
 
 RUN apk add --no-cache \
     git \
@@ -6,7 +6,7 @@ RUN apk add --no-cache \
 
 ENV XCADDY_VERSION v0.3.1
 # Configures xcaddy to build with this version of Caddy
-ENV CADDY_VERSION v2.5.2
+ENV CADDY_VERSION v2.6.0-beta.3
 # Configures xcaddy to not clean up post-build (unnecessary in a container)
 ENV XCADDY_SKIP_CLEANUP 1
 
