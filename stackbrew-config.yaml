@@ -14,7 +14,7 @@ versions:
   - caddy_version: '2.6.0-beta.3'
     is_major: false
     is_latest: false
-    dist_commit: v2.6.0-beta.3
+    dist_commit: 8c5fc6fc265c5d8557f17a18b778c398a2c6f27b
     checksums:
       amd64: 4fd35ccbf42ace902e1fa196b7cb52bfbd9eb49907b10e46a256072516336a78de23b0bbd548efc8254693b73862ee1705aeb1696cacfc6452f8faed62d60e65
       arm32v6: 357f1053c87327631c8f8b66e19b662a9feb3d3cd85346ca726ac64b4cb6005781b7af4c1c23eadfd8a6099d3dc50eb375e8caf3227072f24f42ac1e15647d5e
