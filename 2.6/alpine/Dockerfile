@@ -13,20 +13,20 @@ RUN set -eux; \
 	wget -O /usr/share/caddy/index.html "https://github.com/caddyserver/dist/raw/8c5fc6fc265c5d8557f17a18b778c398a2c6f27b/welcome/index.html"
 
 # https://github.com/caddyserver/caddy/releases
-ENV CADDY_VERSION v2.6.0
+ENV CADDY_VERSION v2.6.1
 
 RUN set -eux; \
 	apkArch="$(apk --print-arch)"; \
 	case "$apkArch" in \
-		x86_64)  binArch='amd64'; checksum='c05515dd332aa2ef1d50ff7285118deb31aabed336efb8234aaaafe531d0a4525488deffdccd50a20bb9688d4df15464a7d3642956975942528b1705f7811b08' ;; \
-		armhf)   binArch='armv6'; checksum='e40d557c5c36ae5fe956e1906c3e967f925daf115347188c19b47b118dc7d2c967e8caa8e8a7604a5474114d33552611c85b9135b0ea2c08045635dc6c2a0316' ;; \
-		armv7)   binArch='armv7'; checksum='6ce633b30541767f93fb1115ab34448d6275856e3dc9fcc31a7ea0472f322838057d23274116181bb15558caac41ddeab89f156880143769485f0b6870afecdb' ;; \
-		aarch64) binArch='arm64'; checksum='6c7aed21dceec7532ec39c4fa79ba7df6e15cfb9c8802244893de8c6b1998eef79a54810bed271e962c5546be482d6dcc20cbeb9773d23920abbf75694afcbe1' ;; \
-		ppc64el|ppc64le) binArch='ppc64le'; checksum='abd734031a318d69296e0e8776b62267466cbdbc994079db4d9615d15ce79a2369a58317a6d812fe0979bcfe447b15dc5a53f1bad97e9e9b2b4af69a331da17d' ;; \
-		s390x)   binArch='s390x'; checksum='b727ba39563709f5f53f026e96e6361d0649b9bb7a151f5ecb46b4c1652664516999c708d65b96366b87730ced97b826256fad2ac04db171be893dde815388be' ;; \
+		x86_64)  binArch='amd64'; checksum='fc0c0c115ad0f4e7ca5622dedb95c5c4bc5fc5a44731aa63c6cbc6307d3e6dfe3ae040d6580e2064c5c84bded165c768cac0125fdb9418c923272ccd7fdf19ed' ;; \
+		armhf)   binArch='armv6'; checksum='9aa52d748e45069ce15274b09737e5806b5aa355c4e32cdc187d478bdd5c1cf22398e0ac365933f64386d79b11860246b8340a740a25644a8bfa6ed032bc5b2f' ;; \
+		armv7)   binArch='armv7'; checksum='d5b026c9f6d4f2aeb9058d6d990d6420439985bd8cbb18f028c6adc7f6a22d3d28a6478958117dbb5051d6537f3b8a9bb61ec8cfa631e33032c7000fa0c44c83' ;; \
+		aarch64) binArch='arm64'; checksum='92a2310ba12a790d632a288c285c2aa7be16eb3521212f78644c07d1c65d7f27ec81823a10e7ea4a200a013cb557d335a06c95c94fdf1f2359f47f4974b6e37a' ;; \
+		ppc64el|ppc64le) binArch='ppc64le'; checksum='c12b3660a7cf0b359d8153bc6be4b7dedf1168e7984fccbf6cf804abaefcbf5edd10651de6c0f7541e8eaefbcdc25eb00b5c2500b8b445e7f8a9382e0fa3ced1' ;; \
+		s390x)   binArch='s390x'; checksum='da1d8d60547de3122603134394b3e2bbe18b7fbecc0bba0d24352c7dd765bec6f2cadc93b00ae69369f14e1800a2318cc94af3ab940710a622bf7be4f713bf0b' ;; \
 		*) echo >&2 "error: unsupported architecture ($apkArch)"; exit 1 ;;\
 	esac; \
-	wget -O /tmp/caddy.tar.gz "https://github.com/caddyserver/caddy/releases/download/v2.6.0/caddy_2.6.0_linux_${binArch}.tar.gz"; \
+	wget -O /tmp/caddy.tar.gz "https://github.com/caddyserver/caddy/releases/download/v2.6.1/caddy_2.6.1_linux_${binArch}.tar.gz"; \
 	echo "$checksum  /tmp/caddy.tar.gz" | sha512sum -c; \
 	tar x -z -f /tmp/caddy.tar.gz -C /usr/bin caddy; \
 	rm -f /tmp/caddy.tar.gz; \
@@ -41,7 +41,7 @@ RUN [ ! -e /etc/nsswitch.conf ] && echo 'hosts: files dns' > /etc/nsswitch.conf
 ENV XDG_CONFIG_HOME /config
 ENV XDG_DATA_HOME /data
 
-LABEL org.opencontainers.image.version=v2.6.0
+LABEL org.opencontainers.image.version=v2.6.1
 LABEL org.opencontainers.image.title=Caddy
 LABEL org.opencontainers.image.description="a powerful, enterprise-ready, open source web server with automatic HTTPS written in Go"
 LABEL org.opencontainers.image.url=https://caddyserver.com
