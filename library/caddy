@@ -1,5 +1,5 @@
 # this file is generated with gomplate:
-# template: https://github.com/caddyserver/caddy-docker/blob/c74bdca53a1efd5195a9c35005e5515afb5feeff/stackbrew.tmpl
+# template: https://github.com/caddyserver/caddy-docker/blob/a82cbc5b1bf43757f718d8b21adcca6a0df560c7/stackbrew.tmpl
 # config context: https://github.com/caddyserver/caddy-docker/blob/9c857d39bef831f27612106ddd00a4df307e8975/stackbrew-config.yaml
 Maintainers: Dave Henderson (@hairyhenderson)
 
