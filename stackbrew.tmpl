@@ -11,7 +11,7 @@ Maintainers: Dave Henderson (@hairyhenderson)
 
 {{- if and (file.IsDir $dir) (file.Exists (filepath.Join $dir "Dockerfile")) }}
 Tags: {{ range $variant.tags }}
-    {{- print $version.caddy_version "-" . }}
+    {{- print $version.caddy_version "-" . }}, {{ print $minor "-" . }}
     {{- if $version.is_major }}, {{ print $major "-" . }}{{ end }}
     {{- if $version.is_latest }}, {{ . }}{{ end }}
     {{- end }}
@@ -19,10 +19,10 @@ Tags: {{ range $variant.tags }}
 {{- if has $variant "shared_tags" }}
 SharedTags: {{ range $i, $tag := $variant.shared_tags }}
     {{- if eq "latest" $tag }}
-        {{- $version.caddy_version }}
+        {{- $version.caddy_version }}, {{ $minor }}
         {{- if $version.is_major }}, {{ $major }}{{ end }}
     {{- else }}
-        {{- print $version.caddy_version "-" $tag }}
+        {{- print $version.caddy_version "-" $tag }}, {{ print $minor "-" $tag }}
         {{- if $version.is_major }}, {{ print $major "-" $tag }}{{ end }}
     {{- end }}
 
