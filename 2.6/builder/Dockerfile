@@ -1,8 +1,9 @@
 FROM golang:1.19-alpine
 
 RUN apk add --no-cache \
-    git \
-    ca-certificates
+	ca-certificates \
+	git \
+	libcap
 
 ENV XCADDY_VERSION v0.3.1
 # Configures xcaddy to build with this version of Caddy
