@@ -7,7 +7,7 @@ Tags: 2.6.2-alpine, 2.6-alpine, 2-alpine, alpine
 SharedTags: 2.6.2, 2.6, 2, latest
 GitRepo: https://github.com/caddyserver/caddy-docker.git
 Directory: 2.6/alpine
-GitCommit: 9c857d39bef831f27612106ddd00a4df307e8975
+GitCommit: 7bebcbe6a3abe6ed873568ae40fbe23d9b7ce6d0
 Architectures: amd64, arm64v8, arm32v6, arm32v7, ppc64le, s390x
 
 Tags: 2.6.2-builder-alpine, 2.6-builder-alpine, 2-builder-alpine, builder-alpine
