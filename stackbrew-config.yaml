@@ -2,7 +2,7 @@ versions:
   - caddy_version: '2.6.2'
     is_major: true
     is_latest: true
-    dist_commit: 8c5fc6fc265c5d8557f17a18b778c398a2c6f27b
+    dist_commit: 305fe484cc8a9ac72900e8cc172d652102a87240
     checksums:
       amd64: ae18c0facae7c8ee872492a1ba63a4c7608915d6d9fe267aef4f869cf65ebd4b7f9ff57f609aff2bd52db98c761d877b574aea2c0c9ddc2ec53d0d5e174cb542
       arm32v6: 6de688e6514df67594635c79be51a3fe3b7b29254b36349955979571d0624dd9bb228abcb798e76fc64ec0e1c4884443c3fd5074a5b5124ee895d29d239bcf1c
