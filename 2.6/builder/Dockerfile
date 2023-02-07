@@ -10,6 +10,8 @@ ENV XCADDY_VERSION v0.3.2
 ENV CADDY_VERSION v2.6.2
 # Configures xcaddy to not clean up post-build (unnecessary in a container)
 ENV XCADDY_SKIP_CLEANUP 1
+# Sets capabilities for output caddy binary to be able to bind to privileged ports
+ENV XCADDY_SETCAP 1
 
 RUN set -eux; \
 	apkArch="$(apk --print-arch)"; \
