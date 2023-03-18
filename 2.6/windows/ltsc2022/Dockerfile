@@ -2,9 +2,7 @@ FROM mcr.microsoft.com/windows/servercore:ltsc2022
 
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
 
-# Apparently Windows Server 2016 disables TLS 1.2 by default - this enables it so we can talk to GitHub
-RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; \
-    mkdir /config; \
+RUN mkdir /config; \
     mkdir /data; \
     mkdir /etc/caddy; \
     mkdir /usr/share/caddy; \
@@ -18,8 +16,7 @@ RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tl
 # https://github.com/caddyserver/caddy/releases
 ENV CADDY_VERSION v2.6.4
 
-RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; \
-    Invoke-WebRequest \
+RUN Invoke-WebRequest \
         -Uri "https://github.com/caddyserver/caddy/releases/download/v2.6.4/caddy_2.6.4_windows_amd64.zip" \
         -OutFile "/caddy.zip"; \
     if (!(Get-FileHash -Path /caddy.zip -Algorithm SHA512).Hash.ToLower().Equals('e2a9a708786cc498cf4b12c0aaf2c9731cc89ccef71a7da4c2be60e18d730675890c2d6bbddd3d8347e5f89f348d5e74fbfbf339ed1ec280f5caf69c3849a243')) { exit 1; }; \
