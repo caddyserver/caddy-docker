@@ -8,9 +8,7 @@ ENV CADDY_VERSION v{{ .config.caddy_version }}
 # Configures xcaddy to not clean up post-build (unnecessary in a container)
 ENV XCADDY_SKIP_CLEANUP 1
 
-# Apparently Windows Server 2016 disables TLS 1.2 by default - this enables it so we can talk to GitHub
-RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; \
-    Invoke-WebRequest \
+RUN Invoke-WebRequest \
         -Uri "https://github.com/caddyserver/xcaddy/releases/download/v{{ .xcaddy_config.version }}/xcaddy_{{ .xcaddy_config.version }}_windows_amd64.zip" \
         -OutFile "/xcaddy.zip"; \
     if (!(Get-FileHash -Path /xcaddy.zip -Algorithm SHA512).Hash.ToLower().Equals('{{ .xcaddy_config.checksums.windows_amd64 }}')) { exit 1; }; \
