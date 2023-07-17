@@ -14,12 +14,12 @@ RUN mkdir /config; \
         -OutFile "/usr/share/caddy/index.html"
 
 # https://github.com/caddyserver/caddy/releases
-ENV CADDY_VERSION v2.7.0-beta.1
+ENV CADDY_VERSION v2.7.0-beta.2
 
 RUN Invoke-WebRequest \
-        -Uri "https://github.com/caddyserver/caddy/releases/download/v2.7.0-beta.1/caddy_2.7.0-beta.1_windows_amd64.zip" \
+        -Uri "https://github.com/caddyserver/caddy/releases/download/v2.7.0-beta.2/caddy_2.7.0-beta.2_windows_amd64.zip" \
         -OutFile "/caddy.zip"; \
-    if (!(Get-FileHash -Path /caddy.zip -Algorithm SHA512).Hash.ToLower().Equals('97df57938f550cc87d5af11364562b5812015c498360d2a61cb3f007a31d119d3b80e01d74b674ae628b428a66b0d864878c06d063a2f2b2f773537dee1ee638')) { exit 1; }; \
+    if (!(Get-FileHash -Path /caddy.zip -Algorithm SHA512).Hash.ToLower().Equals('11ecaa4fb608a5d42169c44be9b1919d47b08c95fab6a4129b72925c1c77f39ef592be80fbf54b93ed60a7f7d8f280549fbf40488b4a64b7635368992c4f7515')) { exit 1; }; \
     Expand-Archive -Path "/caddy.zip" -DestinationPath "/" -Force; \
     Remove-Item "/caddy.zip" -Force
 
@@ -27,7 +27,7 @@ RUN Invoke-WebRequest \
 ENV XDG_CONFIG_HOME c:/config
 ENV XDG_DATA_HOME c:/data
 
-LABEL org.opencontainers.image.version=v2.7.0-beta.1
+LABEL org.opencontainers.image.version=v2.7.0-beta.2
 LABEL org.opencontainers.image.title=Caddy
 LABEL org.opencontainers.image.description="a powerful, enterprise-ready, open source web server with automatic HTTPS written in Go"
 LABEL org.opencontainers.image.url=https://caddyserver.com
