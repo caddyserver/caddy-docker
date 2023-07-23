@@ -33,7 +33,12 @@ RUN set -eux; \
 	echo "$checksum  /tmp/caddy.tar.gz" | sha512sum -c; \
 	tar x -z -f /tmp/caddy.tar.gz -C /usr/bin caddy; \
 	rm -f /tmp/caddy.tar.gz; \
+	{{/** only add CAP_NET_ADMIN for 2.7+ */ -}}
+	{{ if strings.HasPrefix "2.6" .config.caddy_version -}}
 	setcap cap_net_bind_service=+ep /usr/bin/caddy; \
+	{{ else -}}
+	setcap cap_net_admin,cap_net_bind_service=+ep /usr/bin/caddy; \
+	{{ end -}}
 	chmod +x /usr/bin/caddy; \
 	caddy version
 
