@@ -1,48 +1,6 @@
 version: 2
 updates:
 - package-ecosystem: docker
-  directory: "/2.6/alpine"
-  schedule:
-    interval: daily
-    time: "02:00"
-    timezone: UTC
-  open-pull-requests-limit: 10
-- package-ecosystem: docker
-  directory: "/2.6/builder"
-  schedule:
-    interval: daily
-    time: "02:00"
-    timezone: UTC
-  open-pull-requests-limit: 10
-- package-ecosystem: docker
-  directory: "/2.6/windows/1809"
-  schedule:
-    interval: daily
-    time: "02:00"
-    timezone: UTC
-  open-pull-requests-limit: 10
-- package-ecosystem: docker
-  directory: "/2.6/windows/ltsc2022"
-  schedule:
-    interval: daily
-    time: "02:00"
-    timezone: UTC
-  open-pull-requests-limit: 10
-- package-ecosystem: docker
-  directory: "/2.6/windows-builder/1809"
-  schedule:
-    interval: daily
-    time: "02:00"
-    timezone: UTC
-  open-pull-requests-limit: 10
-- package-ecosystem: docker
-  directory: "/2.6/windows-builder/ltsc2022"
-  schedule:
-    interval: daily
-    time: "02:00"
-    timezone: UTC
-  open-pull-requests-limit: 10
-- package-ecosystem: docker
   directory: "/2.7/alpine"
   schedule:
     interval: daily
