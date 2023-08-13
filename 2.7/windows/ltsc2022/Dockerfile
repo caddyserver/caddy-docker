@@ -7,19 +7,19 @@ RUN mkdir /config; \
     mkdir /etc/caddy; \
     mkdir /usr/share/caddy; \
     Invoke-WebRequest \
-        -Uri "https://github.com/caddyserver/dist/raw/5910351159c2995a9a1c911d7879de6ff598d905/config/Caddyfile" \
+        -Uri "https://github.com/caddyserver/dist/raw/0c7fa00a87c65a6ef47ed36d841cd223682a2a2c/config/Caddyfile" \
         -OutFile "/etc/caddy/Caddyfile"; \
     Invoke-WebRequest \
-        -Uri "https://github.com/caddyserver/dist/raw/5910351159c2995a9a1c911d7879de6ff598d905/welcome/index.html" \
+        -Uri "https://github.com/caddyserver/dist/raw/0c7fa00a87c65a6ef47ed36d841cd223682a2a2c/welcome/index.html" \
         -OutFile "/usr/share/caddy/index.html"
 
 # https://github.com/caddyserver/caddy/releases
-ENV CADDY_VERSION v2.7.2
+ENV CADDY_VERSION v2.7.3
 
 RUN Invoke-WebRequest \
-        -Uri "https://github.com/caddyserver/caddy/releases/download/v2.7.2/caddy_2.7.2_windows_amd64.zip" \
+        -Uri "https://github.com/caddyserver/caddy/releases/download/v2.7.3/caddy_2.7.3_windows_amd64.zip" \
         -OutFile "/caddy.zip"; \
-    if (!(Get-FileHash -Path /caddy.zip -Algorithm SHA512).Hash.ToLower().Equals('69d2d73c2514ab5ce4f6a60489c79ce4da0e1d4302c85ab584d0a7a7fd0d034bfe5a5caab78c96ac3383ddd7d2e12c3c41fb47c4716909d2a78d448b0289ccec')) { exit 1; }; \
+    if (!(Get-FileHash -Path /caddy.zip -Algorithm SHA512).Hash.ToLower().Equals('554be2303ba3455085719a19c453290f1654e9ca8bb1cff3556153a6c6eb6ddd04c430f853d98dd1eee5187d4e341bda52baaa9e8e6617e75a447801af1f2fa0')) { exit 1; }; \
     Expand-Archive -Path "/caddy.zip" -DestinationPath "/" -Force; \
     Remove-Item "/caddy.zip" -Force
 
@@ -27,7 +27,7 @@ RUN Invoke-WebRequest \
 ENV XDG_CONFIG_HOME c:/config
 ENV XDG_DATA_HOME c:/data
 
-LABEL org.opencontainers.image.version=v2.7.2
+LABEL org.opencontainers.image.version=v2.7.3
 LABEL org.opencontainers.image.title=Caddy
 LABEL org.opencontainers.image.description="a powerful, enterprise-ready, open source web server with automatic HTTPS written in Go"
 LABEL org.opencontainers.image.url=https://caddyserver.com
