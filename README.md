@@ -11,6 +11,18 @@ If you have an issue or suggestion for the Docker image, please [open an issue](
 
 If you'd like to suggest updates to the [image documentation](https://hub.docker.com/_/caddy), see https://github.com/docker-library/docs/tree/master/caddy.
 
+## Release instructions (for maintainers)
+
+The release process is currently semi-automated, held together with shell scripts and gomplate (and duct tape).
+
+1. update the `stackbrew-config.yaml` file (update `caddy_version`) and save
+2. run `make` (note that you'll need [`gomplate`](https://github.com/hairyhenderson/gomplate) on your path)
+3. commit all changed Dockerfiles and `stackbrew-config.yaml` and issue a PR
+    - note: revert the `library/caddy` file if it's changed
+4. once the CI passes and the PR is merged, pull and run `make` again - this should update the `library/caddy` file
+5. commit the updated `library/caddy` file and push directly to `master`
+6. Finally, issue a PR to https://github.com/docker-library/official-images containing the updated `library/caddy` file (copied into `official-images/library/caddy`)
+
 ## License
 
 View [license information](https://github.com/caddyserver/caddy/blob/master/LICENSE) for the software contained in this image.

@@ -11,7 +11,7 @@ ENV XCADDY_SKIP_CLEANUP 1
 RUN Invoke-WebRequest \
         -Uri "https://github.com/caddyserver/xcaddy/releases/download/v{{ .xcaddy_config.version }}/xcaddy_{{ .xcaddy_config.version }}_windows_amd64.zip" \
         -OutFile "/xcaddy.zip"; \
-    if (!(Get-FileHash -Path /xcaddy.zip -Algorithm SHA512).Hash.ToLower().Equals('{{ .xcaddy_config.checksums.windows_amd64 }}')) { exit 1; }; \
+    if (!(Get-FileHash -Path /xcaddy.zip -Algorithm SHA512).Hash.ToLower().Equals('{{ .xcaddy_checksums.windows_amd64 }}')) { exit 1; }; \
     Expand-Archive -Path "/xcaddy.zip" -DestinationPath "/" -Force; \
     Remove-Item "/xcaddy.zip" -Force
 

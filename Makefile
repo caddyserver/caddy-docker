@@ -2,6 +2,7 @@ all: gen-dockerfiles library/caddy .github/dependabot.yml
 
 gen-dockerfiles: render-dockerfiles.tmpl Dockerfile.tmpl Dockerfile.builder.tmpl Dockerfile.windows.tmpl Dockerfile.windows-builder.tmpl */*/Dockerfile.base
 	@gomplate \
+		--plugin getChecksums=./getChecksums.sh \
 		-t dockerfile=Dockerfile.tmpl \
 		-t builder-dockerfile=Dockerfile.builder.tmpl \
 		-t windows-dockerfile=Dockerfile.windows.tmpl \
