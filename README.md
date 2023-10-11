@@ -16,7 +16,7 @@ If you'd like to suggest updates to the [image documentation](https://hub.docker
 The release process is currently semi-automated, held together with shell scripts and gomplate (and duct tape).
 
 1. update the `stackbrew-config.yaml` file (update `caddy_version`) and save
-2. run `make` (note that you'll need [`gomplate`](https://github.com/hairyhenderson/gomplate) on your path)
+2. run `make` (note that you'll need [`gomplate`](https://docs.gomplate.ca/installing/) on your path)
 3. commit all changed Dockerfiles and `stackbrew-config.yaml` and issue a PR
     - note: revert the `library/caddy` file if it's changed
 4. once the CI passes and the PR is merged, pull and run `make` again - this should update the `library/caddy` file
