@@ -1,3 +1,6 @@
+# default target is gen-dockerfiles
+.DEFAULT_GOAL := gen-dockerfiles
+
 all: gen-dockerfiles library/caddy .github/dependabot.yml
 
 gen-dockerfiles: render-dockerfiles.tmpl Dockerfile.tmpl Dockerfile.builder.tmpl Dockerfile.windows.tmpl Dockerfile.windows-builder.tmpl */*/Dockerfile.base
