@@ -1,5 +1,7 @@
 {{- range $version := .config.versions }}
 	{{- $minor := $version.caddy_version | regexp.Replace `([0-9]+\.[0-9]+).*$` `$1` }}
+	{{- $checksums := getChecksums "caddy" $version.caddy_version | json }}
+	{{- $xcaddy_checksums := getChecksums "xcaddy" $.config.xcaddy_config.version | json }}
 
 	{{- range $variant := $.config.variants }}
 		{{- $dir := filepath.Join $minor $variant.dir }}
@@ -15,7 +17,7 @@
 				{{ $template = "windows-dockerfile" -}}
 			{{ end -}}
 			{{- $base := file.Read (filepath.Join $dir "Dockerfile.base") }}
-			{{- $ctx := dict "base" $base "config" $version "xcaddy_config" $.config.xcaddy_config }}
+			{{- $ctx := dict "base" $base "config" $version "xcaddy_config" $.config.xcaddy_config "checksums" $checksums "xcaddy_checksums" $xcaddy_checksums}}
 			{{- $outPath := filepath.Join $dir "Dockerfile" -}}
 Rendering {{ $outPath }} with template {{ $template }}...{{ "\n" -}}
 			{{- tmpl.Exec $template $ctx | file.Write $outPath -}}

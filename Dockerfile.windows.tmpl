@@ -19,7 +19,7 @@ ENV CADDY_VERSION v{{ .config.caddy_version }}
 RUN Invoke-WebRequest \
         -Uri "https://github.com/caddyserver/caddy/releases/download/v{{ .config.caddy_version }}/caddy_{{ .config.caddy_version }}_windows_amd64.zip" \
         -OutFile "/caddy.zip"; \
-    if (!(Get-FileHash -Path /caddy.zip -Algorithm SHA512).Hash.ToLower().Equals('{{ .config.checksums.windows_amd64 }}')) { exit 1; }; \
+    if (!(Get-FileHash -Path /caddy.zip -Algorithm SHA512).Hash.ToLower().Equals('{{ .checksums.windows_amd64 }}')) { exit 1; }; \
     Expand-Archive -Path "/caddy.zip" -DestinationPath "/" -Force; \
     Remove-Item "/caddy.zip" -Force
 

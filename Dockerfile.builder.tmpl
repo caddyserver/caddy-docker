@@ -16,12 +16,12 @@ ENV XCADDY_SETCAP 1
 RUN set -eux; \
 	apkArch="$(apk --print-arch)"; \
 	case "$apkArch" in \
-		x86_64)  binArch='amd64'; checksum='{{ .xcaddy_config.checksums.amd64 }}' ;; \
-		armhf)   binArch='armv6'; checksum='{{ .xcaddy_config.checksums.arm32v6 }}' ;; \
-		armv7)   binArch='armv7'; checksum='{{ .xcaddy_config.checksums.arm32v7 }}' ;; \
-		aarch64) binArch='arm64'; checksum='{{ .xcaddy_config.checksums.arm64v8 }}' ;; \
-		ppc64el|ppc64le) binArch='ppc64le'; checksum='{{ .xcaddy_config.checksums.ppc64le }}' ;; \
-		s390x)   binArch='s390x'; checksum='{{ .xcaddy_config.checksums.s390x }}' ;; \
+		x86_64)  binArch='amd64'; checksum='{{ .xcaddy_checksums.amd64 }}' ;; \
+		armhf)   binArch='armv6'; checksum='{{ .xcaddy_checksums.arm32v6 }}' ;; \
+		armv7)   binArch='armv7'; checksum='{{ .xcaddy_checksums.arm32v7 }}' ;; \
+		aarch64) binArch='arm64'; checksum='{{ .xcaddy_checksums.arm64v8 }}' ;; \
+		ppc64el|ppc64le) binArch='ppc64le'; checksum='{{ .xcaddy_checksums.ppc64le }}' ;; \
+		s390x)   binArch='s390x'; checksum='{{ .xcaddy_checksums.s390x }}' ;; \
 		*) echo >&2 "error: unsupported architecture ($apkArch)"; exit 1 ;;\
 	esac; \
 	wget -O /tmp/xcaddy.tar.gz "https://github.com/caddyserver/xcaddy/releases/download/v{{ .xcaddy_config.version }}/xcaddy_{{ .xcaddy_config.version }}_linux_${binArch}.tar.gz"; \
