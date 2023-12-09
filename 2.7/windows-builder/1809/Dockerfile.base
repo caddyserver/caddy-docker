@@ -1,1 +1,1 @@
-FROM golang:1.21-windowsservercore-1809
+FROM golang:1-windowsservercore-1809
