@@ -1,0 +1,1 @@
+FROM golang:1.21-windowsservercore-ltsc2022
