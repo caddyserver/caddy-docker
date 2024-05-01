@@ -1,7 +1,8 @@
 # this file is generated with gomplate:
 # template: https://github.com/caddyserver/caddy-docker/blob/{{ fileCommit "stackbrew.tmpl"}}/stackbrew.tmpl
 # config context: https://github.com/caddyserver/caddy-docker/blob/{{ fileCommit "stackbrew-config.yaml"}}/stackbrew-config.yaml
-Maintainers: Dave Henderson (@hairyhenderson)
+Maintainers: Dave Henderson (@hairyhenderson),
+             Francis Lavoie (@francislavoie)
 {{ range $version := .config.versions }}
 {{- $minor := $version.caddy_version | regexp.Replace `([0-9]+\.[0-9]+).*$` `$1` }}
 {{- $major := $minor | regexp.Replace `([0-9]+).*$` `$1` }}
