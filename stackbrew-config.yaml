@@ -1,6 +1,6 @@
 versions:
   - caddy_version: '2.8.0-beta.1'
-    is_major: true
+    is_major: false
     is_latest: false
     dist_commit: d129ae6aec6af2182217ee8a235f4df8cd2bbfde
   - caddy_version: '2.7.6'
