@@ -12,8 +12,8 @@ RUN set -eux; \
 		/etc/caddy \
 		/usr/share/caddy \
 	; \
-	wget -O /etc/caddy/Caddyfile "https://github.com/caddyserver/dist/raw/d129ae6aec6af2182217ee8a235f4df8cd2bbfde/config/Caddyfile"; \
-	wget -O /usr/share/caddy/index.html "https://github.com/caddyserver/dist/raw/d129ae6aec6af2182217ee8a235f4df8cd2bbfde/welcome/index.html"
+	wget -O /etc/caddy/Caddyfile "https://github.com/caddyserver/dist/raw/509c30cecd3cbc4012f6b1cc88d8f3f000fb06e4/config/Caddyfile"; \
+	wget -O /usr/share/caddy/index.html "https://github.com/caddyserver/dist/raw/509c30cecd3cbc4012f6b1cc88d8f3f000fb06e4/welcome/index.html"
 
 # https://github.com/caddyserver/caddy/releases
 ENV CADDY_VERSION v2.8.0-beta.1

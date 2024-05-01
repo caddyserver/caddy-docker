@@ -7,10 +7,10 @@ RUN mkdir /config; \
     mkdir /etc/caddy; \
     mkdir /usr/share/caddy; \
     Invoke-WebRequest \
-        -Uri "https://github.com/caddyserver/dist/raw/cd39178d252a610fee6aa8465c787d9c780007a2/config/Caddyfile" \
+        -Uri "https://github.com/caddyserver/dist/raw/509c30cecd3cbc4012f6b1cc88d8f3f000fb06e4/config/Caddyfile" \
         -OutFile "/etc/caddy/Caddyfile"; \
     Invoke-WebRequest \
-        -Uri "https://github.com/caddyserver/dist/raw/cd39178d252a610fee6aa8465c787d9c780007a2/welcome/index.html" \
+        -Uri "https://github.com/caddyserver/dist/raw/509c30cecd3cbc4012f6b1cc88d8f3f000fb06e4/welcome/index.html" \
         -OutFile "/usr/share/caddy/index.html"
 
 # https://github.com/caddyserver/caddy/releases
