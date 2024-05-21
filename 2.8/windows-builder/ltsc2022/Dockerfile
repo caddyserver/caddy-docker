@@ -4,7 +4,7 @@ SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPref
 
 ENV XCADDY_VERSION v0.4.1
 # Configures xcaddy to build with this version of Caddy
-ENV CADDY_VERSION v2.8.0-beta.2
+ENV CADDY_VERSION v2.8.0-rc.1
 # Configures xcaddy to not clean up post-build (unnecessary in a container)
 ENV XCADDY_SKIP_CLEANUP 1
 
