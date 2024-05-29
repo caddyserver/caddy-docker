@@ -3,10 +3,6 @@ versions:
     is_major: true
     is_latest: true
     dist_commit: 509c30cecd3cbc4012f6b1cc88d8f3f000fb06e4
-  - caddy_version: '2.7.6'
-    is_major: false
-    is_latest: false
-    dist_commit: 509c30cecd3cbc4012f6b1cc88d8f3f000fb06e4
 xcaddy_config:
   version: '0.4.2'
 # configuration for the stackbrew.tmpl template
