@@ -42,8 +42,8 @@ archive_names=(
   linux_armv6.tar.gz
   linux_armv7.tar.gz
   linux_arm64.tar.gz
-  linux_riscv64.tar.gz
   linux_ppc64le.tar.gz
+  linux_riscv64.tar.gz
   linux_s390x.tar.gz
   windows_amd64.zip
 )

@@ -10,11 +10,11 @@ variants:
   - dir: alpine
     tags: [ "alpine" ]
     shared_tags: [ "latest" ]
-    architectures: [ amd64, arm64v8, arm32v6, arm32v7, riscv64, ppc64le, s390x ]
+    architectures: [ amd64, arm64v8, arm32v6, arm32v7, ppc64le, riscv64, s390x ]
   - dir: builder
     tags: [ "builder-alpine" ]
     shared_tags: [ "builder" ]
-    architectures: [ amd64, arm64v8, arm32v6, arm32v7, riscv64, ppc64le, s390x ]
+    architectures: [ amd64, arm64v8, arm32v6, arm32v7, ppc64le, riscv64, s390x ]
   - dir: windows/1809
     base_file: Dockerfile.windowsservercore-1809.base
     tags: [ "windowsservercore-1809" ]
