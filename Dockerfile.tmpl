@@ -26,6 +26,7 @@ RUN set -eux; \
 		armv7)   binArch='armv7'; checksum='{{ .checksums.arm32v7 }}' ;; \
 		aarch64) binArch='arm64'; checksum='{{ .checksums.arm64v8 }}' ;; \
 		ppc64el|ppc64le) binArch='ppc64le'; checksum='{{ .checksums.ppc64le }}' ;; \
+		riscv64) binArch='riscv64'; checksum='{{ .checksums.riscv64 }}' ;; \
 		s390x)   binArch='s390x'; checksum='{{ .checksums.s390x }}' ;; \
 		*) echo >&2 "error: unsupported architecture ($apkArch)"; exit 1 ;;\
 	esac; \

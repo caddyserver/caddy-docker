@@ -31,6 +31,7 @@ arches=(
   arm32v7
   arm64v8
   ppc64le
+  riscv64
   s390x
   windows_amd64
 )
@@ -41,6 +42,7 @@ archive_names=(
   linux_armv6.tar.gz
   linux_armv7.tar.gz
   linux_arm64.tar.gz
+  linux_riscv64.tar.gz
   linux_ppc64le.tar.gz
   linux_s390x.tar.gz
   windows_amd64.zip
