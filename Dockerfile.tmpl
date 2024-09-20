@@ -36,6 +36,12 @@ RUN set -eux; \
 	rm -f /tmp/caddy.tar.gz; \
 	setcap cap_net_bind_service=+ep /usr/bin/caddy; \
 	chmod +x /usr/bin/caddy; \
+	chgrp -R 0 /config && chmod -R g=u /config; \
+	chgrp -R 0 /data && chmod -R g=u /data; \
+	chgrp -R 0 /config && chmod -R g=u /config; \
+	chgrp -R 0 /etc/caddy && chmod -R g=u /etc/caddy; \
+	chgrp -R 0 /usr/share/caddy && chmod -R g=u /usr/share/caddy; \
+	chgrp -R 0 /usr/bin/caddy && chmod -R g=u /usr/bin/caddy; \
 	caddy version
 
 # See https://caddyserver.com/docs/conventions#file-locations for details
