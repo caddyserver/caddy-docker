@@ -1,0 +1,64 @@
+{{ .base | strings.TrimSpace }}
+
+RUN microdnf install -y \
+	ca-certificates \
+	libcap \
+	mailcap \
+        tar \
+        gzip \
+        && microdnf clean all
+
+RUN set -eux; \
+	mkdir -p \
+		/config/caddy \
+		/data/caddy \
+		/etc/caddy \
+		/usr/share/caddy \
+	; \
+	curl -SLf -o /etc/caddy/Caddyfile "https://github.com/caddyserver/dist/raw/{{ .config.dist_commit }}/config/Caddyfile"; \
+	curl -SLf -o /usr/share/caddy/index.html "https://github.com/caddyserver/dist/raw/{{ .config.dist_commit }}/welcome/index.html"
+
+# https://github.com/caddyserver/caddy/releases
+ENV CADDY_VERSION v{{ .config.caddy_version }}
+
+RUN set -eux; \
+	arch="$(uname -m)"; \
+	case "$arch" in \
+		x86_64)  binArch='amd64'; checksum='{{ .checksums.amd64 }}' ;; \
+		armhf)   binArch='armv6'; checksum='{{ .checksums.arm32v6 }}' ;; \
+		armv7)   binArch='armv7'; checksum='{{ .checksums.arm32v7 }}' ;; \
+		aarch64) binArch='arm64'; checksum='{{ .checksums.arm64v8 }}' ;; \
+		ppc64el|ppc64le) binArch='ppc64le'; checksum='{{ .checksums.ppc64le }}' ;; \
+		riscv64) binArch='riscv64'; checksum='{{ .checksums.riscv64 }}' ;; \
+		s390x)   binArch='s390x'; checksum='{{ .checksums.s390x }}' ;; \
+		*) echo >&2 "error: unsupported architecture ($arch)"; exit 1 ;;\
+	esac; \
+	curl -SLf -o /tmp/caddy.tar.gz "https://github.com/caddyserver/caddy/releases/download/v{{ .config.caddy_version }}/caddy_{{ .config.caddy_version }}_linux_${binArch}.tar.gz"; \
+	echo "$checksum  /tmp/caddy.tar.gz" | sha512sum -c; \
+	tar x -z -f /tmp/caddy.tar.gz -C /usr/bin caddy; \
+	rm -f /tmp/caddy.tar.gz; \
+	setcap cap_net_bind_service=+ep /usr/bin/caddy; \
+	chmod +x /usr/bin/caddy; \
+	caddy version
+
+# See https://caddyserver.com/docs/conventions#file-locations for details
+ENV XDG_CONFIG_HOME /config
+ENV XDG_DATA_HOME /data
+
+LABEL org.opencontainers.image.version=v{{ .config.caddy_version }}
+LABEL org.opencontainers.image.title=Caddy
+LABEL org.opencontainers.image.description="a powerful, enterprise-ready, open source web server with automatic HTTPS written in Go"
+LABEL org.opencontainers.image.url=https://caddyserver.com
+LABEL org.opencontainers.image.documentation=https://caddyserver.com/docs
+LABEL org.opencontainers.image.vendor="Light Code Labs"
+LABEL org.opencontainers.image.licenses=Apache-2.0
+LABEL org.opencontainers.image.source="https://github.com/caddyserver/caddy-docker"
+
+EXPOSE 80
+EXPOSE 443
+EXPOSE 443/udp
+EXPOSE 2019
+
+WORKDIR /srv
+
+CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
