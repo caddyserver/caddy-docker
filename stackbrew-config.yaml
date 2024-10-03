@@ -11,6 +11,10 @@ xcaddy_config:
   version: '0.4.4'
 # configuration for the stackbrew.tmpl template
 variants:
+  - dir: ubi
+    tags: [ "ubi" ]
+    shared_tags: [ "redhat-ubi" ]
+    architectures: [ amd64, arm64v8, arm32v6, arm32v7, ppc64le, riscv64, s390x ]
   - dir: alpine
     tags: [ "alpine" ]
     shared_tags: [ "latest" ]
