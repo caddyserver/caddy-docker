@@ -1,10 +1,10 @@
-FROM golang:1.23-windowsservercore-ltsc2022
+FROM golang:1.23-windowsservercore-1809
 
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
 
 ENV XCADDY_VERSION v0.4.3
 # Configures xcaddy to build with this version of Caddy
-ENV CADDY_VERSION v2.8.4
+ENV CADDY_VERSION v2.9.0-beta.3
 # Configures xcaddy to not clean up post-build (unnecessary in a container)
 ENV XCADDY_SKIP_CLEANUP 1
 

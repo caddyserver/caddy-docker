@@ -5,40 +5,82 @@ updates:
   schedule:
     interval: daily
     time: "02:00"
-    timezone: UTC
+    timezone: Etc/UTC
   open-pull-requests-limit: 10
 - package-ecosystem: docker
   directory: "/2.8/builder"
   schedule:
     interval: daily
     time: "02:00"
-    timezone: UTC
+    timezone: Etc/UTC
   open-pull-requests-limit: 10
 - package-ecosystem: docker
   directory: "/2.8/windows/1809"
   schedule:
     interval: daily
     time: "02:00"
-    timezone: UTC
+    timezone: Etc/UTC
   open-pull-requests-limit: 10
 - package-ecosystem: docker
   directory: "/2.8/windows/ltsc2022"
   schedule:
     interval: daily
     time: "02:00"
-    timezone: UTC
+    timezone: Etc/UTC
   open-pull-requests-limit: 10
 - package-ecosystem: docker
   directory: "/2.8/windows-builder/1809"
   schedule:
     interval: daily
     time: "02:00"
-    timezone: UTC
+    timezone: Etc/UTC
   open-pull-requests-limit: 10
 - package-ecosystem: docker
   directory: "/2.8/windows-builder/ltsc2022"
   schedule:
     interval: daily
     time: "02:00"
-    timezone: UTC
+    timezone: Etc/UTC
+  open-pull-requests-limit: 10
+- package-ecosystem: docker
+  directory: "/2.9/alpine"
+  schedule:
+    interval: daily
+    time: "02:00"
+    timezone: Etc/UTC
+  open-pull-requests-limit: 10
+- package-ecosystem: docker
+  directory: "/2.9/builder"
+  schedule:
+    interval: daily
+    time: "02:00"
+    timezone: Etc/UTC
+  open-pull-requests-limit: 10
+- package-ecosystem: docker
+  directory: "/2.9/windows/1809"
+  schedule:
+    interval: daily
+    time: "02:00"
+    timezone: Etc/UTC
+  open-pull-requests-limit: 10
+- package-ecosystem: docker
+  directory: "/2.9/windows/ltsc2022"
+  schedule:
+    interval: daily
+    time: "02:00"
+    timezone: Etc/UTC
+  open-pull-requests-limit: 10
+- package-ecosystem: docker
+  directory: "/2.9/windows-builder/1809"
+  schedule:
+    interval: daily
+    time: "02:00"
+    timezone: Etc/UTC
+  open-pull-requests-limit: 10
+- package-ecosystem: docker
+  directory: "/2.9/windows-builder/ltsc2022"
+  schedule:
+    interval: daily
+    time: "02:00"
+    timezone: Etc/UTC
   open-pull-requests-limit: 10
