@@ -8,7 +8,7 @@ versions:
     is_latest: true
     dist_commit: 509c30cecd3cbc4012f6b1cc88d8f3f000fb06e4
 xcaddy_config:
-  version: '0.4.3'
+  version: '0.4.4'
 # configuration for the stackbrew.tmpl template
 variants:
   - dir: alpine
