@@ -32,16 +32,11 @@ RUN set -eux; \
 	esac; \
 	wget -O /tmp/caddy.tar.gz "https://github.com/caddyserver/caddy/releases/download/v2.9.1/caddy_2.9.1_linux_${binArch}.tar.gz"; \
 	echo "$checksum  /tmp/caddy.tar.gz" | sha512sum -c; \
-	tar x -z -f /tmp/caddy.tar.gz -C /usr/bin caddy; \
+	tar x -z -f /tmp/caddy.tar.gz -C /usr/bin caddy && chown 0:0 /usr/bin/caddy;\
 	rm -f /tmp/caddy.tar.gz; \
 	setcap cap_net_bind_service=+ep /usr/bin/caddy; \
 	chmod +x /usr/bin/caddy; \
-	chgrp -R 0 /config && chmod -R g=u /config; \
-	chgrp -R 0 /data && chmod -R g=u /data; \
-	chgrp -R 0 /config && chmod -R g=u /config; \
-	chgrp -R 0 /etc/caddy && chmod -R g=u /etc/caddy; \
-	chgrp -R 0 /usr/share/caddy && chmod -R g=u /usr/share/caddy; \
-	chgrp -R 0 /usr/bin/caddy && chmod -R g=u /usr/bin/caddy; \
+	chmod -R g=u /config /data /etc/caddy /usr/share/caddy /usr/bin/caddy; \
 	caddy version
 
 # See https://caddyserver.com/docs/conventions#file-locations for details
