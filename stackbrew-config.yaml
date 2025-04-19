@@ -1,5 +1,5 @@
 versions:
-  - caddy_version: '2.9.1'
+  - caddy_version: '2.10.0'
     is_major: true
     is_latest: true
     dist_commit: 33ae08ff08d168572df2956ed14fbc4949880d94
