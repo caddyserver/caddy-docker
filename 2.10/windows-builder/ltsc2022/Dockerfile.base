@@ -1,1 +1,1 @@
-FROM golang:1.23-windowsservercore-ltsc2022
+FROM golang:1.24-windowsservercore-ltsc2022
