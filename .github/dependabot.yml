@@ -15,13 +15,6 @@ updates:
     timezone: Etc/UTC
   open-pull-requests-limit: 10
 - package-ecosystem: docker
-  directory: "/2.10/windows/1809"
-  schedule:
-    interval: daily
-    time: "02:00"
-    timezone: Etc/UTC
-  open-pull-requests-limit: 10
-- package-ecosystem: docker
   directory: "/2.10/windows/ltsc2022"
   schedule:
     interval: daily
@@ -29,7 +22,7 @@ updates:
     timezone: Etc/UTC
   open-pull-requests-limit: 10
 - package-ecosystem: docker
-  directory: "/2.10/windows-builder/1809"
+  directory: "/2.10/windows/ltsc2025"
   schedule:
     interval: daily
     time: "02:00"
@@ -37,6 +30,13 @@ updates:
   open-pull-requests-limit: 10
 - package-ecosystem: docker
   directory: "/2.10/windows-builder/ltsc2022"
+  schedule:
+    interval: daily
+    time: "02:00"
+    timezone: Etc/UTC
+  open-pull-requests-limit: 10
+- package-ecosystem: docker
+  directory: "/2.10/windows-builder/ltsc2025"
   schedule:
     interval: daily
     time: "02:00"
