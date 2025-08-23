@@ -1,10 +1,10 @@
 versions:
-  - caddy_version: '2.10.0'
+  - caddy_version: '2.10.2'
     is_major: true
     is_latest: true
     dist_commit: 33ae08ff08d168572df2956ed14fbc4949880d94
 xcaddy_config:
-  version: '0.4.4'
+  version: '0.4.5'
 # configuration for the stackbrew.tmpl template
 variants:
   - dir: alpine
