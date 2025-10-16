@@ -13,11 +13,13 @@
 			{{ end -}}
 			{{- if strings.HasPrefix "windows-builder" $variant.dir -}}
 				{{ $template = "windows-builder-dockerfile" -}}
+			{{- else if strings.HasPrefix "windows-nanoserver" $variant.dir -}}
+				{{- $template = "nanoserver-dockerfile" -}}
 			{{- else if strings.HasPrefix "windows" $variant.dir -}}
 				{{ $template = "windows-dockerfile" -}}
 			{{ end -}}
 			{{- $base := file.Read (filepath.Join $dir "Dockerfile.base") }}
-			{{- $ctx := dict "base" $base "config" $version "xcaddy_config" $.config.xcaddy_config "checksums" $checksums "xcaddy_checksums" $xcaddy_checksums}}
+			{{- $ctx := dict "base" $base "config" $version "variant" $variant "xcaddy_config" $.config.xcaddy_config "checksums" $checksums "xcaddy_checksums" $xcaddy_checksums}}
 			{{- $outPath := filepath.Join $dir "Dockerfile" -}}
 Rendering {{ $outPath }} with template {{ $template }}...{{ "\n" -}}
 			{{- tmpl.Exec $template $ctx | file.Write $outPath -}}

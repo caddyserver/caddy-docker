@@ -1,0 +1,55 @@
+FROM mcr.microsoft.com/windows/servercore:{{ if contains .variant.dir "ltsc2022" }}ltsc2022{{ else if contains .variant.dir "ltsc2025" }}ltsc2025{{ end }} as builder
+
+SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
+
+# https://github.com/caddyserver/caddy/releases
+ENV CADDY_VERSION v{{ .config.caddy_version }}
+
+RUN mkdir /etc/caddy; \
+    mkdir /usr/share/caddy; \
+    Invoke-WebRequest \
+        -Uri "https://github.com/caddyserver/dist/raw/{{ .config.dist_commit }}/config/Caddyfile" \
+        -OutFile "/etc/caddy/Caddyfile"; \
+    Invoke-WebRequest \
+        -Uri "https://github.com/caddyserver/dist/raw/{{ .config.dist_commit }}/welcome/index.html" \
+        -OutFile "/usr/share/caddy/index.html"
+
+RUN Invoke-WebRequest \
+        -Uri "https://github.com/caddyserver/caddy/releases/download/v{{ .config.caddy_version }}/caddy_{{ .config.caddy_version }}_windows_amd64.zip" \
+        -OutFile "/caddy.zip"; \
+    {{- if .checksums.windows_amd64 }}
+    if (!(Get-FileHash -Path /caddy.zip -Algorithm SHA512).Hash.ToLower().Equals('{{ .checksums.windows_amd64 }}')) { exit 1; }; \
+    {{- end }}
+    Expand-Archive -Path "/caddy.zip" -DestinationPath "/" -Force; \
+    Remove-Item "/caddy.zip" -Force
+
+{{ .base | strings.TrimSpace }}
+
+RUN mkdir c:\config && mkdir c:\data && mkdir c:\etc\caddy && mkdir c:\usr\share\caddy
+
+COPY --from=builder c:/caddy.exe c:/caddy.exe
+COPY --from=builder c:/etc/caddy/Caddyfile c:/etc/caddy/Caddyfile
+COPY --from=builder c:/usr/share/caddy/index.html c:/usr/share/caddy/index.html
+
+# See https://caddyserver.com/docs/conventions#file-locations for details
+ENV XDG_CONFIG_HOME c:/config
+ENV XDG_DATA_HOME c:/data
+
+LABEL org.opencontainers.image.version=v{{ .config.caddy_version }}
+LABEL org.opencontainers.image.title=Caddy
+LABEL org.opencontainers.image.description="a powerful, enterprise-ready, open source web server with automatic HTTPS written in Go"
+LABEL org.opencontainers.image.url=https://caddyserver.com
+LABEL org.opencontainers.image.documentation=https://caddyserver.com/docs
+LABEL org.opencontainers.image.vendor="Light Code Labs"
+LABEL org.opencontainers.image.licenses=Apache-2.0
+LABEL org.opencontainers.image.source="https://github.com/caddyserver/caddy-docker"
+
+EXPOSE 80
+EXPOSE 443
+EXPOSE 443/udp
+EXPOSE 2019
+
+# Make sure it runs and reports its version
+RUN ["caddy", "version"]
+
+CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
