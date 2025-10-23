@@ -27,6 +27,18 @@ variants:
     shared_tags: [ "windowsservercore", "latest" ]
     architectures: [ windows-amd64 ]
     constraints: [ windowsservercore-ltsc2025 ]
+  - dir: windows-nanoserver/ltsc2022
+    base_file: Dockerfile.windowsnanoserver-ltsc2022.base
+    tags: [ "windowsnanoserver-ltsc2022" ]
+    shared_tags: [ "windowsnanoserver" ]
+    architectures: [ windows-amd64 ]
+    constraints: [ windowsnanoserver-ltsc2022 ]
+  - dir: windows-nanoserver/ltsc2025
+    base_file: Dockerfile.windowsnanoserver-ltsc2025.base
+    tags: [ "windowsnanoserver-ltsc2025" ]
+    shared_tags: [ "windowsnanoserver" ]
+    architectures: [ windows-amd64 ]
+    constraints: [ windowsnanoserver-ltsc2025 ]
   - dir: windows-builder/ltsc2022
     tags: [ "builder-windowsservercore-ltsc2022" ]
     shared_tags: [ "builder" ]

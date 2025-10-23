@@ -13,6 +13,8 @@
 			{{ end -}}
 			{{- if strings.HasPrefix "windows-builder" $variant.dir -}}
 				{{ $template = "windows-builder-dockerfile" -}}
+			{{- else if strings.HasPrefix "windows-nanoserver" $variant.dir -}}
+				{{- $template = "nanoserver-dockerfile" -}}
 			{{- else if strings.HasPrefix "windows" $variant.dir -}}
 				{{ $template = "windows-dockerfile" -}}
 			{{ end -}}
