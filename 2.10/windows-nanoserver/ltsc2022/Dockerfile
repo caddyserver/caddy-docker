@@ -2,8 +2,9 @@ FROM mcr.microsoft.com/windows/nanoserver:ltsc2022
 
 RUN mkdir c:\config && mkdir c:\data && mkdir c:\etc\caddy && mkdir c:\usr\share\caddy
 
-# Copy Caddy binary and configs from the Caddy Windows Server Core image
+# Copy Caddy binary from the Caddy Windows Server Core image
 COPY --from=caddy:2.10.2-windowsservercore-ltsc2022 c:/caddy.exe c:/caddy.exe
+
 RUN curl -fsSL -o c:\etc\caddy\Caddyfile https://github.com/caddyserver/dist/raw/33ae08ff08d168572df2956ed14fbc4949880d94/config/Caddyfile
 RUN curl -fsSL -o c:\usr\share\caddy\index.html https://github.com/caddyserver/dist/raw/33ae08ff08d168572df2956ed14fbc4949880d94/welcome/index.html
 
