@@ -5,8 +5,8 @@ RUN mkdir c:\config && mkdir c:\data && mkdir c:\etc\caddy && mkdir c:\usr\share
 # Copy Caddy binary from the Caddy Windows Server Core image
 COPY --from=caddy:{{ .config.caddy_version }}-windowsservercore-{{ if (.base | strings.Contains "ltsc2025") }}ltsc2025{{ else if (.base | strings.Contains "ltsc2022") }}ltsc2022{{ end }} c:/caddy.exe c:/caddy.exe
 
-RUN curl -fsSL -o c:\etc\caddy\Caddyfile https://github.com/caddyserver/dist/raw/33ae08ff08d168572df2956ed14fbc4949880d94/config/Caddyfile
-RUN curl -fsSL -o c:\usr\share\caddy\index.html https://github.com/caddyserver/dist/raw/33ae08ff08d168572df2956ed14fbc4949880d94/welcome/index.html
+RUN curl -fsSL -o c:\etc\caddy\Caddyfile https://github.com/caddyserver/dist/raw/{{ .config.dist_commit }}/config/Caddyfile
+RUN curl -fsSL -o c:\usr\share\caddy\index.html https://github.com/caddyserver/dist/raw/{{ .config.dist_commit }}/welcome/index.html
 
 # See https://caddyserver.com/docs/conventions#file-locations for details
 ENV XDG_CONFIG_HOME c:/config
