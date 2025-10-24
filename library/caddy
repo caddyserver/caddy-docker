@@ -1,6 +1,6 @@
 # this file is generated with gomplate:
 # template: https://github.com/caddyserver/caddy-docker/blob/e05f66898af9a0a694af637db2724f91d9d82ed7/stackbrew.tmpl
-# config context: https://github.com/caddyserver/caddy-docker/blob/dbc42a9faae014366fe42822b09b9ebf125146b0/stackbrew-config.yaml
+# config context: https://github.com/caddyserver/caddy-docker/blob/5572371a83e48fd0368a4917d0fc48e44ef30582/stackbrew-config.yaml
 Maintainers: Dave Henderson (@hairyhenderson),
              Francis Lavoie (@francislavoie)
 
@@ -34,22 +34,6 @@ GitCommit: 5572371a83e48fd0368a4917d0fc48e44ef30582
 Architectures: windows-amd64
 Constraints: windowsservercore-ltsc2025
 
-Tags: 2.10.2-windowsnanoserver-ltsc2022, 2.10-windowsnanoserver-ltsc2022, 2-windowsnanoserver-ltsc2022, windowsnanoserver-ltsc2022
-SharedTags: 2.10.2-windowsnanoserver, 2.10-windowsnanoserver, 2-windowsnanoserver, windowsnanoserver
-GitRepo: https://github.com/caddyserver/caddy-docker.git
-Directory: 2.10/windows-nanoserver/ltsc2022
-GitCommit: dbc42a9faae014366fe42822b09b9ebf125146b0
-Architectures: windows-amd64
-Constraints: windowsnanoserver-ltsc2022
-
-Tags: 2.10.2-windowsnanoserver-ltsc2025, 2.10-windowsnanoserver-ltsc2025, 2-windowsnanoserver-ltsc2025, windowsnanoserver-ltsc2025
-SharedTags: 2.10.2-windowsnanoserver, 2.10-windowsnanoserver, 2-windowsnanoserver, windowsnanoserver
-GitRepo: https://github.com/caddyserver/caddy-docker.git
-Directory: 2.10/windows-nanoserver/ltsc2025
-GitCommit: dbc42a9faae014366fe42822b09b9ebf125146b0
-Architectures: windows-amd64
-Constraints: windowsnanoserver-ltsc2025
-
 Tags: 2.10.2-builder-windowsservercore-ltsc2022, 2.10-builder-windowsservercore-ltsc2022, 2-builder-windowsservercore-ltsc2022, builder-windowsservercore-ltsc2022
 SharedTags: 2.10.2-builder, 2.10-builder, 2-builder, builder
 GitRepo: https://github.com/caddyserver/caddy-docker.git
@@ -65,4 +49,3 @@ Directory: 2.10/windows-builder/ltsc2025
 GitCommit: 5572371a83e48fd0368a4917d0fc48e44ef30582
 Architectures: windows-amd64
 Constraints: windowsservercore-ltsc2025
-
