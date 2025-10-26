@@ -42,3 +42,17 @@ updates:
     time: "02:00"
     timezone: Etc/UTC
   open-pull-requests-limit: 10
+- package-ecosystem: docker
+  directory: "/2.10/windows-nanoserver/ltsc2022"
+  schedule:
+    interval: daily
+    time: "02:00"
+    timezone: Etc/UTC
+  open-pull-requests-limit: 10
+- package-ecosystem: docker
+  directory: "/2.10/windows-nanoserver/ltsc2025"
+  schedule:
+    interval: daily
+    time: "02:00"
+    timezone: Etc/UTC
+  open-pull-requests-limit: 10
