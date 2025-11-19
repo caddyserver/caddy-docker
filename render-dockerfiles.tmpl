@@ -10,6 +10,10 @@
 			{{- $template := "dockerfile" }}
 			{{- if eq "builder" $variant.dir -}}
 				{{ $template = "builder-dockerfile" -}}
+			{{- else if eq "rootless" $variant.dir -}}
+				{{ $template = "rootless-dockerfile" -}}
+			{{- else if eq "rootless-builder" $variant.dir -}}
+				{{ $template = "rootless-builder-dockerfile" -}}
 			{{ end -}}
 			{{- if strings.HasPrefix "windows-builder" $variant.dir -}}
 				{{ $template = "windows-builder-dockerfile" -}}
@@ -24,7 +28,7 @@
 Rendering {{ $outPath }} with template {{ $template }}...{{ "\n" -}}
 			{{- tmpl.Exec $template $ctx | file.Write $outPath -}}
 
-			{{- if eq "builder" $variant.dir -}}
+			{{- if or (eq "builder" $variant.dir) (eq "rootless-builder" $variant.dir) -}}
 				{{- $template = "caddy-builder" }}
 				{{- $ctx := dict "config" $version }}
 				{{- $outPath := filepath.Join $dir "caddy-builder.sh" -}}

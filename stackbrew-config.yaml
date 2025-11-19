@@ -19,6 +19,14 @@ variants:
     tags: [ "builder-alpine" ]
     shared_tags: [ "builder" ]
     architectures: [ amd64, arm64v8, arm32v6, arm32v7, ppc64le, riscv64, s390x ]
+  - dir: rootless
+    tags: [ "rootless-alpine" ]
+    shared_tags: [ "rootless" ]
+    architectures: [ amd64, arm64v8, arm32v6, arm32v7, ppc64le, riscv64, s390x ]
+  - dir: rootless-builder
+    tags: [ "rootless-builder-alpine" ]
+    shared_tags: [ "rootless-builder" ]
+    architectures: [ amd64, arm64v8, arm32v6, arm32v7, ppc64le, riscv64, s390x ]
   - dir: windows/ltsc2022
     tags: [ "windowsservercore-ltsc2022" ]
     shared_tags: [ "windowsservercore", "latest" ]

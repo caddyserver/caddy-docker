@@ -3,11 +3,13 @@
 
 all: gen-dockerfiles library/caddy .github/dependabot.yml
 
-gen-dockerfiles: render-dockerfiles.tmpl Dockerfile.tmpl Dockerfile.builder.tmpl Dockerfile.windows.tmpl Dockerfile.windows-builder.tmpl Dockerfile.nanoserver.tmpl */*/Dockerfile.base
+gen-dockerfiles: render-dockerfiles.tmpl Dockerfile.tmpl Dockerfile.builder.tmpl Dockerfile.rootless.tmpl Dockerfile.rootless-builder.tmpl Dockerfile.windows.tmpl Dockerfile.windows-builder.tmpl Dockerfile.nanoserver.tmpl */*/Dockerfile.base
 	@gomplate \
 		--plugin getChecksums=./getChecksums.sh \
 		-t dockerfile=Dockerfile.tmpl \
 		-t builder-dockerfile=Dockerfile.builder.tmpl \
+		-t rootless-dockerfile=Dockerfile.rootless.tmpl \
+		-t rootless-builder-dockerfile=Dockerfile.rootless-builder.tmpl \
 		-t windows-dockerfile=Dockerfile.windows.tmpl \
 		-t windows-builder-dockerfile=Dockerfile.windows-builder.tmpl \
 		-t nanoserver-dockerfile=Dockerfile.nanoserver.tmpl \
