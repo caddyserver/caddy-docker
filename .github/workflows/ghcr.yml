@@ -132,6 +132,7 @@ jobs:
 
   build:
     needs: parse
+    name: Build (${{ matrix.directory }})
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -162,40 +163,38 @@ jobs:
         shell: bash
         run: |
           set -e
-          
+
           DIRECTORY="${{ matrix.directory }}"
           PLATFORMS="${{ matrix.platforms }}"
           ALL_TAGS="${{ matrix.tags }}"
           IS_PR="${{ github.event_name == 'pull_request' }}"
-          
+
           echo "=========================================="
           echo "Building image from: $DIRECTORY"
           echo "Platforms: $PLATFORMS"
           echo "Tags: $ALL_TAGS"
           echo "=========================================="
-          
+          echo
+
           # Build Docker tag arguments
           TAG_ARGS=""
           for tag in $ALL_TAGS; do
             TAG_ARGS="$TAG_ARGS --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:$tag"
           done
-          
-          # Build the image
+
+          # Construct buildx command string (print it for logs), then run it
           if [[ "$IS_PR" == "true" ]]; then
-            echo "PR mode: Building without pushing..."
-            docker buildx build \
-              --platform "$PLATFORMS" \
-              --file "$DIRECTORY/Dockerfile" \
-              $TAG_ARGS \
-              "$DIRECTORY"
+            CMD="docker buildx build --platform '$PLATFORMS' --file '$DIRECTORY/Dockerfile' $TAG_ARGS '$DIRECTORY'"
           else
-            echo "Master branch: Building and pushing..."
-            docker buildx build \
-              --platform "$PLATFORMS" \
-              --file "$DIRECTORY/Dockerfile" \
-              --push \
-              $TAG_ARGS \
-              "$DIRECTORY"
+            CMD="docker buildx build --push --platform '$PLATFORMS' --file '$DIRECTORY/Dockerfile' $TAG_ARGS '$DIRECTORY'"
           fi
-          
+
+          echo "=========================================="
+          echo "Running buildx command:"
+          echo "$CMD"
+          echo "=========================================="
+
+          # Execute the command
+          eval $CMD
+
           echo "Successfully processed $DIRECTORY"
