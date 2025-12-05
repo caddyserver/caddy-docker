@@ -14,7 +14,7 @@ RUN mkdir /config; \
         -OutFile "/usr/share/caddy/index.html"
 
 # https://github.com/caddyserver/caddy/releases
-ENV CADDY_VERSION v2.11.0-beta.1
+ENV CADDY_VERSION=v2.11.0-beta.1
 
 RUN Invoke-WebRequest \
         -Uri "https://github.com/caddyserver/caddy/releases/download/v2.11.0-beta.1/caddy_2.11.0-beta.1_windows_amd64.zip" \
@@ -24,8 +24,8 @@ RUN Invoke-WebRequest \
     Remove-Item "/caddy.zip" -Force
 
 # See https://caddyserver.com/docs/conventions#file-locations for details
-ENV XDG_CONFIG_HOME c:/config
-ENV XDG_DATA_HOME c:/data
+ENV XDG_CONFIG_HOME=c:/config
+ENV XDG_DATA_HOME=c:/data
 
 LABEL org.opencontainers.image.version=v2.11.0-beta.1
 LABEL org.opencontainers.image.title=Caddy

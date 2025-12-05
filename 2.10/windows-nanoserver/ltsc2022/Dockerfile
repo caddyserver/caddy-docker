@@ -9,8 +9,8 @@ RUN curl -fsSL -o c:\etc\caddy\Caddyfile https://github.com/caddyserver/dist/raw
 RUN curl -fsSL -o c:\usr\share\caddy\index.html https://github.com/caddyserver/dist/raw/33ae08ff08d168572df2956ed14fbc4949880d94/welcome/index.html
 
 # See https://caddyserver.com/docs/conventions#file-locations for details
-ENV XDG_CONFIG_HOME c:/config
-ENV XDG_DATA_HOME c:/data
+ENV XDG_CONFIG_HOME=c:/config
+ENV XDG_DATA_HOME=c:/data
 
 LABEL org.opencontainers.image.version=v2.10.2
 LABEL org.opencontainers.image.title=Caddy

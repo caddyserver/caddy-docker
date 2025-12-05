@@ -2,11 +2,11 @@ FROM golang:1.25-windowsservercore-ltsc2022
 
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
 
-ENV XCADDY_VERSION v0.4.5
+ENV XCADDY_VERSION=v0.4.5
 # Configures xcaddy to build with this version of Caddy
-ENV CADDY_VERSION v2.11.0-beta.1
+ENV CADDY_VERSION=v2.11.0-beta.1
 # Configures xcaddy to not clean up post-build (unnecessary in a container)
-ENV XCADDY_SKIP_CLEANUP 1
+ENV XCADDY_SKIP_CLEANUP=1
 
 RUN Invoke-WebRequest \
         -Uri "https://github.com/caddyserver/xcaddy/releases/download/v0.4.5/xcaddy_0.4.5_windows_amd64.zip" \
