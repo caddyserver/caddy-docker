@@ -1,4 +1,8 @@
 versions:
+  - caddy_version: '2.11.0-beta.1'
+    is_major: false
+    is_latest: false
+    dist_commit: 33ae08ff08d168572df2956ed14fbc4949880d94
   - caddy_version: '2.10.2'
     is_major: true
     is_latest: true
