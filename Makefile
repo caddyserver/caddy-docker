@@ -5,7 +5,7 @@ all: gen-dockerfiles library/caddy .github/dependabot.yml
 
 gen-dockerfiles: tmpl/render-dockerfiles.tmpl tmpl/Dockerfile.tmpl tmpl/Dockerfile.builder.tmpl tmpl/Dockerfile.windows.tmpl tmpl/Dockerfile.windows-builder.tmpl tmpl/Dockerfile.nanoserver.tmpl */*/Dockerfile.base
 	@gomplate \
-		--plugin getChecksums=./getChecksums.sh \
+		--plugin getChecksums=./scripts/getChecksums.sh \
 		-t dockerfile=tmpl/Dockerfile.tmpl \
 		-t builder-dockerfile=tmpl/Dockerfile.builder.tmpl \
 		-t windows-dockerfile=tmpl/Dockerfile.windows.tmpl \
@@ -17,7 +17,7 @@ gen-dockerfiles: tmpl/render-dockerfiles.tmpl tmpl/Dockerfile.tmpl tmpl/Dockerfi
 
 library/caddy: tmpl/stackbrew.tmpl stackbrew-config.yaml gen-dockerfiles
 	@gomplate \
-		--plugin fileCommit=./fileCommit.sh \
+		--plugin fileCommit=./scripts/fileCommit.sh \
 		-c config=./stackbrew-config.yaml \
 		-f $< \
 		-o $@
