@@ -20,27 +20,23 @@ variants:
     shared_tags: [ "builder" ]
     architectures: [ amd64, arm64v8, arm32v6, arm32v7, ppc64le, riscv64, s390x ]
   - dir: windows/ltsc2022
-    base_file: Dockerfile.windowsservercore-ltsc2022.base
     tags: [ "windowsservercore-ltsc2022" ]
     shared_tags: [ "windowsservercore", "latest" ]
     architectures: [ windows-amd64 ]
     constraints: [ windowsservercore-ltsc2022 ]
   - dir: windows/ltsc2025
-    base_file: Dockerfile.windowsservercore-ltsc2025.base
     tags: [ "windowsservercore-ltsc2025" ]
     shared_tags: [ "windowsservercore", "latest" ]
     architectures: [ windows-amd64 ]
     constraints: [ windowsservercore-ltsc2025 ]
   - dir: windows-nanoserver/ltsc2022
-    base_file: Dockerfile.windowsnanoserver-ltsc2022.base
-    tags: [ "windowsnanoserver-ltsc2022" ]
-    shared_tags: [ "windowsnanoserver" ]
+    tags: [ "nanoserver-ltsc2022" ]
+    shared_tags: [ "nanoserver" ]
     architectures: [ windows-amd64 ]
     constraints: [ nanoserver-ltsc2022, windowsservercore-ltsc2022 ]
   - dir: windows-nanoserver/ltsc2025
-    base_file: Dockerfile.windowsnanoserver-ltsc2025.base
-    tags: [ "windowsnanoserver-ltsc2025" ]
-    shared_tags: [ "windowsnanoserver" ]
+    tags: [ "nanoserver-ltsc2025" ]
+    shared_tags: [ "nanoserver" ]
     architectures: [ windows-amd64 ]
     constraints: [ nanoserver-ltsc2025, windowsservercore-ltsc2025 ]
   - dir: windows-builder/ltsc2022
