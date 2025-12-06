@@ -24,28 +24,34 @@ variants:
     shared_tags: [ "windowsservercore", "latest" ]
     architectures: [ windows-amd64 ]
     constraints: [ windowsservercore-ltsc2022 ]
+    # builder: classic
   - dir: windows/ltsc2025
     tags: [ "windowsservercore-ltsc2025" ]
     shared_tags: [ "windowsservercore", "latest" ]
     architectures: [ windows-amd64 ]
     constraints: [ windowsservercore-ltsc2025 ]
+    # builder: classic
   - dir: windows-nanoserver/ltsc2022
     tags: [ "nanoserver-ltsc2022" ]
     shared_tags: [ "nanoserver" ]
     architectures: [ windows-amd64 ]
     constraints: [ nanoserver-ltsc2022, windowsservercore-ltsc2022 ]
+    # builder: classic
   - dir: windows-nanoserver/ltsc2025
     tags: [ "nanoserver-ltsc2025" ]
     shared_tags: [ "nanoserver" ]
     architectures: [ windows-amd64 ]
     constraints: [ nanoserver-ltsc2025, windowsservercore-ltsc2025 ]
+    # builder: classic
   - dir: windows-builder/ltsc2022
     tags: [ "builder-windowsservercore-ltsc2022" ]
     shared_tags: [ "builder" ]
     architectures: [ windows-amd64 ]
     constraints: [ windowsservercore-ltsc2022 ]
+    # builder: classic
   - dir: windows-builder/ltsc2025
     tags: [ "builder-windowsservercore-ltsc2025" ]
     shared_tags: [ "builder" ]
     architectures: [ windows-amd64 ]
     constraints: [ windowsservercore-ltsc2025 ]
+    # builder: classic
