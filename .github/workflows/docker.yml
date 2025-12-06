@@ -6,7 +6,31 @@ on:
   pull_request:
 
 jobs:
-  docker-linux-build:
+  # Parallelized: run quick docker build tests per-Dockerfile in parallel
+  linux-test:
+    runs-on: ubuntu-latest
+    container:
+      image: hairyhenderson/dockerfiles-builder:latest
+    env:
+      BASHBREW_LIBRARY: ./library
+      BASHBREW_NAMESPACE: caddy
+      DOCKER_BUILDKIT: '1'
+    strategy:
+      matrix:
+        path:
+          - 2.10/alpine
+          - 2.10/builder
+          - 2.11/alpine
+          - 2.11/builder
+    steps:
+      - uses: actions/checkout@master
+      - name: non-master build test (per-path)
+        if: github.repository != 'caddyserver/caddy-docker' || github.ref != 'refs/heads/master'
+        run: |
+          docker build -f ${{ matrix.path }}/Dockerfile ${{ matrix.path }}
+
+  # Main linux bashbrew build.
+  linux-build:
     runs-on: ubuntu-latest
     container:
       image: hairyhenderson/dockerfiles-builder:latest
@@ -16,53 +40,145 @@ jobs:
       DOCKER_BUILDKIT: '1'
     steps:
       - uses: actions/checkout@master
-      - name: non-master build test
-        run: |
-          docker build -f 2.10/alpine/Dockerfile 2.10/alpine
-          docker build -f 2.10/builder/Dockerfile 2.10/builder
-        if: github.repository != 'caddyserver/caddy-docker' || github.ref != 'refs/heads/master'
+
       - name: build
         run: bashbrew build caddy
+
       - name: push
+        if: github.repository == 'caddyserver/caddy-docker' && github.ref == 'refs/heads/master'
         # NOTE: DOCKERHUB_TOKEN and DOCKERHUB_USERNAME must be present in https://github.com/caddyserver/caddy-docker/settings
         # the user must have permission to push to https://hub.docker.com/r/caddy/caddy
         run: |
           echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
           bashbrew push caddy
-        if: github.repository == 'caddyserver/caddy-docker' && github.ref == 'refs/heads/master'
+
       - name: push (non-master dry run)
+        if: github.repository != 'caddyserver/caddy-docker' || github.ref != 'refs/heads/master'
         run: |
           bashbrew push --dry-run caddy
-        if: github.repository != 'caddyserver/caddy-docker' || github.ref != 'refs/heads/master'
 
-  docker-windows-build:
-    runs-on: windows-2022
-    # env:
-    #   BASHBREW_LIBRARY: ./library
-    #   BASHBREW_NAMESPACE: caddy
+
+  # Parallelized: run quick windows docker build tests per-Dockerfile in parallel
+  windows-test:
+    strategy:
+      matrix:
+        include:
+          - version: '2.10'
+            os: ltsc2022
+            runner: windows-2022
+          - version: '2.10'
+            os: ltsc2025
+            runner: windows-2025
+          - version: '2.11'
+            os: ltsc2022
+            runner: windows-2022
+          - version: '2.11'
+            os: ltsc2025
+            runner: windows-2025
+    name: windows-test (${{ matrix.version }}/windows/${{ matrix.os }})
+    runs-on: ${{ matrix.runner }}
     steps:
       - uses: actions/checkout@master
-      - name: non-master build test
-        run: |
-          docker build -f 2.10/windows/ltsc2022/Dockerfile 2.10/windows/ltsc2022
-          docker build -f 2.10/windows-nanoserver/ltsc2022/Dockerfile 2.10/windows-nanoserver/ltsc2022
+      - name: non-master build test (per-path)
         if: github.repository != 'caddyserver/caddy-docker' || github.ref != 'refs/heads/master'
-      - name: install bashbrew
-        run: curl -o /bashbrew.exe https://doi-janky.infosiftr.net/job/bashbrew/job/master/lastSuccessfulBuild/artifact/bashbrew-windows-amd64.exe
-      - name: build
+        shell: pwsh
         run: |
-          /bashbrew --arch windows-amd64 --constraint windowsservercore-ltsc2022 --namespace caddy --library ./library build caddy;
-          /bashbrew --arch windows-amd64 --constraint windowsnanoserver-ltsc2022 --namespace caddy --library ./library build caddy
+          $path = "${{ matrix.version }}/windows/${{ matrix.os }}"
+          $nanopath = "${{ matrix.version }}/windows-nanoserver/${{ matrix.os }}"
+          Write-Host "Building test for $path"
+
+          # Early-exit: if there's no nanoserver Dockerfile for this version/os,
+          # just build the servercore Dockerfile and finish early.
+          if (-not (Test-Path "$nanopath\Dockerfile")) {
+            Write-Host "No nanoserver Dockerfile at $nanopath; building servercore only"
+            docker build -f "$path\Dockerfile" "$path"
+            exit 0
+          }
+
+          # nanoserver Dockerfile exists — parse it for the referenced servercore tag.
+          $nanoDockerfile = Get-Content "$nanopath\Dockerfile" -Raw
+          if (-not ($nanoDockerfile -match 'COPY\s+--from=caddy:([^\s]+)')) {
+            throw "Could not find 'COPY --from=caddy:<tag>' in $nanopath/Dockerfile; aborting nanoserver test."
+          }
+
+          $referencedTag = $Matches[1]
+          Write-Host "Found nanoserver copy-from tag: $referencedTag"
+
+          # Ensure the servercore Dockerfile exists and build/tag it so nanoserver can COPY from it.
+          $servercorePath = $path
+          if (-not (Test-Path "$servercorePath\Dockerfile")) {
+            throw "Expected servercore Dockerfile at $servercorePath not found; cannot prepare nanoserver build."
+          }
+
+          Write-Host "Building and tagging servercore image at $servercorePath as caddy:$referencedTag"
+          docker build -t "caddy:$referencedTag" -f "$servercorePath\Dockerfile" "$servercorePath"
+          Write-Host "Building nanoserver image at $nanopath"
+          docker build -f "$nanopath\Dockerfile" "$nanopath"
+
+  # Main windows build (matrix over constraints) - runs after tests
+  windows-build:
+    strategy:
+      matrix:
+        # TODO: nanoserver depends on servercore to be
+        # tagged beforehand, I can't figure it out so
+        # we'll skip it for now.
+        include:
+          - name: core-ltsc2022
+            constraint: windowsservercore-ltsc2022
+            runner: windows-2022
+          # - name: nano-ltsc2022
+          #   constraint: nanoserver-ltsc2022,windowsservercore-ltsc2022
+          #   runner: windows-2022
+          - name: core-ltsc2025
+            constraint: windowsservercore-ltsc2025
+            runner: windows-2025
+          # - name: nano-ltsc2025
+          #   constraint: nanoserver-ltsc2025,windowsservercore-ltsc2025
+          #   runner: windows-2025
+    name: windows-build (${{ matrix.name }})
+    runs-on: ${{ matrix.runner }}
+    env:
+      BASHBREW_LIBRARY: ./library
+      BASHBREW_NAMESPACE: caddy
+    steps:
+      - uses: actions/checkout@master
+
+      - name: install bashbrew
+        shell: bash
+        run: curl -o /bashbrew.exe https://doi-janky.infosiftr.net/job/bashbrew/job/master/lastSuccessfulBuild/artifact/bashbrew-windows-amd64.exe
+
+      - name: set constraint args
+        shell: bash
+        run: |
+          constraint="${{ matrix.constraint }}"
+          if [[ $constraint == *,* ]]; then
+            IFS=',' read -ra CONSTR <<< "$constraint"
+            constr_args=""
+            for c in "${CONSTR[@]}"; do
+              constr_args="$constr_args --constraint $c"
+            done
+          else
+            constr_args="--constraint $constraint"
+          fi
+          echo "CONSTR_ARGS=$constr_args" >> $GITHUB_ENV
+
+      - name: build
+        shell: bash
+        run: |
+          /bashbrew --arch windows-amd64 $CONSTR_ARGS build caddy
+
       - name: push
+        if: github.repository == 'caddyserver/caddy-docker' && github.ref == 'refs/heads/master'
+        shell: bash
         # NOTE: DOCKERHUB_TOKEN and DOCKERHUB_USERNAME must be present in https://github.com/caddyserver/caddy-docker/settings
         # the user must have permission to push to https://hub.docker.com/r/caddy/caddy
         run: |
           echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin;
-          /bashbrew --arch windows-amd64 --constraint windowsservercore-ltsc2022 --namespace caddy --library ./library push caddy;
-          /bashbrew --arch windows-amd64 --constraint windowsnanoserver-ltsc2022 --namespace caddy --library ./library push caddy
-        if: github.repository == 'caddyserver/caddy-docker' && github.ref == 'refs/heads/master'
+          /bashbrew --arch windows-amd64 $CONSTR_ARGS push caddy
+
       - name: push (non-master dry run)
-        run: |
-          /bashbrew --arch windows-amd64 --constraint windowsservercore-ltsc2022 --namespace caddy --library ./library push --dry-run caddy;
-          /bashbrew --arch windows-amd64 --constraint windowsnanoserver-ltsc2022 --namespace caddy --library ./library push --dry-run caddy
         if: github.repository != 'caddyserver/caddy-docker' || github.ref != 'refs/heads/master'
+        shell: bash
+        run: |
+          /bashbrew --arch windows-amd64 $CONSTR_ARGS push --dry-run caddy
+
