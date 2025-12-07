@@ -9,7 +9,7 @@ versions:
     dist_commit: 33ae08ff08d168572df2956ed14fbc4949880d94
 xcaddy_config:
   version: '0.4.5'
-# configuration for the stackbrew.tmpl template
+# configuration for the tmpl/stackbrew.tmpl template
 variants:
   - dir: alpine
     tags: [ "alpine" ]
@@ -24,28 +24,34 @@ variants:
     shared_tags: [ "windowsservercore", "latest" ]
     architectures: [ windows-amd64 ]
     constraints: [ windowsservercore-ltsc2022 ]
+    # builder: classic
   - dir: windows/ltsc2025
     tags: [ "windowsservercore-ltsc2025" ]
     shared_tags: [ "windowsservercore", "latest" ]
     architectures: [ windows-amd64 ]
     constraints: [ windowsservercore-ltsc2025 ]
+    # builder: classic
   - dir: windows-nanoserver/ltsc2022
     tags: [ "nanoserver-ltsc2022" ]
     shared_tags: [ "nanoserver" ]
     architectures: [ windows-amd64 ]
     constraints: [ nanoserver-ltsc2022, windowsservercore-ltsc2022 ]
+    # builder: classic
   - dir: windows-nanoserver/ltsc2025
     tags: [ "nanoserver-ltsc2025" ]
     shared_tags: [ "nanoserver" ]
     architectures: [ windows-amd64 ]
     constraints: [ nanoserver-ltsc2025, windowsservercore-ltsc2025 ]
+    # builder: classic
   - dir: windows-builder/ltsc2022
     tags: [ "builder-windowsservercore-ltsc2022" ]
     shared_tags: [ "builder" ]
     architectures: [ windows-amd64 ]
     constraints: [ windowsservercore-ltsc2022 ]
+    # builder: classic
   - dir: windows-builder/ltsc2025
     tags: [ "builder-windowsservercore-ltsc2025" ]
     shared_tags: [ "builder" ]
     architectures: [ windows-amd64 ]
     constraints: [ windowsservercore-ltsc2025 ]
+    # builder: classic
