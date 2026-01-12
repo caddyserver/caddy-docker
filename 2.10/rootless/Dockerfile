@@ -42,15 +42,16 @@ RUN set -eux; \
 # OpenShift will override the UID but keep GID=0
 # The -D flag creates a system user without password
 # The -H flag prevents creating a home directory
-RUN adduser -D -u 1001 -g 0 -H -h /data caddy
+RUN adduser -D -u 1001 -H -h /data caddy && \
+	addgroup caddy root
 
 # Set ownership to 1001:0 (user:root-group) for OpenShift compatibility
 # OpenShift assigns arbitrary UIDs but always uses GID=0 (root group)
 # The root group has no special privileges despite the name
-RUN chown -R 1001:0 /data /config /etc/caddy /usr/share/caddy /usr/bin/caddy
+RUN chown -R 1001:0 /data /config /etc/caddy
 
 # Make directories writable by the root group for OpenShift compatibility
-RUN chmod -R g+w /data /config /etc/caddy /usr/share/caddy
+RUN chmod -R g+w /data /config /etc/caddy
 
 # See https://caddyserver.com/docs/conventions#file-locations for details
 ENV XDG_CONFIG_HOME /config
