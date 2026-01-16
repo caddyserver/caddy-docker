@@ -1,0 +1,11 @@
+# Global options: rootless image uses non-privileged ports
+{
+	http_port 8080
+	https_port 8443
+}
+
+:8080
+
+route {
+	teapot
+}
