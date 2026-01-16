@@ -1,0 +1,200 @@
+name: GHCR Build and Push
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'library/caddy'
+  pull_request:
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  parse:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.parse.outputs.result }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Parse library file
+        id: parse
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            
+            // Convert architecture names to Docker platform format
+            function archToPlatform(arch) {
+              const mapping = {
+                'amd64': 'linux/amd64',
+                'arm64v8': 'linux/arm64',
+                'arm32v6': 'linux/arm/v6',
+                'arm32v7': 'linux/arm/v7',
+                'ppc64le': 'linux/ppc64le',
+                'riscv64': 'linux/riscv64',
+                's390x': 'linux/s390x',
+              };
+              return mapping[arch] || null;
+            }
+            
+            console.log('Parsing library/caddy...');
+            
+            const content = fs.readFileSync('library/caddy', 'utf8');
+            
+            // Split into sections (separated by blank lines)
+            const sections = content.split('\n\n');
+            
+            const matrixItems = [];
+            
+            for (const section of sections) {
+              if (!section.trim() || section.startsWith('#') || section.startsWith('Maintainers:')) {
+                continue;
+              }
+              
+              // Parse fields from this section
+              let tags = null;
+              let sharedTags = null;
+              let directory = null;
+              let architectures = null;
+              
+              for (const line of section.split('\n')) {
+                const trimmedLine = line.trim();
+                if (trimmedLine.startsWith('#')) {
+                  continue;
+                }
+                
+                if (trimmedLine.startsWith('Tags: ')) {
+                  tags = trimmedLine.substring(6).replace(/,/g, ' ');
+                } else if (trimmedLine.startsWith('SharedTags: ')) {
+                  sharedTags = trimmedLine.substring(12).replace(/,/g, ' ');
+                } else if (trimmedLine.startsWith('Directory: ')) {
+                  directory = trimmedLine.substring(11);
+                } else if (trimmedLine.startsWith('Architectures: ')) {
+                  architectures = trimmedLine.substring(15).replace(/,/g, ' ');
+                }
+              }
+              
+              // Skip if we don't have required fields
+              if (!tags || !directory || !architectures) {
+                continue;
+              }
+              
+              // Skip Windows images
+              if (architectures.includes('windows')) {
+                console.log(`Skipping Windows image: ${directory}`);
+                continue;
+              }
+              
+              // Convert architectures to platforms
+              const platforms = [];
+              for (const arch of architectures.split(/\s+/)) {
+                if (!arch.includes('windows')) {
+                  const platform = archToPlatform(arch);
+                  if (platform) {
+                    platforms.push(platform);
+                  }
+                }
+              }
+              
+              if (platforms.length === 0) {
+                console.log(`No Linux platforms found for ${directory}, skipping`);
+                continue;
+              }
+              
+              console.log(`Found Linux image: ${directory}`);
+              
+              // Combine tags and shared tags
+              let allTags = tags;
+              if (sharedTags) {
+                allTags = `${tags} ${sharedTags}`.replace(/\s+/g, ' ').trim();
+              }
+              
+              matrixItems.push({
+                directory: directory,
+                platforms: platforms.join(','),
+                tags: allTags
+              });
+            }
+            
+            // Create matrix JSON
+            const matrix = { include: matrixItems };
+            
+            console.log(`\nGenerated matrix with ${matrixItems.length} items:`);
+            console.log(JSON.stringify(matrix, null, 2));
+            
+            // Set output for matrix
+            return matrix;
+
+  build:
+    needs: parse
+    name: Build (${{ matrix.directory }})
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.parse.outputs.matrix) }}
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GHCR
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push image
+        shell: bash
+        run: |
+          set -e
+
+          DIRECTORY="${{ matrix.directory }}"
+          PLATFORMS="${{ matrix.platforms }}"
+          ALL_TAGS="${{ matrix.tags }}"
+          IS_PR="${{ github.event_name == 'pull_request' }}"
+
+          echo "=========================================="
+          echo "Building image from: $DIRECTORY"
+          echo "Platforms: $PLATFORMS"
+          echo "Tags: $ALL_TAGS"
+          echo "=========================================="
+          echo
+
+          # Build Docker tag arguments
+          TAG_ARGS=""
+          for tag in $ALL_TAGS; do
+            TAG_ARGS="$TAG_ARGS --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:$tag"
+          done
+
+          # Construct buildx command string (print it for logs), then run it
+          if [[ "$IS_PR" == "true" ]]; then
+            CMD="docker buildx build --platform '$PLATFORMS' --file '$DIRECTORY/Dockerfile' $TAG_ARGS '$DIRECTORY'"
+          else
+            CMD="docker buildx build --push --platform '$PLATFORMS' --file '$DIRECTORY/Dockerfile' $TAG_ARGS '$DIRECTORY'"
+          fi
+
+          echo "=========================================="
+          echo "Running buildx command:"
+          echo "$CMD"
+          echo "=========================================="
+
+          # Execute the command
+          eval $CMD
+
+          echo "Successfully processed $DIRECTORY"
