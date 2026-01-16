@@ -18,7 +18,7 @@ RUN set -eux; \
 	sed -i 's/:80/:{\$CADDY_HTTP_PORT:8080}/g' /etc/caddy/Caddyfile
 
 # https://github.com/caddyserver/caddy/releases
-ENV CADDY_VERSION v2.10.2
+ENV CADDY_VERSION=v2.10.2
 
 RUN set -eux; \
 	apkArch="$(apk --print-arch)"; \
@@ -55,8 +55,8 @@ RUN chown -R 1001:0 /data /config /etc/caddy
 RUN chmod -R g+w /data /config /etc/caddy
 
 # See https://caddyserver.com/docs/conventions#file-locations for details
-ENV XDG_CONFIG_HOME /config
-ENV XDG_DATA_HOME /data
+ENV XDG_CONFIG_HOME=/config
+ENV XDG_DATA_HOME=/data
 
 # Set default HTTP and HTTPS ports to non-privileged ports for rootless operation
 ENV CADDY_HTTP_PORT=8080
