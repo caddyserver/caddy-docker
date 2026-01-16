@@ -2,6 +2,7 @@ FROM golang:1.25-alpine3.23
 
 RUN apk add --no-cache \
 	ca-certificates \
+	curl \
 	git \
 	libcap
 
