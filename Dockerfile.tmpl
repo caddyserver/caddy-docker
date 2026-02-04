@@ -13,6 +13,7 @@ RUN set -eux; \
 		/etc/caddy \
 		/usr/share/caddy \
 	; \
+	chmod 1777 /config/caddy /data/caddy; \
 	wget -O /etc/caddy/Caddyfile "https://github.com/caddyserver/dist/raw/{{ .config.dist_commit }}/config/Caddyfile"; \
 	wget -O /usr/share/caddy/index.html "https://github.com/caddyserver/dist/raw/{{ .config.dist_commit }}/welcome/index.html"
 
