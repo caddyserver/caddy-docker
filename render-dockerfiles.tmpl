@@ -10,6 +10,8 @@
 			{{- $template := "dockerfile" }}
 			{{- if eq "builder" $variant.dir -}}
 				{{ $template = "builder-dockerfile" -}}
+			{{- else if eq "rootless" $variant.dir -}}
+				{{ $template = "rootless-dockerfile" -}}
 			{{ end -}}
 			{{- if strings.HasPrefix "windows-builder" $variant.dir -}}
 				{{ $template = "windows-builder-dockerfile" -}}
