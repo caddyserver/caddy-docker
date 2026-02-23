@@ -1,6 +1,6 @@
 # this file is generated with gomplate:
 # template: https://github.com/caddyserver/caddy-docker/blob/e05f66898af9a0a694af637db2724f91d9d82ed7/stackbrew.tmpl
-# config context: https://github.com/caddyserver/caddy-docker/blob/9938090d6f83b48705541485d24ff3efb9509208/stackbrew-config.yaml
+# config context: https://github.com/caddyserver/caddy-docker/blob/1dc09bb684f72bde5259ea55eae3297f69c86637/stackbrew-config.yaml
 Maintainers: Dave Henderson (@hairyhenderson),
              Francis Lavoie (@francislavoie)
 
@@ -8,21 +8,21 @@ Tags: 2.11.1-alpine, 2.11-alpine, 2-alpine, alpine
 SharedTags: 2.11.1, 2.11, 2, latest
 GitRepo: https://github.com/caddyserver/caddy-docker.git
 Directory: 2.11/alpine
-GitCommit: 9938090d6f83b48705541485d24ff3efb9509208
+GitCommit: 1dc09bb684f72bde5259ea55eae3297f69c86637
 Architectures: amd64, arm64v8, arm32v6, arm32v7, ppc64le, riscv64, s390x
 
 Tags: 2.11.1-builder-alpine, 2.11-builder-alpine, 2-builder-alpine, builder-alpine
 SharedTags: 2.11.1-builder, 2.11-builder, 2-builder, builder
 GitRepo: https://github.com/caddyserver/caddy-docker.git
 Directory: 2.11/builder
-GitCommit: 9938090d6f83b48705541485d24ff3efb9509208
+GitCommit: 1dc09bb684f72bde5259ea55eae3297f69c86637
 Architectures: amd64, arm64v8, arm32v6, arm32v7, ppc64le, riscv64, s390x
 
 Tags: 2.11.1-windowsservercore-ltsc2022, 2.11-windowsservercore-ltsc2022, 2-windowsservercore-ltsc2022, windowsservercore-ltsc2022
 SharedTags: 2.11.1-windowsservercore, 2.11-windowsservercore, 2-windowsservercore, windowsservercore, 2.11.1, 2.11, 2, latest
 GitRepo: https://github.com/caddyserver/caddy-docker.git
 Directory: 2.11/windows/ltsc2022
-GitCommit: 9938090d6f83b48705541485d24ff3efb9509208
+GitCommit: 1dc09bb684f72bde5259ea55eae3297f69c86637
 Architectures: windows-amd64
 Constraints: windowsservercore-ltsc2022
 
@@ -30,7 +30,7 @@ Tags: 2.11.1-windowsservercore-ltsc2025, 2.11-windowsservercore-ltsc2025, 2-wind
 SharedTags: 2.11.1-windowsservercore, 2.11-windowsservercore, 2-windowsservercore, windowsservercore, 2.11.1, 2.11, 2, latest
 GitRepo: https://github.com/caddyserver/caddy-docker.git
 Directory: 2.11/windows/ltsc2025
-GitCommit: 9938090d6f83b48705541485d24ff3efb9509208
+GitCommit: 1dc09bb684f72bde5259ea55eae3297f69c86637
 Architectures: windows-amd64
 Constraints: windowsservercore-ltsc2025
 
@@ -38,7 +38,7 @@ Tags: 2.11.1-nanoserver-ltsc2022, 2.11-nanoserver-ltsc2022, 2-nanoserver-ltsc202
 SharedTags: 2.11.1-nanoserver, 2.11-nanoserver, 2-nanoserver, nanoserver
 GitRepo: https://github.com/caddyserver/caddy-docker.git
 Directory: 2.11/windows-nanoserver/ltsc2022
-GitCommit: 9938090d6f83b48705541485d24ff3efb9509208
+GitCommit: 1dc09bb684f72bde5259ea55eae3297f69c86637
 Architectures: windows-amd64
 Constraints: nanoserver-ltsc2022, windowsservercore-ltsc2022
 
@@ -46,7 +46,7 @@ Tags: 2.11.1-nanoserver-ltsc2025, 2.11-nanoserver-ltsc2025, 2-nanoserver-ltsc202
 SharedTags: 2.11.1-nanoserver, 2.11-nanoserver, 2-nanoserver, nanoserver
 GitRepo: https://github.com/caddyserver/caddy-docker.git
 Directory: 2.11/windows-nanoserver/ltsc2025
-GitCommit: 9938090d6f83b48705541485d24ff3efb9509208
+GitCommit: 1dc09bb684f72bde5259ea55eae3297f69c86637
 Architectures: windows-amd64
 Constraints: nanoserver-ltsc2025, windowsservercore-ltsc2025
 
@@ -54,7 +54,7 @@ Tags: 2.11.1-builder-windowsservercore-ltsc2022, 2.11-builder-windowsservercore-
 SharedTags: 2.11.1-builder, 2.11-builder, 2-builder, builder
 GitRepo: https://github.com/caddyserver/caddy-docker.git
 Directory: 2.11/windows-builder/ltsc2022
-GitCommit: 9938090d6f83b48705541485d24ff3efb9509208
+GitCommit: 1dc09bb684f72bde5259ea55eae3297f69c86637
 Architectures: windows-amd64
 Constraints: windowsservercore-ltsc2022
 
@@ -62,7 +62,7 @@ Tags: 2.11.1-builder-windowsservercore-ltsc2025, 2.11-builder-windowsservercore-
 SharedTags: 2.11.1-builder, 2.11-builder, 2-builder, builder
 GitRepo: https://github.com/caddyserver/caddy-docker.git
 Directory: 2.11/windows-builder/ltsc2025
-GitCommit: 9938090d6f83b48705541485d24ff3efb9509208
+GitCommit: 1dc09bb684f72bde5259ea55eae3297f69c86637
 Architectures: windows-amd64
 Constraints: windowsservercore-ltsc2025
 
