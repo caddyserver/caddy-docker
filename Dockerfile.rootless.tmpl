@@ -1,0 +1,88 @@
+{{ .base | strings.TrimSpace }}
+
+RUN apk add --no-cache \
+	ca-certificates \
+	curl \
+	libcap \
+	mailcap
+
+RUN set -eux; \
+	mkdir -p \
+		/config/caddy \
+		/data/caddy \
+		/etc/caddy \
+		/usr/share/caddy \
+	; \
+	wget -O /etc/caddy/Caddyfile "https://github.com/caddyserver/dist/raw/{{ .config.dist_commit }}/config/Caddyfile"; \
+	wget -O /usr/share/caddy/index.html "https://github.com/caddyserver/dist/raw/{{ .config.dist_commit }}/welcome/index.html"; \
+	sed -i 's/:80/:{\$CADDY_HTTP_PORT:8080}/g' /etc/caddy/Caddyfile
+
+# https://github.com/caddyserver/caddy/releases
+ENV CADDY_VERSION=v{{ .config.caddy_version }}
+
+RUN set -eux; \
+	apkArch="$(apk --print-arch)"; \
+	case "$apkArch" in \
+		x86_64)  binArch='amd64'; checksum='{{ .checksums.amd64 }}' ;; \
+		armhf)   binArch='armv6'; checksum='{{ .checksums.arm32v6 }}' ;; \
+		armv7)   binArch='armv7'; checksum='{{ .checksums.arm32v7 }}' ;; \
+		aarch64) binArch='arm64'; checksum='{{ .checksums.arm64v8 }}' ;; \
+		ppc64el|ppc64le) binArch='ppc64le'; checksum='{{ .checksums.ppc64le }}' ;; \
+		riscv64) binArch='riscv64'; checksum='{{ .checksums.riscv64 }}' ;; \
+		s390x)   binArch='s390x'; checksum='{{ .checksums.s390x }}' ;; \
+		*) echo >&2 "error: unsupported architecture ($apkArch)"; exit 1 ;;\
+	esac; \
+	wget -O /tmp/caddy.tar.gz "https://github.com/caddyserver/caddy/releases/download/v{{ .config.caddy_version }}/caddy_{{ .config.caddy_version }}_linux_${binArch}.tar.gz"; \
+	echo "$checksum  /tmp/caddy.tar.gz" | sha512sum -c; \
+	tar x -z -f /tmp/caddy.tar.gz -C /usr/bin caddy; \
+	rm -f /tmp/caddy.tar.gz; \
+	chmod +x /usr/bin/caddy; \
+	caddy version
+
+# Create non-root user with UID 1001 and root group (GID 0)
+# OpenShift will override the UID but keep GID=0
+# The -D flag creates a system user without password
+# The -H flag prevents creating a home directory
+RUN adduser -D -u 1001 -H -h /data caddy && \
+	addgroup caddy root
+
+# Set ownership to 1001:0 (user:root-group) for OpenShift compatibility
+# OpenShift assigns arbitrary UIDs but always uses GID=0 (root group)
+# The root group has no special privileges despite the name
+RUN chown -R 1001:0 /data /config /etc/caddy
+
+# Make directories writable by the root group for OpenShift compatibility
+RUN chmod -R g+w /data /config /etc/caddy
+
+# See https://caddyserver.com/docs/conventions#file-locations for details
+ENV XDG_CONFIG_HOME=/config
+ENV XDG_DATA_HOME=/data
+
+# Set default HTTP and HTTPS ports to non-privileged ports for rootless operation
+ENV CADDY_HTTP_PORT=8080
+ENV CADDY_HTTPS_PORT=8443
+
+LABEL org.opencontainers.image.version=v{{ .config.caddy_version }}
+LABEL org.opencontainers.image.title=Caddy
+LABEL org.opencontainers.image.description="a powerful, enterprise-ready, open source web server with automatic HTTPS written in Go (rootless)"
+LABEL org.opencontainers.image.url=https://caddyserver.com
+LABEL org.opencontainers.image.documentation=https://caddyserver.com/docs
+LABEL org.opencontainers.image.vendor="Light Code Labs"
+LABEL org.opencontainers.image.licenses=Apache-2.0
+LABEL org.opencontainers.image.source="https://github.com/caddyserver/caddy-docker"
+
+# Expose non-privileged ports (rootless containers cannot bind to ports < 1024)
+# Configure these ports in your Caddyfile with http_port and https_port directives
+# 8080: HTTP, 8443: HTTPS (TCP), 8443/udp: HTTP/3 (QUIC), 2019: Admin API
+EXPOSE 8080
+EXPOSE 8443
+EXPOSE 8443/udp
+EXPOSE 2019
+
+WORKDIR /srv
+
+# Switch to non-root user
+# OpenShift will override this UID with an arbitrary one, but keep GID=0
+USER 1001
+
+CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
