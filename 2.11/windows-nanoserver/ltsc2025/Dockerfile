@@ -3,7 +3,7 @@ FROM mcr.microsoft.com/windows/nanoserver:ltsc2025
 RUN mkdir c:\config && mkdir c:\data && mkdir c:\etc\caddy && mkdir c:\usr\share\caddy
 
 # Copy Caddy binary from the Caddy Windows Server Core image
-COPY --from=caddy:2.11.0-beta.2-windowsservercore-ltsc2025 c:/caddy.exe c:/caddy.exe
+COPY --from=caddy:2.11.1-windowsservercore-ltsc2025 c:/caddy.exe c:/caddy.exe
 
 RUN curl -fsSL -o c:\etc\caddy\Caddyfile https://github.com/caddyserver/dist/raw/33ae08ff08d168572df2956ed14fbc4949880d94/config/Caddyfile
 RUN curl -fsSL -o c:\usr\share\caddy\index.html https://github.com/caddyserver/dist/raw/33ae08ff08d168572df2956ed14fbc4949880d94/welcome/index.html
@@ -12,7 +12,7 @@ RUN curl -fsSL -o c:\usr\share\caddy\index.html https://github.com/caddyserver/d
 ENV XDG_CONFIG_HOME=c:/config
 ENV XDG_DATA_HOME=c:/data
 
-LABEL org.opencontainers.image.version=v2.11.0-beta.2
+LABEL org.opencontainers.image.version=v2.11.1
 LABEL org.opencontainers.image.title=Caddy
 LABEL org.opencontainers.image.description="a powerful, enterprise-ready, open source web server with automatic HTTPS written in Go"
 LABEL org.opencontainers.image.url=https://caddyserver.com
