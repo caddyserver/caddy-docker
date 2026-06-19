@@ -1,4 +1,4 @@
-FROM golang:1.26-windowsservercore-ltsc2022
+FROM golang:1.27rc1-windowsservercore-ltsc2022
 
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
 
