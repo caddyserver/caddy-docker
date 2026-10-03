@@ -43,8 +43,13 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: non-master build test
+        # the nanoserver image copies caddy.exe from the servercore image, which
+        # isn't published yet when the version changes, so tag the local build
+        # with the name the nanoserver Dockerfile expects
         run: |
-          docker build -f 2.11/windows/ltsc2022/Dockerfile 2.11/windows/ltsc2022
+          $servercore = (Select-String -Path 2.11/windows-nanoserver/ltsc2022/Dockerfile -Pattern 'COPY --from=(\S+)').Matches[0].Groups[1].Value
+          docker build -t $servercore -f 2.11/windows/ltsc2022/Dockerfile 2.11/windows/ltsc2022
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           docker build -f 2.11/windows-nanoserver/ltsc2022/Dockerfile 2.11/windows-nanoserver/ltsc2022
         if: github.repository != 'caddyserver/caddy-docker' || github.ref != 'refs/heads/master'
       - name: install bashbrew
